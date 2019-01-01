@@ -43,12 +43,12 @@
     </md-card>
 
     <div class="md-size-100 md-layout-item">
-      <!--<NodeList-->
-        <!--:filterEnabled="false"-->
-        <!--:router="'allContents'"-->
-        <!--:tag="this.$route.params.tid"-->
-        <!--class="md-card md-theme-default md-layout-item md-size-80 md-medium-size-100"-->
-      <!--/>-->
+      <NodeList
+        :filterEnabled="false"
+        :router="'allContents'"
+        :tag="this.$route.params.tid"
+        class="md-card md-theme-default md-layout-item md-size-80 md-medium-size-100"
+      />
     </div>
 
   </div>
@@ -56,14 +56,14 @@
 
 <script>
   import axios from 'axios'
-  // import NodeList from '@/components/allContents/NodeList'
+  import NodeList from '@/components/allContents/NodeList'
   import breadcrumb from '@/components/fields/breadcrumb'
-  import { cookie } from '~/plugins/cookie.js'
+  import { cookie } from '@/plugins/cookie.js'
 
   export default {
     name: 'Tags',
     components: {
-      // NodeList,
+      NodeList,
       breadcrumb
     },
     mixins:[cookie],
@@ -89,6 +89,27 @@
     // },
     mounted(){
       this.mount()
+    },
+    async asyncData({app}) {
+      // let authorization= this.$store.state.access + ' ' + this.$store.state.access
+      try{
+        const {data} = await app.$axios.get('/api/v1.0/homes/')
+        console.log(data)
+        return { homes: data }
+      }
+      catch(err) {
+        console.log(err)
+        switch (err.response.status) {
+          case 404:
+            return {pageError : 'آدرسی که درخواست به آن ارسال شده وجود ندارد!'};
+          case 401:
+            return {pageError : 'شماره اجازه دسترسی به این بخش را ندارید!'};
+          case 500:
+            return {pageError : 'خطای سرور!'}
+
+        }
+
+      }
     },
     methods:{
       mount(){
