@@ -27,12 +27,15 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '@/assets/scss/app.scss',
+    '@/assets/scss/vars.scss'
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/cookie.js'
   ],
 
   /*
@@ -40,7 +43,8 @@ module.exports = {
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    'nuxt-vue-material',
   ],
   /*
   ** Axios module configuration
