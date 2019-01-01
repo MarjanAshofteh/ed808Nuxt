@@ -1,11 +1,11 @@
-//@import "~vue-material/dist/theme/engine"; // Import the theme engine
+@import "~vue-material/dist/theme/engine"; // Import the theme engine
 
-//@include md-register-theme("default", (
-//  primary: #92278f, // The primary color of your brand
-//  accent: #ba68c8 // The secondary color of your brand
-//));
+@include md-register-theme("default", (
+  primary: #92278f, // The primary color of your brand
+  accent: #ba68c8 // The secondary color of your brand
+));
 
-//@import "~vue-material/dist/theme/all"; // Apply the theme
+@import "~vue-material/dist/theme/all"; // Apply the theme
 
 @font-face {
   font-family: 'Material Icons';

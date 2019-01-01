@@ -7,7 +7,7 @@
 
     <md-card class="title md-layout-item md-size-100">
 
-      <!--<breadcrumb :links="[{url:'/tag/'+ tid +'/'+ name, title: 'Tag: '+ name}]"></breadcrumb>-->
+      <breadcrumb :links="[{url:'/tag/'+ tid +'/'+ name, title: 'Tag: '+ name}]"></breadcrumb>
 
       <md-card-content>
         <div class="top_header md-layout-item md-size-100">
