@@ -57,14 +57,14 @@
 <script>
   import axios from 'axios'
   // import NodeList from '@/components/allContents/NodeList'
-  // import breadcrumb from '@/components/fields/breadcrumb'
+  import breadcrumb from '@/components/fields/breadcrumb'
   import { cookie } from '~/plugins/cookie.js'
 
   export default {
     name: 'Tags',
     components: {
       // NodeList,
-      // breadcrumb
+      breadcrumb
     },
     mixins:[cookie],
     data(){
