@@ -1,10 +1,10 @@
 <template>
-  <router-link 
+  <nuxt-link 
     :to="'/tag/'+ tid +'/'+ name | replaceUrlSpace" 
-    target="_blank" 
+    
     :title="name">
     <md-button class="md-raised">{{name}}</md-button>
-  </router-link>
+  </nuxt-link>
 </template>
 
 <script>

@@ -88,51 +88,54 @@
     //     next()
     // },
     mounted(){
-      this.mount()
+      if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
+            this.$router.replace({path:`/tag/${this.$route.params.tid}/${this.replaceUrlSpace(this.name)}`})
+          }
+      this.$nextTick(() => {
+        window.addEventListener('resize', () => {
+          this.windowWidth = window.innerWidth
+        });
+      })
     },
-    async asyncData({app}) {
+    async asyncData({app,params}) {
       // let authorization= this.$store.state.access + ' ' + this.$store.state.access
-      try{
-        const {data} = await app.$axios.get('/api/v1.0/homes/')
-        console.log(data)
-        return { homes: data }
-      }
-      catch(err) {
-        console.log(err)
-        switch (err.response.status) {
-          case 404:
-            return {pageError : 'آدرسی که درخواست به آن ارسال شده وجود ندارد!'};
-          case 401:
-            return {pageError : 'شماره اجازه دسترسی به این بخش را ندارید!'};
-          case 500:
-            return {pageError : 'خطای سرور!'}
-
+      const {data} = await axios.get('http://api.ed808.com/latin/tag/'+ params.tid + '/contents')
+      if (data.tid) {
+        return {
+          name: data.name,
+          image: data.tag_image != null ? data.tag_image : '',
+          description: data.description != null ? data.description : '',
+          loading: {page: false, bookmark: false},
+          bookmarked: data.user_bookmark,
+          collapse: true,
+          metaDescription: data.meta_description != null ? data.meta_description : ''
         }
-
+      }else{
+        throw({ statusCode: 404, message: 'Page not found' })
       }
     },
     methods:{
       mount(){
-        axios.get('http://api.ed808.com/latin/tag/'+ this.tid + '/contents')
-          .then((data) => data.data)
-          .then((data) => {
-            this.name = data.name
-            this.description = data.description != null ? data.description : ''
-            this.image = data.tag_image != null ? data.tag_image : ''
-            this.bookmarked = data.user_bookmark
+        // axios.get('http://api.ed808.com/latin/tag/'+ this.tid + '/contents')
+        //   .then((data) => data.data)
+        //   .then((data) => {
+        //     this.name = data.name
+        //     this.description = data.description != null ? data.description : ''
+        //     this.image = data.tag_image != null ? data.tag_image : ''
+        //     this.bookmarked = data.user_bookmark
 
-            if(data.meta_description != null)
-              this.metaDescription = data.meta_description
-            if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
-              this.$router.replace({path:`/tag/${this.tid}/${this.replaceUrlSpace(this.name)}`})
-            }
-            this.loading.page = false
-          })
-        this.$nextTick(() => {
-          window.addEventListener('resize', () => {
-            this.windowWidth = window.innerWidth
-          });
-        })
+        //     if(data.meta_description != null)
+        //       this.metaDescription = data.meta_description
+        //     if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
+        //       this.$router.replace({path:`/tag/${this.tid}/${this.replaceUrlSpace(this.name)}`})
+        //     }
+        //     this.loading.page = false
+        //   })
+        // this.$nextTick(() => {
+        //   window.addEventListener('resize', () => {
+        //     this.windowWidth = window.innerWidth
+        //   });
+        // })
       },
       convertDomain(value){
         String.prototype.replaceAll = function(search, replacement) {
