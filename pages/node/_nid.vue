@@ -181,7 +181,7 @@
         return "http://api.ed808.com/sites/default/files/" + value.substring(9)
       }
     },
-    metaInfo(){
+    head(){
       return{
         title: this.node_content.title,
         meta: [

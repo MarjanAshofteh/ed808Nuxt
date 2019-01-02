@@ -1,66 +1,119 @@
 <template>
-  <section class="container">
-    <div>
-      <logo/>
-      <h1 class="title">
-        ed808
-      </h1>
-      <h2 class="subtitle">
-        civil engineering social media
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
+  <div>
+    <section id="banner">
+      <!--<img src="http://civil808.com/en/staticfile/top-banner.jpg" alt="">-->
+      <div>
+        <h1>{{title}}</h1>
+        <span>specialized training in Civil and Architecture
+          <span>Ed808.com</span>
+        </span>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <newspane/>
+
+    <NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>
+
+  </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import axios from 'axios'
+import newspane from '@/components/front/newspane'
+import NodeList from '@/components/allContents/NodeList'
 
 export default {
+  name: 'home',
+  data(){
+    return{
+      title:'808 Educational and Engineering institute',
+    }
+  },
   components: {
-    Logo
+    newspane,
+    NodeList
+  },
+  metaInfo(){
+    return{
+      title: this.title,
+      titleTemplate: 'home | %s',
+      links:[
+        {rel: 'canonical', href: 'http://ed808.com'}
+      ]   
+    }
   }
 }
 </script>
 
-<style>
-
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
-}
+<style lang="scss">
+  section#banner{
+    background-image: url(http://ed808.com/staticfile/top-banner.jpg);
+    background-size: cover;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    background-position: bottom;
+    justify-content: flex-end;
+    @media all and (max-width: 700px){
+      justify-content: center; 
+    }
+    > div{
+      margin: 0 11% 0 0;
+      @media all and (max-width: 700px){
+        margin:0px;
+      }
+      h1{
+        font-size: 24px;
+        padding: 26px 26px;
+        font-weight: bold;
+        background-color: #ffffff;
+        margin-bottom: 7px;
+        @media all and (max-width: 600px){
+          font-size: 17px;
+          padding: 26px 10px;
+        }
+      }
+      > span{
+        color: white;
+        font-size: 17px;
+        border: 1px solid white;
+        padding: 24px 20px 30px 20px;
+        display: inline-block;
+        text-shadow: 2px 2px 6px #000;
+        border-width: 1px 1px 0px 1px;
+        position: relative;
+        @media all and (max-width: 600px){
+          font-size: 16px;
+          padding: 24px 10px 30px 10px;
+        }
+        > span{
+          font-size: 10px;
+          position: absolute;
+          bottom: -7px;
+          right: calc(50% - 28px);
+        }
+        &:before,
+        &:after{
+          content: '';
+          position: absolute;
+          background-color: white;
+          width: 100px;
+          height: 1px;
+          bottom: 0;
+        }
+        &:before{
+          left: 0;
+        }
+        &:after{
+          right: 0;
+        }
+      }
+    }
+  }
+  .page-iframe .mejs-container{
+      padding-bottom: 53% !important;
+  }
+  .admin-error{
+      display: none;
+  }
 </style>
