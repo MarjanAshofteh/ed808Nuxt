@@ -3,7 +3,7 @@
     <div class="md-layout" style="align-items: flex-start; padding: 0 0 30px 15px;">
         <filters class="md-layout-item md-size-20" style="padding: 0px 15px 0 0;"/>
         <NodeList 
-          :filterEnabled="true" 
+          :filterEnabled="false" 
           :router="'allContents'" 
           class="md-card md-theme-default md-layout-item md-size-80"
           />
@@ -18,12 +18,12 @@ import NodeList from '@/components/allContents/NodeList'
 import filters from '@/components/allContents/filters'
 
 export default {
-  name: 'allContents',
+  name: 'contents',
   components: {
     NodeList,
     filters
   },
-  metaInfo(){
+  head(){
     return{
       title: 'All content',
       meta: [

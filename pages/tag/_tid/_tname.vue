@@ -58,7 +58,7 @@
   import axios from 'axios'
   import NodeList from '@/components/allContents/NodeList'
   import breadcrumb from '@/components/fields/breadcrumb'
-  import { cookie } from '@/plugins/cookie.js'
+  import { cookie } from '@/components/mixins/cookie.js'
 
   export default {
     name: 'Tags',
