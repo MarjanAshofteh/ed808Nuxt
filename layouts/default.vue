@@ -160,9 +160,9 @@
     methods:{
       update_navbar(){
         //console.log('token is set')
-        /*axios.defaults.crossDomain = true;
-        axios.defaults.withCredentials  = true;
-        axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
+        // axios.defaults.crossDomain = true;
+        // axios.defaults.withCredentials  = true;
+        axios.get('/latin/user/login/nav_bar_info',
         {
           headers:{
             'Content-type': 'application/json'
@@ -180,7 +180,7 @@
         })
         .catch(e => {
           console.log('errors for nav_bar_info : ' + e)
-        })*/
+        })
       },
       opening_menu(){
         this.menu_flag = !this.menu_flag

@@ -99,20 +99,27 @@
     },
     async asyncData({app,params}) {
       // let authorization= this.$store.state.access + ' ' + this.$store.state.access
-      const {data} = await axios.get('http://api.ed808.com/latin/tag/'+ params.tid + '/contents')
-      if (data.tid) {
-        return {
-          name: data.name,
-          image: data.tag_image != null ? data.tag_image : '',
-          description: data.description != null ? data.description : '',
-          loading: {page: false, bookmark: false},
-          bookmarked: data.user_bookmark,
-          collapse: true,
-          metaDescription: data.meta_description != null ? data.meta_description : ''
+      try{
+        const {data} = await app.$axios.get('/latin/tag/'+ params.tid + '/contents')
+        console.log(data)
+        if (data.tid) {
+          return {
+            name: data.name,
+            image: data.tag_image != null ? data.tag_image : '',
+            description: data.description != null ? data.description : '',
+            loading: {page: false, bookmark: false},
+            bookmarked: data.user_bookmark,
+            collapse: true,
+            metaDescription: data.meta_description != null ? data.meta_description : ''
+          }
+        }else{
+          throw({ statusCode: 404, message: 'Page not found' })
         }
-      }else{
-        throw({ statusCode: 404, message: 'Page not found' })
       }
+      catch(e){
+        console.log(e.message)
+      }
+      
     },
     methods:{
       mount(){

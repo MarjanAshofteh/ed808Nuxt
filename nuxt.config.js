@@ -76,8 +76,16 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    proxy: true
   },
 
+  proxy: [
+    'http://api.ed808.com/latin/tag/*/contents',
+    'http://api.ed808.com/latin/*/**',
+    'http://api.ed808.com/latin/user/*/**',
+    'http://api.ed808.com/latin/user/login/nav_bar_info',
+    'http://api.ed808.com/latin/user/login',
+  ],
   /*
   ** Build configuration
   */

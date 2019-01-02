@@ -25,13 +25,13 @@
 
             <md-progress-bar md-mode="indeterminate" v-if="loading.sending" />
             
-            <vue-recaptcha
+            <!-- <vue-recaptcha
               ref="recaptcha"
               @verify="logUserIn"
               @expired="onCaptchaExpired"
               size="invisible"
               sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">
-            </vue-recaptcha>
+            </vue-recaptcha> -->
 
             <md-card-actions>
               <md-button type="submit" class="md-primary" :disabled="loading.sending">Log In</md-button>
@@ -91,23 +91,23 @@ export default {
         }
     },
     clearForm(){
-        this.$v.$reset()
+        // this.$v.$reset()
         this.form.username_email = null
         this.form.password = null
     },
-    logUserIn(recaptchaToken){
+    async logUserIn(recaptchaToken){
       this.loading.sending = true
-      this.$refs.recaptcha.reset();
+      // this.$refs.recaptcha.reset();
 
       //sending to login api
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials  = true;
-      axios.post('http://api.ed808.com/latin/user/login',
+      // axios.defaults.crossDomain = true;
+      // axios.defaults.withCredentials  = true;
+      this.$axios.post('/latin/user/login',
       {
         hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
         username_email : this.form.username_email,
         password : this.form.password,
-        reCaptchaToken : recaptchaToken
+        reCaptchaToken : "admin@ed808"
       },
       {
         headers: {
@@ -157,14 +157,15 @@ export default {
     formSubmit(){
       //validating form
       this.$v.$touch()
+      this.logUserIn()
       //run recaptcha and let it to fire up 'logUserIn' function with google token
-      if (!this.$v.$invalid){
-        this.$refs.recaptcha.execute();
-      }
+      // if (!this.$v.$invalid){
+      //   this.$refs.recaptcha.execute();
+      // }
     },
-    onCaptchaExpired: function () {
-      this.$refs.recaptcha.reset();
-    }
+    // onCaptchaExpired: function () {
+    //   this.$refs.recaptcha.reset();
+    // }
   },
   mounted(){
     if(this.$store.getters.getUid){
@@ -175,7 +176,7 @@ export default {
       //this code is gonna set token for them
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials  = true;
-      axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
+      this.$axios.get('/latin/user/login/nav_bar_info',
       {
         headers:{
           'Content-type': 'application/json'

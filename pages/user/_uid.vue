@@ -511,10 +511,10 @@ export default {
         this.showError = true
       })
     },
-    getProfile(){
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials  = true;
-      axios.get('http://api.ed808.com/latin/user/'+ this.uid + '/information',
+    async getProfile(){
+      // axios.defaults.crossDomain = true;
+      // axios.defaults.withCredentials  = true;
+      this.$axios.get('/latin/user/'+ this.uid + '/information',
         {
           headers:{
             'Content-type': 'application/json',
