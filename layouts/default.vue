@@ -32,6 +32,7 @@
               </md-menu>
             </div>
 
+            <!-- ToDo: Replace Nav_update Vars With Store.State Vars -->
             <div v-else class="md-menu user-links">
               <md-menu md-size="big"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
                 <div @click="opening_menu" style="cursor: pointer;">
@@ -143,6 +144,7 @@
       }
     },
     created(){
+      // We Don't Need This Part For NavBar Anymore
       if(this.getCookie("token") == null){
         //in this way, user is not log in
         //console.log('token is unset')
@@ -158,11 +160,10 @@
       });
     },
     methods:{
-      update_navbar(){
-        //console.log('token is set')
-        // axios.defaults.crossDomain = true;
-        // axios.defaults.withCredentials  = true;
-        axios.get('/latin/user/login/nav_bar_info',
+      // We Don't Need This Part For NavBar Anymore
+      // It Can Be Handled In Store
+      async update_navbar(){
+        this.$axios.get('/latin/user/login/nav_bar_info',
         {
           headers:{
             'Content-type': 'application/json'
@@ -196,10 +197,11 @@
           behavior: 'smooth' 
         });
       },
-      logUserOut(){
-        axios.defaults.crossDomain = true;
-        axios.defaults.withCredentials  = true;
-        axios.post('http://api.ed808.com/latin/user/logout',
+      // Todo Handle Logout In Store
+      async logUserOut(){
+        // axios.defaults.crossDomain = true;
+        // axios.defaults.withCredentials  = true;
+        this.$axios.post('/latin/user/logout',
         true,{
           headers:{
           'Content-type': 'application/json',
