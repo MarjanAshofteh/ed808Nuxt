@@ -188,14 +188,6 @@
       toggle () {
         this.toggleCard = !this.toggleCard
       },
-      gotosubscribe(){
-        var ele = document.getElementById('subscribe');
-        window.scroll({
-          top: ele.offsetTop, 
-          left: ele.offsetLeft, 
-          behavior: 'smooth' 
-        });
-      },
       logUserOut(){
         axios.defaults.crossDomain = true;
         axios.defaults.withCredentials  = true;

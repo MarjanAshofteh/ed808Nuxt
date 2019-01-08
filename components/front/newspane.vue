@@ -40,10 +40,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { Carousel, Slide } from 'vue-carousel'
 import newsteaser from '@/components/front/newsteaser'
 import news from '@/components/front/news'
+
 export default {
   name: 'newspane',
   data () {
@@ -67,8 +66,6 @@ export default {
     }
   },
   components: {
-    Carousel,
-    Slide,
     newsteaser,
     news
   },

@@ -1,5 +1,6 @@
 
 <template>
+<transition name="fade">
   <div class="aboutus">
     <div class="top-pic">
       <img :src="createlink(pic)" width="100%" height="241">
@@ -10,6 +11,7 @@
       </div>
     </div>
   </div>
+</transition>
 </template>
 
 <script>
@@ -23,8 +25,25 @@
         title:'about us'
       }
     },
+    asyncData({app,params}) {
+      return axios.get('http://api.ed808.com/latin/page?args=about_us',
+      {
+        headers: {
+          'Content-type': 'application/json'
+        }
+      })
+      .then((data) => {
+        return{
+          text : data.data.body,
+          pic : data.data.image
+        }
+      })
+      .catch(e => {
+        console.log(e.message)
+      })
+    },
     mounted(){
-      axios.get('http://api.ed808.com/latin/page?args=about_us',
+      /*axios.get('http://api.ed808.com/latin/page?args=about_us',
       {
         headers: {
           'Content-type': 'application/json'
@@ -36,7 +55,7 @@
       })
       .catch(e => {
 
-      });
+      });*/
     },
     methods:{
       createlink: function (value) {
@@ -124,4 +143,66 @@
       z-index: 2;
     }
   }
+  .page-enter-active,
+.page-leave-active {
+  opacity: 1;
+  transition: opacity .25s;
+  animation-duration: .3s;
+  animation-fill-mode: both;
+}
+
+.page-enter-active {
+  animation-name: pageFadeInUp;
+}
+
+.page-leave-active {
+  animation-name: pageFadeOutDown;
+}
+
+.page-enter, .page-leave-to {
+  opacity: 0;
+}
+
+
+@-webkit-keyframes pageFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 1.25%, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@-webkit-keyframes pageFadeOutDown {
+  0% {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    transform: translate3d(0, 1.25%, 0);
+  }
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .9s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
 </style>
