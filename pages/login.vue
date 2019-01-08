@@ -96,12 +96,48 @@ export default {
         this.form.password = null
     },
     async logUserIn(recaptchaToken){
-      this.loading.sending = true
+      try {
+        await this.$store.dispatch('login', {
+          hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
+          username_email : this.form.username_email,
+          password : this.form.password,
+          reCaptchaToken : "admin@ed808"
+        })
+        this.lastUser = `${this.form.username_email}`
+        this.userSaved = true
+        
+        this.$emit('do_navbar')
+        this.loading.sending = false
+
+        if(data.data.uid != 0){
+          this.setUid(data.data.uid)
+
+          // redirect after successfull login
+          if(this.$route.query.hasOwnProperty('callback'))
+            this.$router.push(this.$route.query.callback)
+          else
+            this.$router.push('/user/'+ data.data.uid)
+        }
+        this.clearForm()
+      } catch(e) {
+        if(e.hasOwnProperty('response')){
+          if(e.response.hasOwnProperty('data'))
+            this.errors = e.response.data
+          else{
+            this.errors = e.response
+          }
+        }
+        else{
+          this.errors = e
+        }
+        this.showError = true
+            
+      }
+      // this.loading.sending = true
       // this.$refs.recaptcha.reset();
 
       //sending to login api
-      // axios.defaults.crossDomain = true;
-      // axios.defaults.withCredentials  = true;
+      
       this.$axios.post('/latin/user/login',
       {
         hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
@@ -115,28 +151,8 @@ export default {
         }
       })
       .then((data) => {
-        this.sessid = data.data.sessid
-        this.session_name = data.data.session_name
-        this.token = data.data.token
-        var jsonCookie2 = this.token
-        //this.setCookie( this.session_name , this.sessid , 23)
-        this.setCookie("token", jsonCookie2 , 23)
-        this.lastUser = `${this.form.username_email}`
-        this.userSaved = true
         
-        this.$emit('do_navbar')
-        this.loading.sending = false
-
-        if(data.data.uid != 0){
-          this.setUid(data.data.uid)
-
-          //redirect after successfull login
-          if(this.$route.query.hasOwnProperty('callback'))
-            this.$router.push(this.$route.query.callback)
-          else
-            this.$router.push('/user/'+ data.data.uid)
-        }
-        this.clearForm()
+        
       })
       .catch(e => {
         if(e.hasOwnProperty('response')){
@@ -150,6 +166,10 @@ export default {
           this.errors = e
         }
         this.showError = true
+
+
+
+
         //this.clearForm()
         /*todo : showing error without [""] */
       });
@@ -158,7 +178,7 @@ export default {
       //validating form
       this.$v.$touch()
       this.logUserIn()
-      //run recaptcha and let it to fire up 'logUserIn' function with google token
+      // run recaptcha and let it to fire up 'logUserIn' function with google token
       // if (!this.$v.$invalid){
       //   this.$refs.recaptcha.execute();
       // }
