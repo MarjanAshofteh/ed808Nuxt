@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+
 import NodeList from '@/components/allContents/NodeList'
 import filters from '@/components/allContents/filters'
 

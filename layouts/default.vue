@@ -120,7 +120,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+
   import { cookie } from '@/components/mixins/cookie.js'
   export default {
     name: 'default',
@@ -247,6 +247,9 @@
     .md-menu{
       width: 100%;
       display: block;
+      a{
+        display: block;
+      }
     }
     .md-button{
       width:100%;

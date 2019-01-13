@@ -3,7 +3,7 @@
     <section id="banner">
       <!--<img src="http://civil808.com/en/staticfile/top-banner.jpg" alt="">-->
       <div>
-        <h1>{{title}}</h1>
+        <h1>808 Educational and Engineering institute</h1>
         <span>specialized training in Civil and Architecture
           <span>Ed808.com</span>
         </span>
@@ -26,20 +26,37 @@ export default {
   name: 'home',
   data(){
     return{
-      title:'808 Educational and Engineering institute',
+      title:'Home',
+      pic:'http://ed808.com/api/sites/default/files/field/image/node_19760.jpg'
     }
   },
   components: {
     newspane,
     NodeList
   },
-  metaInfo(){
+  head(){
     return{
+      links: [
+        { rel: 'canonical', href: 'http://ed808.com'},
+        { rel: 'alternate', href: 'http://ed808.com', hreflang:'en'},
+        { rel: 'shortlink', href: 'http://ed808.com'}
+      ],
       title: this.title,
-      titleTemplate: 'home | %s',
-      links:[
-        {rel: 'canonical', href: 'http://ed808.com'}
-      ]   
+      meta: [
+
+        // OpenGraph data (Most widely used)
+        {property: 'og:title', content: this.title, hid: 'og:title'},
+        {property: 'og:url', content: 'http://ed808.com', hid: 'og:url'},
+        {property: 'og:image', content: this.pic, hid: 'og:image'},
+
+        // Twitter card
+        {name: 'twitter:title', content: this.title, hid: 'twitter:title'},
+        {name: 'twitter:image:src', content: this.pic, hid: 'twitter:image:src'},
+
+        // Google / Schema.org markup:
+        {itemprop: 'name', content: this.title, hid: 'name'},
+        {itemprop: 'image', content: this.pic, hid: 'image'},
+      ]
     }
   }
 }

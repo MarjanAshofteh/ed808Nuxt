@@ -312,7 +312,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+
 import { cookie } from '@/components/mixins/cookie.js'
 
 export default {

@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+
   import NodeList from '@/components/allContents/NodeList'
   import breadcrumb from '@/components/fields/breadcrumb'
   import { cookie } from '@/components/mixins/cookie.js'
@@ -87,6 +87,27 @@
     //   this.name = to.params.tname,
     //     next()
     // },
+    async asyncData({app,params}) {
+      try {
+        const {data} = await app.$axios.get('/latin/tag/' + params.tid + '/contents')
+        //console.log(data)
+        if (data.tid) {
+          return {
+            name: data.name,
+            image: data.tag_image != null ? data.tag_image : '',
+            description: data.description != null ? data.description : '',
+            loading: {page: false, bookmark: false},
+            bookmarked: data.user_bookmark,
+            collapse: true,
+            metaDescription: data.meta_description != null ? data.meta_description : ''
+          }
+        } else {
+          throw({statusCode: 404, message: 'Page not found'})
+        }
+      } catch (e) {
+        console.log(e.message)
+      }
+    },
     mounted(){
       if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
             this.$router.replace({path:`/tag/${this.$route.params.tid}/${this.replaceUrlSpace(this.name)}`})
@@ -97,35 +118,8 @@
         });
       })
     },
-    async asyncData({app,params}) {
-      // let authorization= this.$store.state.access + ' ' + this.$store.state.access
-      // if(process.client){
-        try{
-          const {data} = await app.$axios.get('/latin/tag/'+ params.tid + '/contents')
-          console.log(data)
-          if (data.tid) {
-            return {
-              name: data.name,
-              image: data.tag_image != null ? data.tag_image : '',
-              description: data.description != null ? data.description : '',
-              loading: {page: false, bookmark: false},
-              bookmarked: data.user_bookmark,
-              collapse: true,
-              metaDescription: data.meta_description != null ? data.meta_description : ''
-            }
-          }else{
-            throw({ statusCode: 404, message: 'Page not found' })
-          }
-        }
-        catch(e){
-          console.log(e.message)
-        }
-      // }
-      
-      
-    },
     methods:{
-      mount(){
+      /*mount(){
         // axios.get('http://api.ed808.com/latin/tag/'+ this.tid + '/contents')
         //   .then((data) => data.data)
         //   .then((data) => {
@@ -146,7 +140,7 @@
         //     this.windowWidth = window.innerWidth
         //   });
         // })
-      },
+      },*/
       convertDomain(value){
         String.prototype.replaceAll = function(search, replacement) {
           var target = this;
@@ -193,46 +187,34 @@
         return value != null? "http://api.ed808.com/sites/default/files/" + value.substring(9) : ''
       }
     },
-    metaInfo(){
+    head(){
       return{
+        links: [
+          //these three line doesn't work
+          { rel: 'canonical', href: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname},
+          { rel: 'alternate', href: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname, hreflang:'en'},
+          { rel: 'shortlink', href: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname}
+        ],
         title: this.name,
         meta: [
-          {name: 'description', content: this.metaDescription, vmid: 'description'},
+          { name: 'description', content: this.metaDescription, hid:'description'},
 
           // OpenGraph data (Most widely used)
-          {
-            'property': 'og:title',
-            'content': this.name,
-            'template': '%s - ed808',
-            'vmid': 'og:title'
-          },
-          {property: 'og:type', content: 'article', vmid: 'og:type'},
-          {property: 'og:url', content: 'http://ed808.com/tag/' + this.tid + '/' + this.replaceUrlSpace(this.name), vmid: 'og:url'},
-          {property: 'og:image', content: this.createlink(this.image), vmid: 'og:image'},
-          {property: 'og:description', content: this.metaDescription, vmid: 'og:description'},
+          {property: 'og:type', content: 'article', hid: 'og:type'},
+          {property: 'og:title', content: this.name, hid: 'og:title'},
+          {property: 'og:url', content: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname , hid: 'og:url'},
+          {property: 'og:image', content: this.createlink(this.image), hid: 'og:image'},
+          {property: 'og:description', content: this.metaDescription, hid:'og:description'},
 
           // Twitter card
-          {
-            'name': 'twitter:title',
-            'content': this.name,
-            'template': '%s - ed808',
-            'vmid': 'twitter:title'
-          },
-          {name: 'twitter:description', content: this.metaDescription, vmid: 'twitter:description'},
-          {name: 'twitter:image:src', content: this.createlink(this.image), vmid: 'twitter:image:src'},
+          {name: 'twitter:title', content: this.name, hid: 'twitter:title'},
+          {name: 'twitter:image:src', content: this.createlink(this.image), hid: 'twitter:image:src'},
+          {name: 'twitter:description', content: this.metaDescription, hid:'twitter:description'},
 
           // Google / Schema.org markup:
-          {
-            'itemprop': 'name',
-            'content': this.name,
-            'template': '%s - ed808',
-            'vmid': 'name'
-          },
-          {itemprop: 'description', content: this.metaDescription, vmid: 'description'},
-          {itemprop: 'image', content: this.createlink(this.image), vmid: 'image'}
-        ],
-        links: [
-          {rel: 'canonical', href:'http://ed808.com/tag/' + this.tid + '/' + this.replaceUrlSpace(this.name)}
+          {itemprop: 'name', content: this.name, hid: 'name'},
+          {itemprop: 'image', content: this.createlink(this.image), hid: 'image'},
+          {itemprop: 'description', content: this.metaDescription, hid:'description'}
         ]
       }
     }

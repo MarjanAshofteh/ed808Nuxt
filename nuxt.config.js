@@ -7,41 +7,43 @@ module.exports = {
   ** Headers of the page
   */
   head: {
+    link: [
+      { rel: 'icon', type: 'image/png', href: '/favlogo.png' }
+    ],
     title: '808 Educational and Engineering institute',
     titleTemplate: '%s | 808 Educational and Engineering institute',
     meta: [
       { charset: 'utf-8' },
       {'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8'},
       { name: 'viewport', content: 'width=device-width, initi al-scale=1' },
-      { name: 'description', name: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.'},
+      { name: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid:'description'},
 
-      // OpenGraph data (Most widely used)
-      {property: 'og:title', content: this.title},
+      // OpenGraph data (Most widely used) - Dynamic
+      {property: 'og:title', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'og:title'},
+      {property: 'og:url', content: 'http://ed808.com', hid: 'og:url'},
+      {property: 'og:image', content: "http://ed808.com/staticfile/top-banner.jpg", hid: 'og:image'},
+      {property: 'og:description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid:'og:description'},
       {property: 'og:type', content: 'website'},
-      {property: 'og:url', content: 'http://ed808.com'},
-      {property: 'og:image', content: "http://ed808.com/staticfile/top-banner.jpg"},
-      {property: 'og:description', content: this.description},
+      // OpenGraph data (Most widely used) - Static
       {property: 'og:site_name', content: '808 Educational and Engineering institute'},
 
-      // Twitter card
-      {name: 'twitter:card', content:'summary'},
-      {name: 'twitter:title', content: this.title},
-      {name: 'twitter:description', content: this.description},
-      {name: 'twitter:image:src', content: 'http://ed808.com/staticfile/top-banner.jpg'},
+      // Twitter card - Dynamic
+      {name: 'twitter:title', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'twitter:title'},
+      {name: 'twitter:description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid:'twitter:description'},
+      {name: 'twitter:image:src', content: 'http://ed808.com/staticfile/top-banner.jpg', hid: 'twitter:image:src'},
+      // Twitter card - Static
       {name: 'twitter:site', content: 'http://ed808.com'},
+      {name: 'twitter:card', content:'summary'},
+      // Your twitter handle, if you have one.{name: 'twitter:creator', content: ''},
 
-      // Your twitter handle, if you have one.
-      {name: 'twitter:creator', content: ''},
-
-      // Google / Schema.org markup:
-      {itemprop: 'name', content: this.title},
-      {itemprop: 'description', content: this.description},
-      {itemprop: 'image', content: 'http://ed808.com/staticfile/top-banner.jpg'},
+      // Google / Schema.org markup: - Dynamic
+      {itemprop: 'name', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'name'},
+      {itemprop: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid: 'description'},
+      {itemprop: 'image', content: 'http://ed808.com/staticfile/top-banner.jpg', hid: 'image'},
     ],
-    link: [
-      { rel: 'icon', type: 'image/png', href: '/favlogo.png' },
-      { rel: 'alternate', href: 'http://ed808.com', hreflang:'en'}
-    ]
+    htmlAttrs: {
+      class: 'md-scrollbar'
+    }
   },
 
   /*
@@ -85,6 +87,7 @@ module.exports = {
     'http://api.ed808.com/latin/user/login/nav_bar_info',
     'http://api.ed808.com/latin/user/login',
     'http://api.ed808.com/latin/page?args=about_us',
+    'http://api.ed808.com/latin/event',
   ],
   /*
   ** Build configuration
@@ -93,5 +96,6 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    extractCSS: true
   }
 }

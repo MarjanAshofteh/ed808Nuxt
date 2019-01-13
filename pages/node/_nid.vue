@@ -108,7 +108,7 @@
   import eventData from '@/components/fields/eventData'
   import author from '@/components/fields/author'
   import tag from '@/components/fields/tag'
-  import axios from 'axios'
+
   export default {
     name: 'node',
     data(){
@@ -128,8 +128,26 @@
       tag,
       embedVideo: () => import('@/components/fields/embedVideo')
     },
+    async asyncData({app,params}) {
+      try{
+        const {data} = await app.$axios.get('http://api.ed808.com/latin/latin_contents/'+ params.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45')
+        if (data) {
+          return {
+            node_content : data.content,
+            author : data.author,
+            loading : false,
+          }
+        }else{
+          throw({ statusCode: 404, message: 'Page not found' })
+        }
+      }
+      catch(e){
+        console.log(e)
+      }
+    },
     mounted(){
-      axios.get('http://api.ed808.com/latin/latin_contents/'+ this.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45',
+      this.type()
+      /*axios.get('http://api.ed808.com/latin/latin_contents/'+ this.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45',
       {
         headers:{
         'Content-type': 'application/json'
@@ -148,8 +166,8 @@
           this.errors = e.response.statusText
           this.showError = true
           this.$router.push('/')
-        }  
-      });
+        }
+      });*/
     },
     methods:{
       type(){
@@ -183,44 +201,32 @@
     },
     head(){
       return{
+        links: [
+          //these three line doesn't work
+          { rel: 'canonical', href: 'http://ed808.com/node/' + this.$route.params.nid},
+          { rel: 'alternate', href: 'http://ed808.com/node/' + this.$route.params.nid, hreflang:'en'},
+          { rel: 'shortlink', href: 'http://ed808.com/node/' + this.$route.params.nid}
+        ],
         title: this.node_content.title,
         meta: [
-          {name: 'description', content: this.node_content.meta_description, hid: 'description'},
+          { name: 'description', content: this.node_content.meta_description, hid:'description'},
 
           // OpenGraph data (Most widely used)
-          {
-            'property': 'og:title',
-            'content': this.node_content.title,
-            'template': '%s - ed808',
-            'hid': 'og:title'
-          },
           {property: 'og:type', content: 'article', hid: 'og:type'},
-          {property: 'og:url', content: 'http://ed808.com/node/' + this.$route.params.nid, hid: 'og:url'},
+          {property: 'og:title', content: this.node_content.title, hid: 'og:title'},
+          {property: 'og:url', content: 'http://ed808.com/node/' + this.$route.params.nid , hid: 'og:url'},
           {property: 'og:image', content: this.createlink(this.node_content.image), hid: 'og:image'},
-          {property: 'og:description', content: this.node_content.meta_description, hid: 'og:description'},
+          {property: 'og:description', content: this.node_content.meta_description, hid:'og:description'},
 
           // Twitter card
-          {
-            'name': 'twitter:title',
-            'content': this.node_content.title,
-            'template': '%s - ed808',
-            'hid': 'twitter:title'
-          },
-          {name: 'twitter:description', content: this.node_content.meta_description, hid: 'twitter:description'},
+          {name: 'twitter:title', content: this.node_content.title, hid: 'twitter:title'},
           {name: 'twitter:image:src', content: this.createlink(this.node_content.image), hid: 'twitter:image:src'},
+          {name: 'twitter:description', content: this.node_content.meta_description, hid:'twitter:description'},
 
           // Google / Schema.org markup:
-          {
-            'itemprop': 'name',
-            'content': this.node_content.title,
-            'template': '%s - ed808',
-            'hid': 'name'
-          },
-          {itemprop: 'description', content: this.node_content.meta_description, hid: 'description'},
-          {itemprop: 'image', content: this.createlink(this.node_content.image), hid: 'image'}
-        ],
-        links: [
-          {rel: 'canonical', href:'http://ed808.com/node/' + this.$route.params.nid}
+          {itemprop: 'name', content: this.node_content.title, hid: 'name'},
+          {itemprop: 'image', content: this.createlink(this.node_content.image), hid: 'image'},
+          {itemprop: 'description', content: this.node_content.meta_description, hid:'description'}
         ]
       }
     }
@@ -372,6 +378,9 @@
     .tags {
       @include main-center-content();
       margin: 20px auto 20px auto !important;
+      a{
+        display: inline-block;
+      }
       button {
         border: none;
         color: rgba(0,0,0,.68) !important;

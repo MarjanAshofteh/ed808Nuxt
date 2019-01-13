@@ -43,7 +43,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
+
 import VueRecaptcha from 'vue-recaptcha'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'

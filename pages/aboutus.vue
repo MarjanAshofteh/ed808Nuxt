@@ -1,21 +1,17 @@
 
 <template>
-<transition name="fade">
   <div class="aboutus">
     <div class="top-pic">
-      <img :src="createlink(pic)" width="100%" height="241">
+      <img :src="createlink(pic)" width="100%" height="241"/>
       <h1>{{title}}</h1>
     </div>
     <div class="inner">
-      <div class="atext" v-html="text">
-      </div>
+      <div class="atext" v-html="text"></div>
     </div>
   </div>
-</transition>
 </template>
 
 <script>
-  import axios from 'axios'
   export default {
     name: 'aboutus',
     data(){
@@ -25,22 +21,21 @@
         title:'about us'
       }
     },
-    asyncData({app,params}) {
-      return axios.get('http://api.ed808.com/latin/page?args=about_us',
-      {
-        headers: {
-          'Content-type': 'application/json'
+    async asyncData({app,params}) {
+      try{
+        const {data} = await app.$axios.get('http://api.ed808.com/latin/page?args=about_us')
+        if (data) {
+          return {
+            text : data.body,
+            pic : data.image
+          }
+        }else{
+          throw({ statusCode: 404, message: 'Page not found' })
         }
-      })
-      .then((data) => {
-        return{
-          text : data.data.body,
-          pic : data.data.image
-        }
-      })
-      .catch(e => {
+      }
+      catch(e){
         console.log(e.message)
-      })
+      }
     },
     mounted(){
       /*axios.get('http://api.ed808.com/latin/page?args=about_us',
@@ -65,36 +60,26 @@
     },
     head(){
       return{
+        links: [
+          { rel: 'canonical', href: 'http://ed808.com/aboutus'},
+          { rel: 'alternate', href: 'http://ed808.com/aboutus', hreflang:'en'},
+          { rel: 'shortlink', href: 'http://ed808.com/aboutus'}
+        ],
         title: 'about us',
         meta: [
+
           // OpenGraph data (Most widely used)
-          {
-            'property': 'og:title',
-            'content': this.title,
-            'template': '%s - ed808',
-            'vmid': 'og:title'
-          },
-          {property: 'og:url', content: 'http://ed808.com/about-us', vmid: 'og:url'},
-          {property: 'og:image', content: this.createlink(this.pic), vmid: 'og:image'},
-          {
-            'name': 'twitter:title',
-            'content': this.title,
-            'template': '%s - ed808',
-            'vmid': 'twitter:title'
-          },
-          {name: 'twitter:image:src', content: this.createlink(this.pic), vmid: 'twitter:image:src'},
+          {property: 'og:title', content: this.title, hid: 'og:title'},
+          {property: 'og:url', content: 'http://ed808.com/about-us', hid: 'og:url'},
+          {property: 'og:image', content: this.createlink(this.pic), hid: 'og:image'},
+
+          // Twitter card
+          {name: 'twitter:title', content: this.title, hid: 'twitter:title'},
+          {name: 'twitter:image:src', content: this.createlink(this.pic), hid: 'twitter:image:src'},
 
           // Google / Schema.org markup:
-          {
-            'name': 'itemprop',
-            'content': this.title,
-            'template': '%s - ed808',
-            'vmid': 'itemprop'
-          },
-          {itemprop: 'image', content: this.createlink(this.pic), vmid: 'image'}
-        ],
-        links: [
-          {rel: 'canonical', href: 'http://ed808.com/about-us'}
+          {itemprop: 'name', content: this.title, hid: 'name'},
+          {itemprop: 'image', content: this.createlink(this.pic), hid: 'image'}
         ]
       }
     }
