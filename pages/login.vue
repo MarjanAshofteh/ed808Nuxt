@@ -138,41 +138,41 @@ export default {
 
       //sending to login api
       
-      this.$axios.post('/latin/user/login',
-      {
-        hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
-        username_email : this.form.username_email,
-        password : this.form.password,
-        reCaptchaToken : "admin@ed808"
-      },
-      {
-        headers: {
-          'Content-type': 'application/json'
-        }
-      })
-      .then((data) => {
+      // this.$axios.post('/latin/user/login',
+      // {
+      //   hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
+      //   username_email : this.form.username_email,
+      //   password : this.form.password,
+      //   reCaptchaToken : "admin@ed808"
+      // },
+      // {
+      //   headers: {
+      //     'Content-type': 'application/json'
+      //   }
+      // })
+      // .then((data) => {
         
         
-      })
-      .catch(e => {
-        if(e.hasOwnProperty('response')){
-          if(e.response.hasOwnProperty('data'))
-            this.errors = e.response.data
-          else{
-            this.errors = e.response
-          }
-        }
-        else{
-          this.errors = e
-        }
-        this.showError = true
+      // })
+      // .catch(e => {
+      //   if(e.hasOwnProperty('response')){
+      //     if(e.response.hasOwnProperty('data'))
+      //       this.errors = e.response.data
+      //     else{
+      //       this.errors = e.response
+      //     }
+      //   }
+      //   else{
+      //     this.errors = e
+      //   }
+      //   this.showError = true
 
 
 
 
         //this.clearForm()
         /*todo : showing error without [""] */
-      });
+      // });
     },
     formSubmit(){
       //validating form

@@ -62,7 +62,7 @@
         v-html="convertDomain(node_content.body_value)"
       ></article>
       <div 
-        v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)" 
+      v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)" 
         class="reference" 
         v-for="(reference , index) in node_content.references" 
         :key="index"
@@ -95,6 +95,9 @@
       :picture="author.picture"
       :about_me="author.about_me"
     />-->
+    <comment
+      :nid="nid"
+    />
     <md-snackbar 
       class="error" 
       :md-active.sync="showError"
@@ -108,6 +111,7 @@
   import eventData from '@/components/fields/eventData'
   import author from '@/components/fields/author'
   import tag from '@/components/fields/tag'
+  import comment from '@/components/fields/comment'
 
   export default {
     name: 'node',
@@ -126,11 +130,12 @@
       eventData,
       author,
       tag,
+      comment,
       embedVideo: () => import('@/components/fields/embedVideo')
     },
     async asyncData({app,params}) {
       try{
-        const {data} = await app.$axios.get('http://api.ed808.com/latin/latin_contents/'+ params.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45')
+        const {data} = await app.$axios.get('/latin/latin_contents/'+ params.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45')
         if (data) {
           return {
             node_content : data.content,

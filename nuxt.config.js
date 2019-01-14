@@ -49,7 +49,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { color: '#ba68c8' },
 
   /*
   ** Global CSS
@@ -69,26 +69,12 @@ module.exports = {
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios',
+    ['@nuxtjs/axios', {
+      baseURL: 'http://api.ed808.com/'
+    }],
     'nuxt-vue-material',
   ],
-  /*
-  ** Axios module configuration
-  */
-  axios: {
-    // See https://github.com/nuxt-community/axios-module#options
-    proxy: true
-  },
-
-  proxy: [
-    'http://api.ed808.com/latin/tag/*/contents',
-    'http://api.ed808.com/latin/*/**',
-    'http://api.ed808.com/latin/user/*/**',
-    'http://api.ed808.com/latin/user/login/nav_bar_info',
-    'http://api.ed808.com/latin/user/login',
-    'http://api.ed808.com/latin/page?args=about_us',
-    'http://api.ed808.com/latin/event',
-  ],
+  
   /*
   ** Build configuration
   */
