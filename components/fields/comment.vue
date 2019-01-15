@@ -53,6 +53,17 @@
                     <md-icon>reply</md-icon>
                     <md-tooltip md-direction="bottom">Reply to this Comment</md-tooltip>
                   </md-button>
+                  <md-menu md-size="small" :md-offset-x="127" :md-offset-y="-36">
+                    <md-button class="md-icon-button md-primary md-dense" md-menu-trigger>
+                      <md-icon>more_vert</md-icon>
+                    </md-button>
+
+                    <md-menu-content>
+                      <md-menu-item><md-icon>edit</md-icon>Edit</md-menu-item>
+                      <md-menu-item>My Item 2</md-menu-item>
+                      <md-menu-item>My Item 3</md-menu-item>
+                    </md-menu-content>
+                  </md-menu>
                 </div>
               </div>
             </div>
@@ -115,6 +126,13 @@ export default {
     border-radius: 3px;
     border: 1px solid #d9d9d9;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.09);
+    .md-list-item-content .md-icon {
+      margin-left: 0px!important;
+    }
+    .md-list-item-content .md-icon {
+      margin-right: 10px!important;
+    }
+
   }
   .comment-form {
     padding: 0;
