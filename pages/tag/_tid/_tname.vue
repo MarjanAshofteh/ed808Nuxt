@@ -1,10 +1,6 @@
 <template>
   <div class="md-layout container tags">
 
-    <div class="loading" v-if="loading.page" style="width: 100%;">
-      <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
-    </div>
-
     <md-card class="title md-layout-item md-size-100">
 
       <breadcrumb :links="[{url:'/tag/'+ tid +'/'+ name, title: 'Tag: '+ name}]"></breadcrumb>
@@ -56,6 +52,7 @@
 
 <script>
 
+  import axios from '@/node_modules/axios'
   import NodeList from '@/components/allContents/NodeList'
   import breadcrumb from '@/components/fields/breadcrumb'
   import { cookie } from '@/components/mixins/cookie.js'
@@ -87,10 +84,9 @@
     //   this.name = to.params.tname,
     //     next()
     // },
-    async asyncData({app,params}) {
+    async asyncData({params}) {
       try {
-        const {data} = await app.$axios.get('/latin/tag/' + params.tid + '/contents')
-        //console.log(data)
+        const {data} = await axios.get('http://api.ed808.com/latin/tag/' + params.tid + '/contents')
         if (data.tid) {
           return {
             name: data.name,
@@ -157,12 +153,12 @@
         };
         return value != null ? (reverse==false ? value.replaceAll(' ', '-'): value.replaceAll('-', ' ')) : ''
       },
-      follow(){
+      async follow(){
         this.loading.bookmark = true
         if(this.getCookie("token") != null){
           axios.defaults.crossDomain = true;
           axios.defaults.withCredentials  = true;
-          axios.post('http://api.ed808.com/latin/flag',
+          await axios.post('http://api.ed808.com/latin/flag',
             {
               entity_id : this.tid,
               action : this.bookmarked? "unflag": "flag",

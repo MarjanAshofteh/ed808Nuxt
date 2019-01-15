@@ -1,9 +1,6 @@
 
 <template>
   <div :class="'main-container node_type_' + types[0]">
-    <div class="loading" v-if="loading">
-      <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
-    </div>
     <!--<a 
       :href="'http://api.ed808.com/node/' + nid + '/edit'" 
       target="_blank"
@@ -14,12 +11,12 @@
       <h1 v-if="node_content.hasOwnProperty('title')">{{node_content.title}}</h1>
       <div class="date_and_category" v-if="!types.includes('event')">
         <span v-if="node_content.hasOwnProperty('created')">{{node_content.created}}</span>
-        <router-link
+        <nuxt-link
           v-if="node_content.hasOwnProperty('topic') && (node_content.topic.length != 0)"
           :to="'/contents?topic='+ node_content.topic[0].tid"
           target="_blank"
           :title="node_content.topic[0].name"
-        >{{node_content.topic[0].name}}</router-link>
+        >{{node_content.topic[0].name}}</nuxt-link>
       </div>
       <eventData
         v-if="types.includes('event')"
@@ -113,9 +110,20 @@ export default {
           "?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45"
       );
       if (data) {
-        console.log(data.content)
+        let contentTypes = [];
+        if (
+          data.content.hasOwnProperty("type") &&
+          data.content.type.length != 0
+        ) {
+          data.content.type.forEach(element => {
+            if (element.tid == 4058) contentTypes.push("event");
+            if (element.tid == 3938) contentTypes.push("podcast");
+            if (element.tid == 3941) contentTypes.push("video");
+          });
+        }
         return {
           node_content: data.content,
+          types: contentTypes,
           author: data.author,
           loading: false
         };
@@ -127,7 +135,7 @@ export default {
     }
   },
   mounted() {
-    this.type();
+
     /*axios.get('http://api.ed808.com/latin/latin_contents/'+ this.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45',
       {
         headers:{
@@ -151,19 +159,19 @@ export default {
       });*/
   },
   methods: {
-    type() {
-      this.types = [];
-      if (
-        this.node_content.hasOwnProperty("type") &&
-        this.node_content.type.length != 0
-      ) {
-        this.node_content.type.forEach(element => {
-          if (element.tid == 4058) this.types.push("event");
-          if (element.tid == 3938) this.types.push("podcast");
-          if (element.tid == 3941) this.types.push("video");
-        });
-      }
-    },
+    // type() {
+    //   this.types = [];
+    //   if (
+    //     this.node_content.hasOwnProperty("type") &&
+    //     this.node_content.type.length != 0
+    //   ) {
+    //     this.node_content.type.forEach(element => {
+    //       if (element.tid == 4058) this.types.push("event");
+    //       if (element.tid == 3938) this.types.push("podcast");
+    //       if (element.tid == 3941) this.types.push("video");
+    //     });
+    //   }
+    // },
     convertDomain(value) {
       //this work but its performance is slow
       /* return value.split('="/sites').join('="http://api.ed808.com/sites') */
@@ -181,6 +189,21 @@ export default {
       if (!value) return "";
       return "http://api.ed808.com/sites/default/files/" + value.substring(9);
     }
+  },
+  computed: {
+    // type: function() {
+    //   this.types = [];
+    //   if (
+    //     this.node_content.hasOwnProperty("type") &&
+    //     this.node_content.type.length != 0
+    //   ) {
+    //     this.node_content.type.forEach(element => {
+    //       if (element.tid == 4058) this.types.push("event");
+    //       if (element.tid == 3938) this.types.push("podcast");
+    //       if (element.tid == 3941) this.types.push("video");
+    //     });
+    //   }
+    // }
   },
   head() {
     return {
