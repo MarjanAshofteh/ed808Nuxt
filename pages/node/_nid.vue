@@ -105,14 +105,15 @@ export default {
     comment,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
-  async asyncData({ app, params }) {
+  async asyncData({ params }) {
     try {
-      const { data } = await app.$axios.get(
+      const { data } = await axios.get(
         "http://api.ed808.com/latin/latin_contents/" +
           params.nid +
           "?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45"
       );
       if (data) {
+        console.log(data.content)
         return {
           node_content: data.content,
           author: data.author,
