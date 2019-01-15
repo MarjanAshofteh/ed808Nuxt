@@ -91,3 +91,7 @@ header#header{
 .md-button {
 	text-transform: capitalize;
 }
+.md-list-item .md-list-item-content {
+  height: 36px;
+  min-height: 36px !important;
+}
