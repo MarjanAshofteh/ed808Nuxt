@@ -22,7 +22,7 @@
         </div>
         <p v-if="image != ''" class="seperator"></p>
         <div>
-          <img :src="createlink(image)" v-if="image != ''" style="display: block;margin: auto;padding: 15px;">
+          <img :src="image" v-if="image != ''" style="display: block;margin: auto;padding: 15px;">
           <article class="md-layout-item md-size-100"
                    v-if="description != ''"
                    v-html="convertDomain(description)"
@@ -86,11 +86,11 @@
     // },
     async asyncData({params}) {
       try {
-        const {data} = await axios.get('http://api.ed808.com/latin/tag/' + params.tid + '/contents')
+        const {data} = await axios.get('http://api.ed808.com/latin/tag/' + params.tid )
         if (data.tid) {
           return {
             name: data.name,
-            image: data.tag_image != null ? data.tag_image : '',
+            image: data.image != null ? data.image : '',
             description: data.description != null ? data.description : '',
             loading: {page: false, bookmark: false},
             bookmarked: data.user_bookmark,
@@ -115,28 +115,6 @@
       })
     },
     methods:{
-      /*mount(){
-        // axios.get('http://api.ed808.com/latin/tag/'+ this.tid + '/contents')
-        //   .then((data) => data.data)
-        //   .then((data) => {
-        //     this.name = data.name
-        //     this.description = data.description != null ? data.description : ''
-        //     this.image = data.tag_image != null ? data.tag_image : ''
-        //     this.bookmarked = data.user_bookmark
-
-        //     if(data.meta_description != null)
-        //       this.metaDescription = data.meta_description
-        //     if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
-        //       this.$router.replace({path:`/tag/${this.tid}/${this.replaceUrlSpace(this.name)}`})
-        //     }
-        //     this.loading.page = false
-        //   })
-        // this.$nextTick(() => {
-        //   window.addEventListener('resize', () => {
-        //     this.windowWidth = window.innerWidth
-        //   });
-        // })
-      },*/
       convertDomain(value){
         String.prototype.replaceAll = function(search, replacement) {
           var target = this;
@@ -178,9 +156,6 @@
           this.loading.bookmark = false
           this.$router.push({ name: 'login', query: { callback: `/tag/${this.tid}/${this.replaceUrlSpace(this.name)}` }})
         }
-      },
-      createlink: function (value) {
-        return value != null? "http://api.ed808.com/sites/default/files/" + value.substring(9) : ''
       }
     },
     head(){
@@ -199,17 +174,17 @@
           {property: 'og:type', content: 'article', hid: 'og:type'},
           {property: 'og:title', content: this.name, hid: 'og:title'},
           {property: 'og:url', content: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname , hid: 'og:url'},
-          {property: 'og:image', content: this.createlink(this.image), hid: 'og:image'},
+          {property: 'og:image', content: this.image, hid: 'og:image'},
           {property: 'og:description', content: this.metaDescription, hid:'og:description'},
 
           // Twitter card
           {name: 'twitter:title', content: this.name, hid: 'twitter:title'},
-          {name: 'twitter:image:src', content: this.createlink(this.image), hid: 'twitter:image:src'},
+          {name: 'twitter:image:src', content: this.image, hid: 'twitter:image:src'},
           {name: 'twitter:description', content: this.metaDescription, hid:'twitter:description'},
 
           // Google / Schema.org markup:
           {itemprop: 'name', content: this.name, hid: 'name'},
-          {itemprop: 'image', content: this.createlink(this.image), hid: 'image'},
+          {itemprop: 'image', content: this.image, hid: 'image'},
           {itemprop: 'description', content: this.metaDescription, hid:'description'}
         ]
       }

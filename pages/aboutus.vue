@@ -2,7 +2,7 @@
 <template>
   <div class="aboutus">
     <div class="top-pic">
-      <img :src="createlink(pic)" width="100%" height="241">
+      <img :src="pic" width="100%" height="241">
       <h1>{{title}}</h1>
     </div>
     <div class="inner">
@@ -40,27 +40,6 @@ export default {
       console.log(e.message);
     }
   },
-  mounted() {
-    /*axios.get('http://api.ed808.com/latin/page?args=about_us',
-      {
-        headers: {
-          'Content-type': 'application/json'
-        }
-      })
-      .then((data) => {
-        this.text = data.data.body
-        this.pic = data.data.image
-      })
-      .catch(e => {
-
-      });*/
-  },
-  methods: {
-    createlink: function(value) {
-      if (!value) return "";
-      return "http://ed808.com/api/sites/default/files/" + value.substring(9);
-    }
-  },
   head() {
     return {
       links: [
@@ -79,7 +58,7 @@ export default {
         },
         {
           property: "og:image",
-          content: this.createlink(this.pic),
+          content: this.pic,
           hid: "og:image"
         },
 
@@ -87,13 +66,13 @@ export default {
         { name: "twitter:title", content: this.title, hid: "twitter:title" },
         {
           name: "twitter:image:src",
-          content: this.createlink(this.pic),
+          content: this.pic,
           hid: "twitter:image:src"
         },
 
         // Google / Schema.org markup:
         { itemprop: "name", content: this.title, hid: "name" },
-        { itemprop: "image", content: this.createlink(this.pic), hid: "image" }
+        { itemprop: "image", content: this.pic, hid: "image" }
       ]
     };
   }

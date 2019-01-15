@@ -9,14 +9,24 @@
         <md-icon>close</md-icon>
       </md-button>
     <div class="md-title">{{news.title}}</div>
-    
-    <div class="md-layout md-gutter" v-if="'uri' in news">
+
+    <!--
+    ------ if you wanna print image uncomment below code:
+    -->
+    <!--<div class="md-layout md-gutter" v-if="'image' in news">
       <div class="md-layout-item">
-        <img v-bind:src="news.uri | converturl " />
+        <img v-bind:src="news.image" />
       </div>
       <div class="md-body-2 md-layout-item md-size-100" v-html="news.body_value"></div>
     </div>
     <div class="md-layout md-gutter" v-else>
+      <div class="md-body-2 md-layout-item md-size-100 " v-html="news.body_value"></div>
+    </div>-->
+
+    <!--
+    ------ we just print body without main image of content
+    -->
+    <div class="md-layout md-gutter">
       <div class="md-body-2 md-layout-item md-size-100 " v-html="news.body_value"></div>
     </div>
     
@@ -49,10 +59,10 @@ export default {
     getNews(){
       if(this.nid != 0){
         this.loading = true
-        fetch('http://api.ed808.com/latin/latin_news/'+ this.nid +'?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
+        fetch("http://api.ed808.com/latin/contents/" + this.nid)
           .then(response => response.json())
           .then((data) => {
-            this.news = data.latin_news
+            this.news = data.content
             this.loading = false
         })
       }

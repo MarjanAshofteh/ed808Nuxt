@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://api.ed808.com/latin/latin_contents/all/filters?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45')
+    fetch('http://api.ed808.com/latin/contents/all/filters')
       .then(response => response.json())
       .then((data) => {
         this.filters = data

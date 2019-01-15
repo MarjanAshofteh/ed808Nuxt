@@ -68,10 +68,6 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://github.com/nuxt-community/axios-module#usage
-    ['@nuxtjs/axios', {
-      baseURL: 'http://api.ed808.com/'
-    }],
     'nuxt-vue-material',
   ],
   

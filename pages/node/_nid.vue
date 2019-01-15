@@ -33,7 +33,7 @@
       v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
         <wavesurferPlayer 
           layout="modal"
-          :src="node_content.files[0] | createlink"
+          :src="node_content.files[0]"
           >
         </wavesurferPlayer>
       </div>-->
@@ -43,7 +43,7 @@
       />
       <img
         v-if="node_content.hasOwnProperty('image') && (node_content.image != null)"
-        :src="createlink(node_content.image)"
+        :src="node_content.image"
         :alt="node_content.title"
       >
       <article
@@ -105,9 +105,7 @@ export default {
   async asyncData({ params }) {
     try {
       const { data } = await axios.get(
-        "http://api.ed808.com/latin/latin_contents/" +
-          params.nid +
-          "?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45"
+        "http://api.ed808.com/latin/contents/" + params.nid
       );
       if (data) {
         let contentTypes = [];
@@ -134,44 +132,7 @@ export default {
       console.log(e);
     }
   },
-  mounted() {
-
-    /*axios.get('http://api.ed808.com/latin/latin_contents/'+ this.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45',
-      {
-        headers:{
-        'Content-type': 'application/json'
-        }
-      })
-      .then((data) => {
-        this.node_content = data.data.content
-        this.author = data.data.author
-      })
-      .then((data) => {
-        this.loading = false
-        this.type()
-      })
-      .catch(e => {
-        if(e.hasOwnProperty('response') && e.response.hasOwnProperty('statusText')){
-          this.errors = e.response.statusText
-          this.showError = true
-          this.$router.push('/')
-        }
-      });*/
-  },
   methods: {
-    // type() {
-    //   this.types = [];
-    //   if (
-    //     this.node_content.hasOwnProperty("type") &&
-    //     this.node_content.type.length != 0
-    //   ) {
-    //     this.node_content.type.forEach(element => {
-    //       if (element.tid == 4058) this.types.push("event");
-    //       if (element.tid == 3938) this.types.push("podcast");
-    //       if (element.tid == 3941) this.types.push("video");
-    //     });
-    //   }
-    // },
     convertDomain(value) {
       //this work but its performance is slow
       /* return value.split('="/sites').join('="http://api.ed808.com/sites') */
@@ -184,26 +145,7 @@ export default {
         .replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
         .replaceAll('="/sites', '="http://api.ed808.com/sites')
         .replaceAll('="/node', '="http://ed808.com/node');
-    },
-    createlink: function(value) {
-      if (!value) return "";
-      return "http://api.ed808.com/sites/default/files/" + value.substring(9);
     }
-  },
-  computed: {
-    // type: function() {
-    //   this.types = [];
-    //   if (
-    //     this.node_content.hasOwnProperty("type") &&
-    //     this.node_content.type.length != 0
-    //   ) {
-    //     this.node_content.type.forEach(element => {
-    //       if (element.tid == 4058) this.types.push("event");
-    //       if (element.tid == 3938) this.types.push("podcast");
-    //       if (element.tid == 3941) this.types.push("video");
-    //     });
-    //   }
-    // }
   },
   head() {
     return {
@@ -245,7 +187,7 @@ export default {
         },
         {
           property: "og:image",
-          content: this.createlink(this.node_content.image),
+          content: this.node_content.image,
           hid: "og:image"
         },
         {
@@ -262,7 +204,7 @@ export default {
         },
         {
           name: "twitter:image:src",
-          content: this.createlink(this.node_content.image),
+          content: this.node_content.image,
           hid: "twitter:image:src"
         },
         {
@@ -275,7 +217,7 @@ export default {
         { itemprop: "name", content: this.node_content.title, hid: "name" },
         {
           itemprop: "image",
-          content: this.createlink(this.node_content.image),
+          content: this.node_content.image,
           hid: "image"
         },
         {
@@ -450,6 +392,7 @@ body {
   }
   .reference {
     @include main-center-content();
+    overflow: hidden;
     h3 {
       display: inline;
     }

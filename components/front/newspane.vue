@@ -53,7 +53,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://api.ed808.com/latin/event')
+    fetch('http://api.ed808.com/latin/contents/list/event')
       .then(response => response.json())
       .then((data) => {
           this.events = data
@@ -91,7 +91,7 @@ button.VueCarousel-navigation-button{
   width: 40px;
   height: 40px;
   background-color:white !important;
-  font-family: Material Icons;
+  font-family: Material Icons!important;
   font-size: 30px;
   text-align: center;
   line-height: 30px;
