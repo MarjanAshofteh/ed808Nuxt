@@ -313,8 +313,8 @@
 
 <script>
 
-import axios from '@/node_modules/axios'
-import { cookie } from '@/components/mixins/cookie.js'
+  import axios from "@/node_modules/axios";
+  import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name:'profile',
@@ -511,10 +511,10 @@ export default {
         this.showError = true
       })
     },
-    async getProfile(){
+    getProfile(){
       // axios.defaults.crossDomain = true;
       // axios.defaults.withCredentials  = true;
-      axios.get('http://api.ed808.com/latin/user/'+ this.uid)
+      axios.get('/latin/user/'+ this.uid)
       .then((data) => {
         this.user = data.data
         this.userapi = Object.assign({}, this.user)
