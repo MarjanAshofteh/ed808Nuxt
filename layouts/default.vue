@@ -121,6 +121,7 @@
 
 <script>
 
+  import axios from '@/node_modules/axios'
   import { cookie } from '@/components/mixins/cookie.js'
   export default {
     name: 'default',
@@ -161,14 +162,15 @@
     methods:{
       // We Don't Need This Part For NavBar Anymore
       // It Can Be Handled In Store
-      async update_navbar(){
-        this.$axios.get('/latin/user/login/nav_bar_info',
+      update_navbar(){
+        axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
           {
             headers:{
               'Content-type': 'application/json'
             }
           })
           .then((data) => {
+            console.log(data)
             if(data.data.uid != 0){
               this.user.uid = data.data.uid
               this.user.picture = data.data.picture

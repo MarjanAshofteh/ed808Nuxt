@@ -1,83 +1,104 @@
 
 <template>
-  <div :class="'main-container node_type_' + types[0]">
-    <!--<a 
+  <div>
+    <div :class="'main-container node_type_' + types[0]">
+      <scroll></scroll>
+      <!--<a 
       :href="'http://api.ed808.com/node/' + nid + '/edit'" 
       target="_blank"
       >
       <md-icon class="md-size-2x edit_link">edit</md-icon>
-    </a>-->
-    <div class="top_header">
-      <h1 v-if="node_content.hasOwnProperty('title')">{{node_content.title}}</h1>
-      <div class="date_and_category" v-if="!types.includes('event')">
-        <span v-if="node_content.hasOwnProperty('created')">{{node_content.created}}</span>
-        <nuxt-link
-          v-if="node_content.hasOwnProperty('topic') && (node_content.topic.length != 0)"
-          :to="'/contents?topic='+ node_content.topic[0].tid"
-          target="_blank"
-          :title="node_content.topic[0].name"
-        >{{node_content.topic[0].name}}</nuxt-link>
+      </a>-->
+      <div class="top_header">
+        <h1 v-if="node_content.hasOwnProperty('title')">{{node_content.title}}</h1>
+        <div class="date_and_category" v-if="!types.includes('event')">
+          <span v-if="node_content.hasOwnProperty('created')">{{node_content.created}}</span>
+          <nuxt-link
+            v-if="node_content.hasOwnProperty('topic') && (node_content.topic.length != 0)"
+            :to="'/contents?topic='+ node_content.topic[0].tid"
+            target="_blank"
+            :title="node_content.topic[0].name"
+          >{{node_content.topic[0].name}}</nuxt-link>
+        </div>
+        <eventData
+          v-if="types.includes('event')"
+          :date="node_content.event_time"
+          :time="node_content.time_and_duration"
+          :organizer="node_content.company"
+          :place="node_content.event_place"
+          :webinar_covered="node_content.ifwebinar"
+          :registration_link="node_content.registration_link"
+        />
       </div>
-      <eventData
-        v-if="types.includes('event')"
-        :date="node_content.event_time"
-        :time="node_content.time_and_duration"
-        :organizer="node_content.company"
-        :place="node_content.event_place"
-        :webinar_covered="node_content.ifwebinar"
-        :registration_link="node_content.registration_link"
-      />
-    </div>
-    <md-content class="node_body">
-      <!--<div 
+      <md-content class="node-body" id="node_body">
+        <!--<div 
       v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
         <wavesurferPlayer 
           layout="modal"
           :src="node_content.files[0]"
           >
         </wavesurferPlayer>
-      </div>-->
-      <embedVideo
-        v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
-        :url="node_content.video_link"
-      />
-      <img
-        v-if="node_content.hasOwnProperty('image') && (node_content.image != null)"
-        :src="node_content.image"
-        :alt="node_content.title"
-      >
-      <article
-        v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
-        v-html="convertDomain(node_content.body_value)"
-      ></article>
+        </div>-->
+        <embedVideo
+          v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
+          :url="node_content.video_link"
+        />
+        <img
+          v-if="node_content.hasOwnProperty('image') && (node_content.image != null)"
+          :src="node_content.image"
+          :alt="node_content.title"
+        >
+        <article
+          v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
+          v-html="convertDomain(node_content.body_value)"
+        ></article>
+        <div
+          v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
+          class="reference"
+          v-for="(reference , index) in node_content.references"
+          :key="index"
+        >
+          <h3>Reference:</h3>
+          <a :href="reference" target="_blank" rel="nofollow">{{reference}}</a>
+          <span v-if="index > 0">,</span>
+        </div>
+      </md-content>
       <div
-        v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
-        class="reference"
-        v-for="(reference , index) in node_content.references"
-        :key="index"
+        class="tags"
+        v-if="node_content.hasOwnProperty('tags') && (node_content.tags.length != 0)"
       >
-        <h3>Reference:</h3>
-        <a :href="reference" target="_blank" rel="nofollow">{{reference}}</a>
-        <span v-if="index > 0">,</span>
+        <tag
+          v-for="(tag , index) in node_content.tags"
+          :key="index"
+          :name="tag.name"
+          :tid="tag.tid"
+        />
       </div>
-    </md-content>
-    <div class="tags" v-if="node_content.hasOwnProperty('tags') && (node_content.tags.length != 0)">
-      <tag v-for="(tag , index) in node_content.tags" :key="index" :name="tag.name" :tid="tag.tid"/>
-    </div>
-    <!--<author
+      <!--<author
       :uid="author.uid"
       :name="author.full_name"
       :picture="author.picture"
       :about_me="author.about_me"
-    />-->
-    <comment :nid="nid"/>
-    <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
+      />-->
+      <comment :nid="nid"/>
+      <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
+    </div>
+
+    <!-- Doesnt Work Correctly ! -->
+    <!-- Ancho Side Elements -->
+    
+    <!-- <affix class="sidebar-menu" relative-element-selector="#node_body" style="width: 300px">
+      <a href="">Markup 1</a>
+      <a href="">Markup 2</a>
+      <a href="">Markup 3</a>
+    </affix> -->
   </div>
 </template>
 
 <script>
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
+import scroll from "@/components/elements/scrollbar";
 import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
@@ -100,6 +121,7 @@ export default {
     author,
     tag,
     comment,
+    scroll,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
   async asyncData({ params }) {
@@ -306,7 +328,7 @@ body {
       }
     }
   }
-  .node_body {
+  .node-body {
     > img {
       margin: 25px 0px 0px 0px;
       max-width: 100%;
@@ -409,7 +431,7 @@ body {
   }
 }
 .node_type_video {
-  .node_body > img {
+  .node-body > img {
     display: none;
   }
 }

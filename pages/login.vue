@@ -194,24 +194,24 @@ export default {
     else{
       //this is just work for admins that login in api.edu befor(has session and doesnt have token)
       //this code is gonna set token for them
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials  = true;
-      this.$axios.get('/latin/user/login/nav_bar_info',
-      {
-        headers:{
-          'Content-type': 'application/json'
-        }
-      })
-      .then((data) => {
-        if(data.data.uid != 0){
-          this.setCookie('token', data.data.token , 23)
-          //under line is not working, I think.
-          this.$emit('do_navbar')
-        }
-      })
-      .catch(e => {
-        console.log('errors for nav_bar_info : ' + e)
-      })
+      // axios.defaults.crossDomain = true;
+      // axios.defaults.withCredentials  = true;
+      // this.$axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
+      // {
+      //   headers:{
+      //     'Content-type': 'application/json'
+      //   }
+      // })
+      // .then((data) => {
+      //   if(data.data.uid != 0){
+      //     this.setCookie('token', data.data.token , 23)
+      //     //under line is not working, I think.
+      //     this.$emit('do_navbar')
+      //   }
+      // })
+      // .catch(e => {
+      //   console.log('errors for nav_bar_info : ' + e)
+      // })
     }
   },
 }

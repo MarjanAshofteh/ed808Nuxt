@@ -313,6 +313,7 @@
 
 <script>
 
+import axios from '@/node_modules/axios'
 import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
@@ -460,7 +461,6 @@ export default {
           [fieldName] : this.user[fieldName]
         }
       }
-      console.log(data)
       axios.put('http://api.ed808.com/latin/user/'+ this.$route.params.uid,
       data,
       {
@@ -514,13 +514,7 @@ export default {
     async getProfile(){
       // axios.defaults.crossDomain = true;
       // axios.defaults.withCredentials  = true;
-      this.$axios.get('/latin/user/'+ this.uid + '/information',
-        {
-          headers:{
-            'Content-type': 'application/json',
-            'X-CSRF-Token' : this.getCookie("token")
-          } 
-        })
+      axios.get('http://api.ed808.com/latin/user/'+ this.uid)
       .then((data) => {
         this.user = data.data
         this.userapi = Object.assign({}, this.user)

@@ -79,6 +79,7 @@
 
 <script>
 
+import axios from '@/node_modules/axios'
 import { validationMixin } from 'vuelidate'
 import {
   required,

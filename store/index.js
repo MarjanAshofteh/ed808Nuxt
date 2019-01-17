@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 const cookieparser = process.server ? require('cookieparser') : undefined
 import Cookies from 'js-cookie';
@@ -40,21 +41,33 @@ export const actions = {
     if (req.headers && req.headers.cookie) {
       // ToDo: Handle Token Based Auth And NavBar Info 
       let parsedCookie = cookieparser.parse(req.headers.cookie)
-      console.log(parsedCookie.token)
+      // console.log(parsedCookie.token)
       if (parsedCookie.token) {
-        let { data } = await this.$axios.get('/latin/user/login/nav_bar_info')
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        let { data } = await axios.get('http://api.ed808.com/latin/user/login/nav_bar_info', {
+          headers: {
+            'Content-type': 'application/json'
+          }
+        })
         console.log(data)
       }
     }
   },
   async login({ hash, username_email, password, reCaptchaToken }) {
     try {
-      await this.$axios.post('/latin/user/login', { hash, username_email, password, reCaptchaToken })
-      .then((data)=> {
+      // axios.defaults.crossDomain = true;
+      // axios.defaults.withCredentials = true;
+      const {data} = await axios.post('http://api.ed808.com/latin/user/login', { hash, username_email, password, reCaptchaToken }, {
+        headers: { 'Access-Control-Allow-Origin': 'http://api.ed808.com'}
+      })
+      
         console.log(data)
         Cookies.set('token', data.data.token, 23)
-      })
+        // commit('SET_USER', data)
+      
     } catch (error) {
+      console.log(error)
       if (error.response && error.response.status === 401) {
         throw new Error('نام کاربری یا کلمه عبور اشتباه می باشد!')
       }

@@ -14,32 +14,32 @@ module.exports = {
     titleTemplate: '%s | 808 Educational and Engineering institute',
     meta: [
       { charset: 'utf-8' },
-      {'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8'},
+      { 'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8' },
       { name: 'viewport', content: 'width=device-width, initi al-scale=1' },
-      { name: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid:'description'},
+      { name: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid: 'description' },
 
       // OpenGraph data (Most widely used) - Dynamic
-      {property: 'og:title', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'og:title'},
-      {property: 'og:url', content: 'http://ed808.com', hid: 'og:url'},
-      {property: 'og:image', content: "http://ed808.com/staticfile/top-banner.jpg", hid: 'og:image'},
-      {property: 'og:description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid:'og:description'},
-      {property: 'og:type', content: 'website'},
+      { property: 'og:title', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'og:title' },
+      { property: 'og:url', content: 'http://ed808.com', hid: 'og:url' },
+      { property: 'og:image', content: "http://ed808.com/staticfile/top-banner.jpg", hid: 'og:image' },
+      { property: 'og:description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid: 'og:description' },
+      { property: 'og:type', content: 'website' },
       // OpenGraph data (Most widely used) - Static
-      {property: 'og:site_name', content: '808 Educational and Engineering institute'},
+      { property: 'og:site_name', content: '808 Educational and Engineering institute' },
 
       // Twitter card - Dynamic
-      {name: 'twitter:title', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'twitter:title'},
-      {name: 'twitter:description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid:'twitter:description'},
-      {name: 'twitter:image:src', content: 'http://ed808.com/staticfile/top-banner.jpg', hid: 'twitter:image:src'},
+      { name: 'twitter:title', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'twitter:title' },
+      { name: 'twitter:description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid: 'twitter:description' },
+      { name: 'twitter:image:src', content: 'http://ed808.com/staticfile/top-banner.jpg', hid: 'twitter:image:src' },
       // Twitter card - Static
-      {name: 'twitter:site', content: 'http://ed808.com'},
-      {name: 'twitter:card', content:'summary'},
+      { name: 'twitter:site', content: 'http://ed808.com' },
+      { name: 'twitter:card', content: 'summary' },
       // Your twitter handle, if you have one.{name: 'twitter:creator', content: ''},
 
       // Google / Schema.org markup: - Dynamic
-      {itemprop: 'name', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'name'},
-      {itemprop: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid: 'description'},
-      {itemprop: 'image', content: 'http://ed808.com/staticfile/top-banner.jpg', hid: 'image'},
+      { itemprop: 'name', content: this.title, template: '%s - 808 Educational and Engineering institute', hid: 'name' },
+      { itemprop: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid: 'description' },
+      { itemprop: 'image', content: 'http://ed808.com/staticfile/top-banner.jpg', hid: 'image' },
     ],
     htmlAttrs: {
       class: 'md-scrollbar'
@@ -62,7 +62,8 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [{ src: '~plugins/vue-carousel', ssr: false }],
+  plugins: [{ src: '~plugins/vue-carousel', ssr: false }
+    , { src: '~plugins/affix', ssr: false }],
 
   /*
   ** Nuxt.js modules
@@ -70,7 +71,7 @@ module.exports = {
   modules: [
     'nuxt-vue-material',
   ],
-  
+
   /*
   ** Build configuration
   */
