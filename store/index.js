@@ -42,30 +42,30 @@ export const actions = {
       // ToDo: Handle Token Based Auth And NavBar Info 
       let parsedCookie = cookieparser.parse(req.headers.cookie)
       // console.log(parsedCookie.token)
-      // if (parsedCookie.token) {
-      // axios.defaults.crossDomain = true;
-      // axios.defaults.withCredentials = true;
-      try {
-        let { data } = await axios.get('http://api.ed808.com/latin/user/login/nav_bar_info', {
-          headers: {
-            'Content-type': 'application/json'
-          }
-        })
-        console.log(data)
-      } catch (e) {
-        console.log(e)
+      if (parsedCookie.token) {
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        try {
+          let { data } = await axios.get('http://api.ed808.com/latin/user/login/nav_bar_info', {
+            headers: {
+              'Content-type': 'application/json'
+            }
+          })
+          console.log(data)
+        } catch (e) {
+          console.log(e)
+        }
       }
-      // }
     }
   },
   async login({ hash, username_email, password, reCaptchaToken }) {
     try {
       // axios.defaults.crossDomain = true;
       // axios.defaults.withCredentials = true;
-      const { data } = await this.$axios.$post('/latin/user/login', { hash, username_email, password, reCaptchaToken },
-      {
-        headers: { 'Access-Control-Allow-Origin': '*' }
-      })
+      const { data } = await this.$axios.$post('http://api.ed808.com/latin/user/login', { hash, username_email, password, reCaptchaToken },
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' }
+        })
 
       console.log(data)
       Cookies.set('token', data.data.token, 23)
