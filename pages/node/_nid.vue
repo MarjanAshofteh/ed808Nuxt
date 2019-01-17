@@ -80,7 +80,7 @@
       :picture="author.picture"
       :about_me="author.about_me"
       />-->
-      <comment :nid="nid"/>
+      <!-- <comment :nid="nid"/> -->
       <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
     </div>
 
