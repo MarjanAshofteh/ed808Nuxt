@@ -514,7 +514,7 @@ export default {
     getProfile(){
       // axios.defaults.crossDomain = true;
       // axios.defaults.withCredentials  = true;
-      axios.get('/latin/user/'+ this.uid)
+      axios.get('http://api.ed808.com/latin/user/'+ this.uid)
       .then((data) => {
         this.user = data.data
         this.userapi = Object.assign({}, this.user)
