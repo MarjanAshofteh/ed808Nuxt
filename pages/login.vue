@@ -50,7 +50,7 @@ import { required } from 'vuelidate/lib/validators'
 import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
-  name: 'login',
+  name: 'Login',
   mixins: [validationMixin,cookie],
   components: {
     'vue-recaptcha': VueRecaptcha

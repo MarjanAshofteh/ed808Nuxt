@@ -80,7 +80,15 @@
       :picture="author.picture"
       :about_me="author.about_me"
       />-->
-      <!-- <comment :nid="nid"/> -->
+      <h2 class="section-title">Related Contents:</h2>
+
+
+      <div class="md-layout" style="position: relative;	margin: 0 -1%;">
+        <teaser v-if="relatedNodes[0]" :title="relatedNodes[0].title" :pic="relatedNodes[0].picture" :date="relatedNodes[0].created" :nid="relatedNodes[0].nid" type=""/>
+        <teaser v-if="relatedNodes[1]" :title="relatedNodes[1].title" :pic="relatedNodes[1].picture" :date="relatedNodes[1].created" :nid="relatedNodes[1].nid" type=""/>
+        <teaser v-if="relatedNodes[2]" :title="relatedNodes[2].title" :pic="relatedNodes[2].picture" :date="relatedNodes[2].created" :nid="relatedNodes[2].nid" type=""/>
+      </div>
+        <!-- <comment :nid="nid"/> -->
       <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
     </div>
 
@@ -102,9 +110,19 @@ import scroll from "@/components/elements/scrollbar";
 import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
+import teaser from "@/components/allContents/NodeTeaser";
 
 export default {
   name: "node",
+  components: {
+    teaser,
+    eventData,
+    author,
+    tag,
+    comment,
+    scroll,
+    embedVideo: () => import("@/components/fields/embedVideo")
+  },
   data() {
     return {
       nid: this.$route.params.nid,
@@ -113,16 +131,9 @@ export default {
       loading: true,
       types: [],
       errors: "",
-      showError: false
+      showError: false,
+      relatedNodes: []
     };
-  },
-  components: {
-    eventData,
-    author,
-    tag,
-    comment,
-    scroll,
-    embedVideo: () => import("@/components/fields/embedVideo")
   },
   async asyncData({ params }) {
     try {
@@ -154,21 +165,35 @@ export default {
       console.log(e);
     }
   },
+  mounted(){
+    this.getRelatedNodes()
+    console.log(this.relatedNodes)
+  },
   methods: {
     convertDomain(value) {
       //this work but its performance is slow
       /* return value.split('="/sites').join('="http://api.ed808.com/sites') */
 
       String.prototype.replaceAll = function(search, replacement) {
-        var target = this;
+        let target = this;
         return target.replace(new RegExp(search, "g"), replacement);
       };
       return value
         .replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
         .replaceAll('="/sites', '="http://api.ed808.com/sites')
         .replaceAll('="/node', '="http://ed808.com/node');
+    },
+    getRelatedNodes(){
+      console.log(this.nid)
+      axios.get('http://api.ed808.com/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
+        .then(response => response.data)
+        .then((response)=>{
+          // console.log( response )
+          this.relatedNodes = response
+        })
     }
   },
+
   head() {
     return {
       links: [
@@ -267,6 +292,14 @@ body {
 .main-container {
   margin-bottom: 50px;
   padding: 0px 0 15px 0;
+  .md-layout {
+    @include main-center-content();
+
+  }
+  h2.section-title {
+    @include main-center-content();
+    text-align: left;
+  }
   .loading {
     position: absolute;
     width: 100%;
@@ -445,4 +478,5 @@ body {
     border-radius: 20px;
   }
 }
+
 </style>
