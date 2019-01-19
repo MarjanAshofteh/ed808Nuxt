@@ -45,11 +45,22 @@ export const actions = {
       if (parsedCookie.token) {
         axios.defaults.crossDomain = true;
         axios.defaults.withCredentials = true;
+        var myaxios = axios.create({
+          withCredentials: true
+        });
         try {
+          XMLHttpRequest.withCredentials = true
           let { data } = await axios.get('http://api.ed808.com/latin/user/login/nav_bar_info', {
             headers: {
-              'Content-type': 'application/json'
-            }
+              'Content-type': 'application/json',
+              'Access-Control-Allow-Credentials': true,
+              'Access-Control-Allow-Headers': 'api.ed808.com'
+            },
+            withCredentials: true,
+            //crossDomain: true,
+            /*xhrFields: {
+              withCredentials: true
+            }*/
           })
           console.log(data)
         } catch (e) {
@@ -58,17 +69,15 @@ export const actions = {
       }
     }
   },
-  async login({ hash, username_email, password, reCaptchaToken }) {
+  async login({ commit },{hash, username_email, password, reCaptchaToken }) {
+    console.log(username_email)
     try {
-      // axios.defaults.crossDomain = true;
-      // axios.defaults.withCredentials = true;
-      const { data } = await this.$axios.$post('http://api.ed808.com/latin/user/login', { hash, username_email, password, reCaptchaToken },
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' }
-        })
+       axios.defaults.crossDomain = true;
+       axios.defaults.withCredentials = true;
+      const { data } = await axios.post('http://api.ed808.com/latin/user/login', { hash, username_email, password, reCaptchaToken })
 
       console.log(data)
-      Cookies.set('token', data.data.token, 23)
+      Cookies.set('token', data.token, 23)
       // commit('SET_USER', data)
 
     } catch (error) {

@@ -69,6 +69,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    ['@nuxtjs/axios'],
     'nuxt-vue-material',
   ],
 
