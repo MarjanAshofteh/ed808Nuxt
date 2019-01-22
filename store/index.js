@@ -37,11 +37,15 @@ export const state = () => ({
 
 export const actions = {
   // nuxtServerInit is called by Nuxt.js before server-rendering every page
+  // $dispatch triggers an action
+  // $dispatch sends a message to your vuex store to do some action. The action may be done anytime after the current tick, so that your frontend performance is not affected.
   async nuxtServerInit({ commit }, { req }) {
     if (req.headers && req.headers.cookie) {
-      // ToDo: Handle Token Based Auth And NavBar Info 
+      // ToDo: Handle Token Based Auth And NavBar Info
+      console.log(req.headers)
       let parsedCookie = cookieparser.parse(req.headers.cookie)
-      // console.log(parsedCookie.token)
+      //console.log('Im Here!')
+      //console.log(parsedCookie.token)
       if (parsedCookie.token) {
         axios.defaults.crossDomain = true;
         axios.defaults.withCredentials = true;
@@ -49,12 +53,12 @@ export const actions = {
           withCredentials: true
         });
         try {
-          XMLHttpRequest.withCredentials = true
           let { data } = await axios.get('http://api.ed808.com/latin/user/login/nav_bar_info', {
             headers: {
+              cookie: 'test',
               'Content-type': 'application/json',
               'Access-Control-Allow-Credentials': true,
-              'Access-Control-Allow-Headers': 'api.ed808.com'
+              'Access-Control-Allow-Headers': 'api.ed808.com',
             },
             withCredentials: true,
             //crossDomain: true,
@@ -122,6 +126,9 @@ export const actions = {
 }
 
 export const mutations = {
+  //commit triggers a mutation
+  //You never commit from any of your components / routes. It is done only from within an action, and only when you have some data to commit
+  //commit is synchronous and may freeze your frontend till it is done.
   LOGIN(state, uid, { user }) {
     state.uid = uid
     state.user = { user }
