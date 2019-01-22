@@ -30,6 +30,8 @@
           :registration_link="node_content.registration_link"
         />
       </div>
+
+
       <md-content class="node-body" id="node_body">
         <!--<div 
       v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
@@ -43,12 +45,29 @@
           v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
           :url="node_content.video_link"
         />
-        <img
+        <img id="image"
           v-if="node_content.hasOwnProperty('image') && (node_content.image != null)"
           :src="node_content.image"
           :alt="node_content.title"
         >
-        <article
+        <affix
+          class="sidebar-menu affix-bottom"
+          relative-element-selector="#article"
+          :offset="{ top: 20, bottom: 20 }"
+          style=""
+        >
+          <scrollactive
+            class="my-nav"
+            @:itemchanged="onItemChanged"
+            active-class="active"
+            :offset="20">
+
+
+            <a v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>
+
+          </scrollactive>
+        </affix>
+        <article id="article"
           v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
           v-html="convertDomain(node_content.body_value)"
         ></article>
@@ -62,49 +81,70 @@
           <a :href="reference" target="_blank" rel="nofollow">{{reference}}</a>
           <span v-if="index > 0">,</span>
         </div>
+        <div
+          class="tags"
+          v-if="node_content.hasOwnProperty('tags') && (node_content.tags.length != 0)"
+        >
+          <tag
+            v-for="(tag , index) in node_content.tags"
+            :key="index"
+            :name="tag.name"
+            :tid="tag.tid"
+          />
+        </div>
       </md-content>
-      <div
-        class="tags"
-        v-if="node_content.hasOwnProperty('tags') && (node_content.tags.length != 0)"
-      >
-        <tag
-          v-for="(tag , index) in node_content.tags"
-          :key="index"
-          :name="tag.name"
-          :tid="tag.tid"
-        />
-      </div>
+
       <!--<author
       :uid="author.uid"
       :name="author.full_name"
       :picture="author.picture"
       :about_me="author.about_me"
       />-->
-      <!-- <comment :nid="nid"/> -->
+      <h2 id="related" class="section-title">
+        Related Contents:
+      </h2>
+
+
+      <div class="md-layout" style="position: relative;">
+        <teaser v-if="relatedNodes[0]" :title="relatedNodes[0].title" :pic="relatedNodes[0].picture" :date="relatedNodes[0].created" :nid="relatedNodes[0].nid" type=""/>
+        <teaser v-if="relatedNodes[1]" :title="relatedNodes[1].title" :pic="relatedNodes[1].picture" :date="relatedNodes[1].created" :nid="relatedNodes[1].nid" type=""/>
+        <teaser v-if="relatedNodes[2]" :title="relatedNodes[2].title" :pic="relatedNodes[2].picture" :date="relatedNodes[2].created" :nid="relatedNodes[2].nid" type=""/>
+      </div>
+      <div id="comments">
+        <comment :nid="nid" />
+      </div>
       <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
     </div>
 
     <!-- Doesnt Work Correctly ! -->
     <!-- Ancho Side Elements -->
     
-    <!-- <affix class="sidebar-menu" relative-element-selector="#node_body" style="width: 300px">
-      <a href="">Markup 1</a>
-      <a href="">Markup 2</a>
-      <a href="">Markup 3</a>
-    </affix> -->
+
   </div>
 </template>
 
 <script>
+import ScrollActive from '@/node_modules/vue-scrollactive'
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
 import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
+import teaser from "@/components/allContents/NodeTeaser";
 
 export default {
   name: "node",
+  components: {
+    teaser,
+    eventData,
+    author,
+    tag,
+    comment,
+    scroll,
+    ScrollActive,
+    embedVideo: () => import("@/components/fields/embedVideo")
+  },
   data() {
     return {
       nid: this.$route.params.nid,
@@ -113,16 +153,10 @@ export default {
       loading: true,
       types: [],
       errors: "",
-      showError: false
+      showError: false,
+      relatedNodes: [],
+      articleHeadings: []
     };
-  },
-  components: {
-    eventData,
-    author,
-    tag,
-    comment,
-    scroll,
-    embedVideo: () => import("@/components/fields/embedVideo")
   },
   async asyncData({ params }) {
     try {
@@ -154,21 +188,52 @@ export default {
       console.log(e);
     }
   },
+  mounted(){
+    this.getRelatedNodes()
+    this.getHeadings()
+  },
   methods: {
+    onItemChanged(event, currentItem, lastActiveItem) {
+      // your logic
+    },
+    getHeadings(){
+      let headings = document.getElementById('article').getElementsByTagName('h2')
+      console.log(headings)
+      let headObject = []
+      Array.from(headings).forEach(function (el,i) {
+        let obj = {
+          id: 'head'+i,
+          text: el.innerHTML
+        }
+        el.setAttribute('id','head'+i)
+        headObject.push(obj)
+      })
+      this.articleHeadings = headObject
+    },
     convertDomain(value) {
       //this work but its performance is slow
       /* return value.split('="/sites').join('="http://api.ed808.com/sites') */
 
       String.prototype.replaceAll = function(search, replacement) {
-        var target = this;
+        let target = this;
         return target.replace(new RegExp(search, "g"), replacement);
       };
       return value
         .replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
         .replaceAll('="/sites', '="http://api.ed808.com/sites')
         .replaceAll('="/node', '="http://ed808.com/node');
+    },
+    getRelatedNodes(){
+      console.log(this.nid)
+      axios.get('http://api.ed808.com/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
+        .then(response => response.data)
+        .then((response)=>{
+          // console.log( response )
+          this.relatedNodes = response
+        })
     }
   },
+
   head() {
     return {
       links: [
@@ -267,6 +332,14 @@ body {
 .main-container {
   margin-bottom: 50px;
   padding: 0px 0 15px 0;
+  .md-layout {
+    @include main-center-content();
+
+  }
+  h2.section-title {
+    @include main-center-content();
+    text-align: left;
+  }
   .loading {
     position: absolute;
     width: 100%;
@@ -445,4 +518,23 @@ body {
     border-radius: 20px;
   }
 }
+.vue-affix {
+  padding-top: 20px;
+  position: absolute;
+  width: calc(((100% - 800px)/2) - 15px);
+  margin-left: 15px;
+  a.scrollactive-item {
+    display: block;
+  }
+  a.active {
+    color: #fff;
+    background: #92278f;
+    background: #92278f;
+    background: var(--md-theme-default-primary-on-background, #92278f);
+  }
+}
+.vue-affix.affix {
+  position: fixed;
+}
+
 </style>
