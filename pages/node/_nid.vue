@@ -3,12 +3,6 @@
   <div>
     <div :class="'main-container node_type_' + types[0]">
       <scroll></scroll>
-      <!--<a 
-      :href="'http://api.ed808.com/node/' + nid + '/edit'" 
-      target="_blank"
-      >
-      <md-icon class="md-size-2x edit_link">edit</md-icon>
-      </a>-->
       <div class="top_header">
         <h1 v-if="node_content.hasOwnProperty('title')">{{node_content.title}}</h1>
         <div class="date_and_category" v-if="!types.includes('event')">

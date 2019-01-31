@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import axios from "@/node_modules/axios";
+import axios from "@/node_modules/axios"
 
 export default {
   name: "aboutus",
