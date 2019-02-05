@@ -5,27 +5,21 @@
         <h1>Contact Us</h1>
         <div class="text">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing vitae proin sagittis nisl. Auctor urna nunc id cursus metus aliquam eleifend. Neque sodales ut etiam sit amet nisl purus in. Suscipit tellus mauris a diam maecenas. Est sit amet facilisis magna etiam tempor. At elementum eu facilisis sed odio morbi quis commodo.
+            We are ready to lead you into the future of Civil Engineering and Construction Industry. Get in touch with experts and share your experience.
+            Use the form below to drop us an email.
           </p>
           <div class="row">
-            <md-icon class="fa fa-bars">home</md-icon>
+            <md-icon class="fa fa-bars">place</md-icon>
             <span>
-              <b>Label: </b>
-              Lorem Ipsum
+              <b>Address: </b>
+              4, Stapleford Close, Kingston Upon Thames, United Kingdom, KT1 3HL
             </span>
           </div>
           <div class="row">
-            <md-icon class="fa fa-bars">home</md-icon>
+            <md-icon class="fa fa-bars">email</md-icon>
             <span>
-              <b>Label: </b>
-              Lorem Ipsum
-            </span>
-          </div>
-          <div class="row">
-            <md-icon class="fa fa-bars">home</md-icon>
-            <span>
-              <b>Label: </b>
-              Lorem Ipsum
+              <b>Email: </b>
+              Info[at]ed808.com
             </span>
           </div>
         </div>
@@ -107,18 +101,17 @@
 </template>
 
 <script>
-  import axios from "@/node_modules/axios";
+  import axios from "@/node_modules/axios"
   import { validationMixin } from 'vuelidate'
   import {
     required,
     email,
     minLength,
-    maxLength,
     numeric
   } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'contactUs',
+    name: 'contactus',
     mixins: [validationMixin],
     data: () => ({
       form: {
@@ -177,8 +170,10 @@
       sendForm(){
         axios.defaults.crossDomain = true
         axios.defaults.withCredentials  = true
-        axios.post('http://api.ed808.com/latin/page/contact_form',
+        axios.post('http://api.ed808.com/latin/web_form',
           {
+            "nid" : 19768,
+            "reCaptchaToken" : "admin@ed808",
             "name" : this.form.fullName,
             "email" : this.form.email,
             "phone" : this.form.phone,
@@ -212,65 +207,92 @@
 </script>
 
 <style lang="scss" scoped>
+  @import "@/assets/scss/vars.scss";
   .md-progress-bar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
+    @include absolute('','',0,0,'',0);
   }
   .main-container{
     min-height: 100vh;
-    background-image: url(/_nuxt/assets/images/contactUs.jpg);
+    background-image: url(/_nuxt/assets/images/295.jpg);
     background-position: center;
     background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  form {
-    width: 465px;
-    margin-left: 26%;
-    > div{
-      margin: auto;
+    padding: 30px 4vw;
+    @media #{$x840}{
+      flex-direction: column;
+      padding-top: 50px;
+      padding-bottom: 50px;
     }
-    .md-card-content{
-      padding: 0 3vw;
+    @media #{$x600}{
+      padding: 0 0 50px 0;
     }
-    .md-card-actions{
-      padding-top: 0;
-      margin: -8px 0 6px 0;
-      button{
-        display: block;
-        margin: 0 auto !important;
-        width: 137px;
-        background-color: #03A9F4;
-        border-radius: 7px;
-        color: white !important;
+    form {
+      width: 38%;
+      margin-right: -32%;
+      max-width: 450px;
+      min-width: 350px;
+      @media #{$x840}{
+        margin: -44px 0 0 0;
+        width: 450px;
+      }
+      @media #{$x600}{
+        width: 90%;
+        min-width: 300px;
+      }
+      > div{
+        margin: auto;
+      }
+      .md-card-content{
+        padding: 0 3vw;
+      }
+      .md-card-actions{
+        padding-top: 0;
+        margin: -8px 0 6px 0;
+        button{
+          @include blue-btn();
+          margin: 0 auto !important;
+          width: 137px;
+          border-radius: 7px;
+        }
       }
     }
-  }
-  section{
-    background-color: #00000087;
-    width: 61%;
-    height: 505px;
-    position: absolute;
-    text-align: left;
-    padding: 60px 5vw;
-    /* background-image: url(/_nuxt/assets/images/contactUs.jpg); */
-    color: white;
-    h1{
-      font-size: 25px;
-    }
-    .text{
-      width: 310px;
-      .row {
-        padding: 7px 3px;
-        span{
-          vertical-align: middle;
-          padding-left: 5px;
+    section{
+      background-color: rgba(0, 0, 0, 0.8);
+      width: 75%;
+      height: 505px;
+      position: absolute;
+      text-align: left;
+      padding: 4vw 5vw;
+      color: white;
+      max-width: 1000px;
+      @media #{$x840}{
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding-bottom: 70px;
+      }
+      @media #{$x600}{
+        padding-top: 30px;
+      }
+      h1{
+        font-size: 25px;
+      }
+      .text{
+        width: 36%;
+        @media #{$x840}{
+          width: 100%;
         }
-        i{
-          color:white;
+        .row {
+          padding: 7px 3px;
+          span{
+            vertical-align: middle;
+            padding-left: 5px;
+          }
+          i{
+            color:white;
+          }
         }
       }
     }
