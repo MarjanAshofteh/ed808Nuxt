@@ -1,6 +1,8 @@
 <template>
   <div class="comment-list">
-    <h2>Comments:</h2>
+    <h2 class="section-title">
+      Comments:
+    </h2>
     <div class="comment-card comment-form">
       <md-card-header>
         <md-avatar>
@@ -9,15 +11,27 @@
             alt="Avatar"
           >
         </md-avatar>
-        <div class="md-commentor">{{ 'Mohsen Bagheri' }}</div>
+        <div class="md-commentor">
+          {{ 'Mohsen Bagheri' }}
+        </div>
         <div class="md-right">
-          <md-button class="md-dense md-primary">Submit</md-button>
+          <md-button
+            class="md-dense md-primary"
+            @click="submitComment(0)"
+          >
+            Submit
+          </md-button>
         </div>
       </md-card-header>
       <md-card-content>
         <md-field>
           <label>Write your comment</label>
-          <md-textarea :class="{'active': textareaActive}" @click="textareaActive = true"></md-textarea>
+          <md-textarea
+            v-model="commentText"
+            :class="{'active': textareaActive}"
+            :disabled="onSubmit"
+            @focus="textareaActive = true"
+          />
         </md-field>
       </md-card-content>
     </div>
@@ -34,25 +48,55 @@
                   >
                 </md-avatar>
                 <div class="md-title">
-                  <nuxt-link :to="'/user/'+c.uid">{{ c.author_name ? c.author_name : c.author_username }}</nuxt-link>
+                  <nuxt-link :to="'/user/'+c.uid">
+                    {{ c.author_name ? c.author_name : c.author_username }}
+                  </nuxt-link>
                 </div>
-                <div class="md-date">{{ c.created }}</div>
+                <div class="md-date">
+                  {{ c.created }}
+                </div>
               </div>
             </div>
             <div class="md-layout-item">
               <!-- comment body -->
               <div class="md-comment-body">
-                <p v-html="c.body"></p>
+                <p v-html="c.body" />
                 <!-- comment actions -->
                 <div class="comment-action">
-                  <md-button class="md-icon-button md-primary md-dense" @click="showReplyBox(c.cid)">
-                    <md-icon>reply</md-icon>
-                    <md-tooltip md-direction="bottom">Reply to this Comment</md-tooltip>
+                  <md-button
+                    v-if="onReply == c.cid"
+                    class="md-icon-button md-primary md-dense"
+                    @click="submitComment(c.cid)"
+                  >
+                    <md-icon style="font-size: 20px!important;">
+                      send
+                    </md-icon>
+                    <md-tooltip md-direction="bottom">
+                      Send your reply
+                    </md-tooltip>
                   </md-button>
-                  <md-menu md-size="small" :md-offset-x="127" :md-offset-y="-36">
-                    <md-button class="md-icon-button md-primary md-dense" md-menu-trigger>
+                  <md-button
+                    class="md-icon-button md-primary md-dense"
+                    @click="showReplyBox(c.cid)"
+                  >
+                    <md-icon>reply</md-icon>
+                    <md-tooltip md-direction="bottom">
+                      Reply to this Comment
+                    </md-tooltip>
+                  </md-button>
+                  <md-menu
+                    md-size="small"
+                    :md-offset-x="127"
+                    :md-offset-y="-36"
+                  >
+                    <md-button
+                      class="md-icon-button md-primary md-dense"
+                      md-menu-trigger
+                    >
                       <md-icon>more_vert</md-icon>
-                      <md-tooltip md-direction="bottom">More Functions</md-tooltip>
+                      <md-tooltip md-direction="bottom">
+                        More Functions
+                      </md-tooltip>
                     </md-button>
 
                     <md-menu-content>
@@ -68,9 +112,16 @@
                 <!-- end of comment actions -->
                 <!-- reply box -->
                 <transition name="fade">
-                  <md-field class="reply-box" v-if="onReply == c.cid">
+                  <md-field
+                    v-if="onReply == c.cid"
+                    class="reply-box"
+                  >
                     <label>Write your reply</label>
-                    <md-textarea></md-textarea>
+
+                    <md-textarea
+                      v-model="replyText"
+                      :disabled="onSubmit"
+                    />
                   </md-field>
                 </transition>
 
@@ -81,7 +132,10 @@
           </div>
         </div>
       </div>
-      <div class="reply-comment" v-for="r in c.replies">
+      <div
+        v-for="r in c.replies"
+        class="reply-comment"
+      >
         <div class="comment-card">
           <div class="md-layout">
             <div class="md-layout-item md-size-20">
@@ -93,21 +147,34 @@
                   >
                 </md-avatar>
                 <div class="md-title">
-                  <nuxt-link :to="'/user/'+c.uid">{{ r.author_name ? r.author_name : r.author_username }}</nuxt-link>
+                  <nuxt-link :to="'/user/'+c.uid">
+                    {{ r.author_name ? r.author_name : r.author_username }}
+                  </nuxt-link>
                 </div>
-                <div class="md-date">{{ r.created }}</div>
+                <div class="md-date">
+                  {{ r.created }}
+                </div>
               </div>
             </div>
             <div class="md-layout-item">
               <!-- comment body -->
               <div class="md-comment-body">
-                <p v-html="r.body"></p>
+                <p v-html="r.body" />
                 <!-- comment actions -->
                 <div class="comment-action">
-                  <md-menu md-size="small" :md-offset-x="127" :md-offset-y="-36">
-                    <md-button class="md-icon-button md-primary md-dense" md-menu-trigger>
+                  <md-menu
+                    md-size="small"
+                    :md-offset-x="127"
+                    :md-offset-y="-36"
+                  >
+                    <md-button
+                      class="md-icon-button md-primary md-dense"
+                      md-menu-trigger
+                    >
                       <md-icon>more_vert</md-icon>
-                      <md-tooltip md-direction="bottom">More Functions</md-tooltip>
+                      <md-tooltip md-direction="bottom">
+                        More Functions
+                      </md-tooltip>
                     </md-button>
 
                     <md-menu-content>
@@ -133,14 +200,22 @@
 
 <script>
 import axios from "@/node_modules/axios"
+import { cookie } from '@/components/mixins/cookie.js'
+
 export default {
-  name: "comment",
-  props: ["nid"],
+  name: "Comment",
+  mixins: [cookie],
+  props: {
+    nid: Number
+  },
   data() {
     return {
+      commentText:'',
+      replyText:'',
       commentList: [],
       onReply: {},
-      textareaActive: false
+      textareaActive: false,
+      onSubmit: false
     };
   },
   mounted() {
@@ -148,8 +223,36 @@ export default {
     this.getComments();
   },
   methods: {
+    submitComment(pid){
+      this.onSubmit = true;
+      console.log('Submit');
+      axios
+        .post("http://api.ed808.com/latin/comments" ,{
+          "nid" : this.nid,
+          "pid" : pid,
+          "body" : pid != 0 ? this.replyText : this.commentText
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token' : this.getCookie('token')
+          }
+        })
+        .then(response => {
+          console.log(response);
+          this.replyText = '';
+          this.commentText = '';
+          this.getComments();
+          this.onSubmit = false;
+        })
+        .catch(err => {
+          console.log(err);
+          this.onSubmit = false;
+        });
+    },
     showReplyBox(commentID) {
       console.log(commentID);
+      this.commentText = ''
+      this.replyText = ''
       this.onReply = commentID;
     },
     getComments() {
@@ -161,11 +264,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
-  },
-  computer: {
-    fieldGrow: function() {
-      return this.textareaActive ? "active" : "";
     }
   }
 };

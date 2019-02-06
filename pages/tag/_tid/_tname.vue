@@ -86,7 +86,12 @@
     // },
     async asyncData({params}) {
       try {
-        const {data} = await axios.get('http://api.ed808.com/latin/tag/' + params.tid )
+        const {data} = await axios.get('http://api.ed808.com/latin/tag/' + params.tid ,{
+          headers: {
+            'Access-Control-Allow-Origin' : 'http://api.ed808.com',
+            'Content-type': 'application/json',
+          }
+        })
         if (data.tid) {
           return {
             name: data.name,
@@ -144,6 +149,7 @@
             },
             {
               headers: {
+                'Access-Control-Allow-Origin':'http://api.ed808.com',
                 'Content-type': 'application/json',
                 'X-CSRF-Token' : this.getCookie("token")
               }

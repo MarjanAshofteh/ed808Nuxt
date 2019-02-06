@@ -44,23 +44,25 @@
           :src="node_content.image"
           :alt="node_content.title"
         >
-        <affix
-          class="sidebar-menu affix-bottom"
-          relative-element-selector="#article"
-          :offset="{ top: 20, bottom: 20 }"
-          style=""
-        >
-          <scrollactive
-            class="my-nav"
-            @:itemchanged="onItemChanged"
-            active-class="active"
-            :offset="20">
+
+        <!--<affix-->
+          <!--class="sidebar-menu affix-bottom"-->
+          <!--relative-element-selector="#article"-->
+          <!--:offset="{ top: 20, bottom: 20 }"-->
+          <!--style=""-->
+        <!--&gt;-->
+          <!--<scrollactive-->
+            <!--class="my-nav"-->
+            <!--@:itemchanged="onItemChanged"-->
+            <!--active-class="active"-->
+            <!--:offset="20">-->
 
 
-            <a v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>
+            <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
 
-          </scrollactive>
-        </affix>
+          <!--</scrollactive>-->
+        <!--</affix>-->
+
         <article id="article"
           v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
           v-html="convertDomain(node_content.body_value)"
@@ -94,15 +96,39 @@
       :picture="author.picture"
       :about_me="author.about_me"
       />-->
-      <h2 id="related" class="section-title">
+      <h2 class="section-title">
         Related Contents:
       </h2>
 
 
-      <div class="md-layout" style="position: relative;">
-        <teaser v-if="relatedNodes[0]" :title="relatedNodes[0].title" :pic="relatedNodes[0].picture" :date="relatedNodes[0].created" :nid="relatedNodes[0].nid" type=""/>
-        <teaser v-if="relatedNodes[1]" :title="relatedNodes[1].title" :pic="relatedNodes[1].picture" :date="relatedNodes[1].created" :nid="relatedNodes[1].nid" type=""/>
-        <teaser v-if="relatedNodes[2]" :title="relatedNodes[2].title" :pic="relatedNodes[2].picture" :date="relatedNodes[2].created" :nid="relatedNodes[2].nid" type=""/>
+      <div class="md-layout node-page" style="position: relative;">
+        <teaser
+          v-if="relatedNodes[0]"
+          :title="relatedNodes[0].title"
+          :pic="relatedNodes[0].picture"
+          :date="relatedNodes[0].created"
+          :nid="relatedNodes[0].nid"
+          :type="relatedNodes[0].types"
+        />
+
+        <teaser
+          v-if="relatedNodes[1]"
+          :title="relatedNodes[1].title"
+          :pic="relatedNodes[1].picture"
+          :date="relatedNodes[1].created"
+          :nid="relatedNodes[1].nid"
+          :type="relatedNodes[1].types"
+        />
+
+        <teaser
+          v-if="relatedNodes[2]"
+          :title="relatedNodes[2].title"
+          :pic="relatedNodes[2].picture"
+          :date="relatedNodes[2].created"
+          :nid="relatedNodes[2].nid"
+          :type="relatedNodes[2].types"
+        />
+
       </div>
       <div id="comments">
         <comment :nid="nid" />
@@ -118,7 +144,7 @@
 </template>
 
 <script>
-import ScrollActive from '@/node_modules/vue-scrollactive'
+// import ScrollActive from '@/node_modules/vue-scrollactive'
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
@@ -136,7 +162,7 @@ export default {
     tag,
     comment,
     scroll,
-    ScrollActive,
+    // ScrollActive,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
   data() {
@@ -155,7 +181,7 @@ export default {
   async asyncData({ params }) {
     try {
       const { data } = await axios.get(
-        "http://api.ed808.com/latin/contents/" + params.nid
+        "http://ed808.com:91/latin/contents/" + params.nid
       );
       if (data) {
         let contentTypes = [];
@@ -192,15 +218,14 @@ export default {
     },
     getHeadings(){
       let headings = document.getElementById('article').getElementsByTagName('h2')
-      console.log(headings)
       let headObject = []
       Array.from(headings).forEach(function (el,i) {
         let obj = {
           id: 'head'+i,
           text: el.innerHTML
         }
-        el.setAttribute('id','head'+i)
         headObject.push(obj)
+        el.setAttribute('id','head'+i)
       })
       this.articleHeadings = headObject
     },
@@ -218,8 +243,7 @@ export default {
         .replaceAll('="/node', '="http://ed808.com/node');
     },
     getRelatedNodes(){
-      console.log(this.nid)
-      axios.get('http://api.ed808.com/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
+      axios.get('http://ed808.com:91/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
         .then(response => response.data)
         .then((response)=>{
           // console.log( response )
@@ -333,6 +357,9 @@ body {
   h2.section-title {
     @include main-center-content();
     text-align: left;
+    font-size: 22px;
+    margin: 35px auto 11px auto;
+    line-height: 40px;
   }
   .loading {
     position: absolute;
@@ -529,6 +556,13 @@ body {
 }
 .vue-affix.affix {
   position: fixed;
+}
+
+@media (max-width: 1440px){
+  .node-page .content-teaser {
+    width: 31.3%;
+    flex: 0 1 31.3%;
+  }
 }
 
 </style>
