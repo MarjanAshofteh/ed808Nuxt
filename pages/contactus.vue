@@ -9,14 +9,14 @@
             Use the form below to drop us an email.
           </p>
           <div class="row">
-            <md-icon class="fa fa-bars">place</md-icon>
+            <md-icon>place</md-icon>
             <span>
               <b>Address: </b>
               4, Stapleford Close, Kingston Upon Thames, United Kingdom, KT1 3HL
             </span>
           </div>
           <div class="row">
-            <md-icon class="fa fa-bars">email</md-icon>
+            <md-icon>email</md-icon>
             <span>
               <b>Email: </b>
               Info[at]ed808.com
@@ -35,7 +35,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('fullName')">
-                <label for="full-name">Full Name</label>
+                <label for="first-name">Full Name</label>
                 <md-input name="full-name" id="first-name" autocomplete="given-name" v-model="form.fullName" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.fullName.required">The full name is required</span>
                 <span class="md-error" v-else-if="!$v.form.fullName.minlength">Invalid full name</span>
@@ -57,7 +57,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('phone')">
-                <label for="phone">phone</label>
+                <label for="phone">Phone</label>
                 <md-input name="phone" id="phone" v-model="form.phone" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.phone.numeric">The phone number must be numeric</span>
                 <span class="md-error" v-else-if="!$v.form.phone.minlength">Invalid phone number</span>
@@ -68,7 +68,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('company')">
-                <label for="company">company</label>
+                <label for="company">Company</label>
                 <md-input name="company" id="company" autocomplete="given-name" v-model="form.company" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.company.minlength">Invalid company name</span>
               </md-field>
@@ -78,7 +78,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('description')">
-                <label for="description">description</label>
+                <label for="description">Description</label>
                 <md-textarea name="description" id="description" v-model="form.description" :disabled="sending" ></md-textarea>
                 <span class="md-error" v-if="!$v.form.description.required">is required</span>
                 <span class="md-error" v-else-if="!$v.form.description.minlength">Invalid description</span>
