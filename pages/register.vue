@@ -160,7 +160,7 @@ export default {
       this.sending = true
       this.$refs.recaptcha.reset();
 
-      axios.post('http://api.ed808.com/latin/user/register',
+      axios.post('http://ed808.com:91/latin/user/register',
         {
           hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
           username : this.form.username,

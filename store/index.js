@@ -57,36 +57,7 @@ export const actions = {
             }
       }
     }
-  },
-
-  login({ commit },{hash, username_email, password, reCaptchaToken }) {
-    return new Promise((resolve, reject) => {
-        console.log('before starting axios')
-            axios.defaults.crossDomain = true;
-            axios.defaults.withCredentials = true;
-            axios.post('http://ed808.com:91/latin/user/login',
-                {
-                    hash,
-                    username_email,
-                    password,
-                    reCaptchaToken
-                },
-                {
-                    headers: {
-                        'Content-type': 'application/json'
-                    }
-                }).then(response => {
-                    console.log('data export from axios reasult:' + response.data)
-                    console.log(response.data.uid)
-                    commit('SET_USER', response.data.uid)
-                    Cookies.set('token', response.data.token, {expires: 23})
-                    resolve()
-                }).catch(() => {
-                reject()
-            })
-    })
-  },
-
+  }
 }
 
 export const mutations = {

@@ -48,6 +48,7 @@ import VueRecaptcha from 'vue-recaptcha'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import { cookie } from '@/components/mixins/cookie.js'
+import axios from "@/node_modules/axios"
 
 export default {
   name: 'Login',
@@ -97,37 +98,45 @@ export default {
     },
     logUserIn(recaptchaToken){
           this.loading.sending = true
-        this.$store.dispatch('login', {
-          hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
-          username_email : this.form.username_email,
-          password : this.form.password,
-          reCaptchaToken : "admin@ed808"
-        }).then(() => {
-            setTimeout(()=>{
-                console.log('after resolve promise - back in login.vue:' + this.$store.getters.getUid)
-            }, 1000)
-            if(this.$store.getters.getUid){
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        axios.post('http://ed808.com:91/latin/user/login',
+            {
+                hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
+                username_email : this.form.username_email,
+                password : this.form.password,
+                reCaptchaToken : "admin@ed808"
+            },
+            {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }).then((data) => {
+                //console.log(data)
+                //this line doesn't work
+                this.$store.commit('SET_USER',data.data.uid)
+                this.setCookie('token', data.data.token , 23)
                 this.lastUser = `${this.form.username_email}`
                 this.userSaved = true
                 this.loading.sending = false
                 // redirect after successfull login
-                this.$router.push('/user/'+ this.$store.getters.getUid)
+                this.$router.push('/user/'+ data.data.uid)
                 this.clearForm()
-            }
-        })
-            .catch(e => {
-                if(e.hasOwnProperty('response')){
-                    if(e.response.hasOwnProperty('data'))
-                        this.errors = e.response.data
-                    else{
-                        this.errors = e.response
-                    }
-                }
+
+            }).catch(e => {
+            if(e.hasOwnProperty('response')){
+                if(e.response.hasOwnProperty('data'))
+                    this.errors = e.response.data
                 else{
-                    this.errors = e
+                    this.errors = e.response
                 }
-                this.showError = true
+            }
+            else{
+                this.errors = e
+            }
+            //this.showError = true
             })
+
 
       // this.loading.sending = true
       // this.$refs.recaptcha.reset();
