@@ -59,6 +59,7 @@
 
   export default {
     name: 'Tags',
+      scrollToTop: true,
     components: {
       NodeList,
       breadcrumb

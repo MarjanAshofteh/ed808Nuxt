@@ -32,8 +32,8 @@ export const cookie = {
       }
       return null
     },
-    setUid(uid){
-      this.$store.commit('LOGIN',uid);
+    set_user(uid){
+      this.$store.commit('SET_USER',uid);
     }
   }
 }

@@ -17,6 +17,10 @@
             </md-menu>
 
             <md-menu md-direction="bottom-start">
+              <nuxt-link to="/contactus"><md-button>contact us</md-button></nuxt-link>
+            </md-menu>
+
+            <md-menu md-direction="bottom-start">
               <nuxt-link to="/contents"><md-button>all contents</md-button></nuxt-link>
             </md-menu>
 
@@ -32,14 +36,13 @@
               </md-menu>
             </div>
 
-            <!-- ToDo: Replace Nav_update Vars With Store.State Vars -->
             <div v-else class="md-menu user-links">
               <md-menu md-size="big"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
                 <div @click="opening_menu" style="cursor: pointer;">
-                  <span v-if="user.username" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{user.username}}</span>
+                  <span v-if="$store.state.user.username" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{$store.state.user.username}}</span>
                   <md-button class="md-icon-button">
                     <md-avatar>
-                      <img v-if="user.picture" v-bind:src="user.picture" alt="user_image">
+                      <img v-if="$store.state.user.picture" v-bind:src="$store.state.user.picture" alt="user_image">
                       <img v-else src="http://civil808.com/en/staticfile/avatar.png" alt="user_image">
                     </md-avatar>
                   </md-button>
@@ -47,7 +50,7 @@
 
                 <md-menu-content>
                   <md-menu-item>
-                    <nuxt-link :to="'/user/'+ user.uid" target="_blank">My Profile</nuxt-link>
+                    <nuxt-link :to="'/user/'+ $store.state.user.uid" target="_blank">My Profile</nuxt-link>
                   </md-menu-item>
                   <md-menu-item @click="logUserOut">log out</md-menu-item>
                 </md-menu-content>
@@ -96,12 +99,8 @@
     <!--<nuxt/>-->
     <!-- end of content-->
 
-    <div v-if="($route.name == 'login') || ($route.name == 'register')">
-      <router-view @do_navbar="update_navbar" v-if="NavbarDone"/>
-    </div>
-    <div v-else>
-      <router-view @do_navbar="update_navbar"/>
-    </div>
+    <router-view/>
+
     <md-snackbar :md-active.sync="IsLogOut">You log out successfully!</md-snackbar>
 
     <section id="subscribe">
@@ -128,73 +127,37 @@
     mixins:[cookie],
     data(){
       return{
-        user:{
-          uid:'',
-          picture:'',
-          username:''
-        },
         IsLogin:false,
-        IsLogOut:false,
+          IsLogOut:false,
         menu_flag:false,
         queryClasses: '',
         inputBox:'',
         aftersubmit:false,
-        toggleCard: false,
-        NavbarDone:false
+        toggleCard: false
       }
     },
     created(){
-      // We Don't Need This Part For NavBar Anymore
-      if(this.getCookie("token") == null){
-        //in this way, user is not log in
-        //console.log('token is unset')
-        this.NavbarDone = true
-      }
-      else {
-        this.update_navbar()
-      }
       var query = this.$router.currentRoute.path.split('/')
       query.forEach(element => {
         if(element != '')
           this.queryClasses += ' page-' + element
       });
     },
-    methods:{
-      // We Don't Need This Part For NavBar Anymore
-      // It Can Be Handled In Store
-      update_navbar(){
-        axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
-          {
-            headers:{
-              'Content-type': 'application/json'
-            }
-          })
-          .then((data) => {
-            console.log(data)
-            if(data.data.uid != 0){
-              this.user.uid = data.data.uid
-              this.user.picture = data.data.picture
-              this.user.username = data.data.username
-              this.setUid(data.data.uid)
-              this.IsLogin = true
-              this.NavbarDone = true
-            }
-          })
-          .catch(e => {
-            console.log('errors for nav_bar_info : ' + e)
-          })
+      mounted(){
+        if(this.$store.getters.getUid)
+            this.IsLogin = true
       },
+    methods:{
       opening_menu(){
         this.menu_flag = !this.menu_flag
       },
       toggle () {
         this.toggleCard = !this.toggleCard
       },
-      // Todo Handle Logout In Store
-      async logUserOut(){
-        // axios.defaults.crossDomain = true;
-        // axios.defaults.withCredentials  = true;
-        this.$axios.post('/latin/user/logout',
+      logUserOut(){
+          axios.defaults.crossDomain = true
+          axios.defaults.withCredentials  = true
+        axios.post('http://ed808.com:91/latin/user/logout',
           true,{
             headers:{
               'Content-type': 'application/json',

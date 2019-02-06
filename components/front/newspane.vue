@@ -53,7 +53,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://api.ed808.com/latin/contents/list/event')
+    fetch('http://ed808.com:91/latin/contents/list/event')
       .then(response => response.json())
       .then((data) => {
           this.events = data

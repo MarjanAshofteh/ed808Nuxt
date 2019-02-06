@@ -95,44 +95,40 @@ export default {
         this.form.username_email = null
         this.form.password = null
     },
-    async logUserIn(recaptchaToken){
-      try {
-        await this.$store.dispatch('login', {
+    logUserIn(recaptchaToken){
+          this.loading.sending = true
+        this.$store.dispatch('login', {
           hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
           username_email : this.form.username_email,
           password : this.form.password,
           reCaptchaToken : "admin@ed808"
+        }).then(() => {
+            setTimeout(()=>{
+                console.log('after resolve promise - back in login.vue:' + this.$store.getters.getUid)
+            }, 1000)
+            if(this.$store.getters.getUid){
+                this.lastUser = `${this.form.username_email}`
+                this.userSaved = true
+                this.loading.sending = false
+                // redirect after successfull login
+                this.$router.push('/user/'+ this.$store.getters.getUid)
+                this.clearForm()
+            }
         })
-        this.lastUser = `${this.form.username_email}`
-        this.userSaved = true
-        
-        this.$emit('do_navbar')
-        this.loading.sending = false
+            .catch(e => {
+                if(e.hasOwnProperty('response')){
+                    if(e.response.hasOwnProperty('data'))
+                        this.errors = e.response.data
+                    else{
+                        this.errors = e.response
+                    }
+                }
+                else{
+                    this.errors = e
+                }
+                this.showError = true
+            })
 
-        if(data.data.uid != 0){
-          this.setUid(data.data.uid)
-
-          // redirect after successfull login
-          if(this.$route.query.hasOwnProperty('callback'))
-            this.$router.push(this.$route.query.callback)
-          else
-            this.$router.push('/user/'+ data.data.uid)
-        }
-        this.clearForm()
-      } catch(e) {
-        if(e.hasOwnProperty('response')){
-          if(e.response.hasOwnProperty('data'))
-            this.errors = e.response.data
-          else{
-            this.errors = e.response
-          }
-        }
-        else{
-          this.errors = e
-        }
-        this.showError = true
-            
-      }
       // this.loading.sending = true
       // this.$refs.recaptcha.reset();
 

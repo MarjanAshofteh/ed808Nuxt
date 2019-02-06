@@ -35,7 +35,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://api.ed808.com/latin/contents/all/filters')
+    fetch('http://ed808.com:91/latin/contents/all/filters')
       .then(response => response.json())
       .then((data) => {
         this.filters = data

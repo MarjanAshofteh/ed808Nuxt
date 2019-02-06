@@ -170,27 +170,27 @@
       sendForm(){
         axios.defaults.crossDomain = true
         axios.defaults.withCredentials  = true
-        axios.post('http://api.ed808.com/latin/web_form',
-          {
-            "nid" : 19768,
-            "reCaptchaToken" : "admin@ed808",
-            "name" : this.form.fullName,
-            "email" : this.form.email,
-            "phone" : this.form.phone,
-            "company": this.form.company,
-            "description":this.form.description
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        ).then((data) =>{
-          this.lastUser = `${this.form.fullName}`
-          this.userSaved = true
-          this.sending = false
-          this.clearForm()
-        })
+        axios.post('http://ed808.com:91/latin/web_form',
+              {
+                  "nid" : 19768,
+                  "reCaptchaToken" : "admin@ed808",
+                  "name" : this.form.fullName,
+                  "email" : this.form.email,
+                  "phone" : this.form.phone,
+                  "company": this.form.company,
+                  "description":this.form.description
+              },
+              {
+                  headers: {
+                      'Content-Type': 'application/json'
+                  }
+              }
+          ).then((data) =>{
+              this.lastUser = `${this.form.fullName}`
+              this.userSaved = true
+              this.sending = false
+              this.clearForm()
+          })
           .catch((e) =>{
             console.log('FAILURE!!' + e)
           });
@@ -213,7 +213,7 @@
   }
   .main-container{
     min-height: 100vh;
-    background-image: url(/_nuxt/assets/images/295.jpg);
+    background-image: url(/images/295.jpg);
     background-position: center;
     background-size: cover;
     display: flex;

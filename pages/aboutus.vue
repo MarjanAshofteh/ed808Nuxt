@@ -26,7 +26,7 @@ export default {
   async asyncData({ params }) {
     try {
       const { data } = await axios.get(
-        "http://api.ed808.com/latin/page?args=about_us"
+        "http://ed808.com:91/latin/page?args=about_us"
       );
       if (data) {
         return {
