@@ -35,7 +35,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('fullName')">
-                <label for="first-name">Full Name</label>
+                <label for="full-name">Full Name</label>
                 <md-input name="full-name" id="first-name" autocomplete="given-name" v-model="form.fullName" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.fullName.required">The full name is required</span>
                 <span class="md-error" v-else-if="!$v.form.fullName.minlength">Invalid full name</span>
