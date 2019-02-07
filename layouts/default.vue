@@ -13,33 +13,34 @@
             </md-menu>
 
             <md-menu md-direction="bottom-start">
-              <nuxt-link to="/aboutus"><md-button>about us</md-button></nuxt-link>
+              <nuxt-link to="/contents"><md-button>All Contents</md-button></nuxt-link>
             </md-menu>
 
             <md-menu md-direction="bottom-start">
-              <nuxt-link to="/contactus"><md-button>contact us</md-button></nuxt-link>
+              <nuxt-link to="/aboutus"><md-button>About Us</md-button></nuxt-link>
             </md-menu>
 
             <md-menu md-direction="bottom-start">
-              <nuxt-link to="/contents"><md-button>all contents</md-button></nuxt-link>
+              <nuxt-link to="/contactus"><md-button>Contact us</md-button></nuxt-link>
             </md-menu>
 
-            <div v-if="!IsLogin" class="md-menu user-links">
+
+            <div v-if="!$store.getters.getUid" class="md-menu user-links">
               <md-menu md-direction="bottom-start">
-                <nuxt-link to="/login"><md-button>login</md-button></nuxt-link>
+                <nuxt-link to="/login"><md-button>Login</md-button></nuxt-link>
               </md-menu>
 
               <md-menu md-direction="bottom-start">
                 <nuxt-link to="/register">
-                  <md-button class="md-raised" style="background: #2196F3;color: #fff;">register</md-button>
+                  <md-button class="md-raised" style="background: #2196F3;color: #fff;">Register</md-button>
                 </nuxt-link>
               </md-menu>
             </div>
 
             <div v-else class="md-menu user-links">
-              <md-menu md-size="big"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
+              <md-menu md-size="big" md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
                 <div @click="opening_menu" style="cursor: pointer;">
-                  <span v-if="$store.state.user.username" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{$store.state.user.username}}</span>
+                  <span v-if="$store.state.user.full_name" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{$store.state.user.username}}</span>
                   <md-button class="md-icon-button">
                     <md-avatar>
                       <img v-if="$store.state.user.picture" v-bind:src="$store.state.user.picture" alt="user_image">
@@ -52,7 +53,7 @@
                   <md-menu-item>
                     <nuxt-link :to="'/user/'+ $store.state.user.uid" target="_blank">My Profile</nuxt-link>
                   </md-menu-item>
-                  <md-menu-item @click="logUserOut">log out</md-menu-item>
+                  <md-menu-item @click="logUserOut">Logout</md-menu-item>
                 </md-menu-content>
               </md-menu>
 
@@ -166,10 +167,14 @@
           })
           .then((data) => {
             this.eraseCookie('token')
-            this.$store.commit('LOGOUT')
+            this.$store.commit('LOGOUT', false)
             this.IsLogin = false
             this.IsLogOut = true
-            this.$router.push('/')
+
+            // ToDo: it should be changed later
+            // this.$router.push('/')
+            window.location.replace('/')
+
           })
           .catch(e => {
             console.log('errors for logout : ' + e)

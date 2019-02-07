@@ -1,46 +1,103 @@
 <template>
-    <div>
-        <form novalidate class="md-layout" @submit.prevent="formSubmit">
-        <md-card class="md-layout-item md-size-30 md-small-size-100" style="overflow: visible;">
-            <md-card-header>
-            <div class="md-title" style="margin: 0;color: white;font-size: 25px;">Login</div>
-            </md-card-header>
+  <div>
+    <form
+      novalidate
+      class="md-layout"
+      @submit.prevent="formSubmit"
+    >
+      <md-card
+        class="md-layout-item md-size-30 md-small-size-100"
+        style="overflow: visible;"
+      >
+        <md-card-header>
+          <div
+            class="md-title"
+            style="margin: 0;color: white;font-size: 25px;"
+          >
+            Login
+          </div>
+        </md-card-header>
 
-            <md-card-content>
-              <div class="md-layout-item md-small-size-100 md-size-100">
-                  <md-field :class="getValidationClass('emailOrUsename')">
-                  <label for="email">Email or Username</label>
-                  <md-input name="username_email" id="username_email" autocomplete="email" v-model="form.username_email" :disabled="loading.sending" required/>
-                  <span class="md-error" v-if="!$v.form.username_email.required">The email or usename is required</span>
-                  </md-field>
-              </div>
-              <div class="md-layout-item md-small-size-100 md-size-100">
-                  <md-field :class="getValidationClass('password')">
-                  <label for="password">Password</label>
-                  <md-input type="password" id="password" name="password" v-model="form.password" :disabled="loading.sending" autocomplete="current-password" required/>
-                  <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
-                  </md-field>
-              </div>
-            </md-card-content>
+        <md-card-content>
+          <div class="md-layout-item md-small-size-100 md-size-100">
+            <md-field :class="getValidationClass('emailOrUsename')">
+              <label for="username_email">
+                Email or Username
+              </label>
+              <md-input
+                id="username_email"
+                v-model="form.username_email"
+                name="username_email"
+                autocomplete="email"
+                :disabled="loading.sending"
+                required
+              />
+              <span
+                v-if="!$v.form.username_email.required"
+                class="md-error"
+              >
+                The email or usename is required
+              </span>
+            </md-field>
+          </div>
+          <div class="md-layout-item md-small-size-100 md-size-100">
+            <md-field :class="getValidationClass('password')">
+              <label for="password">
+                Password
+              </label>
+              <md-input
+                id="password"
+                v-model="form.password"
+                type="password"
+                name="password"
+                :disabled="loading.sending"
+                autocomplete="current-password"
+                required
+              />
+              <span
+                v-if="!$v.form.password.required"
+                class="md-error"
+              >
+                The Password is required
+              </span>
+            </md-field>
+          </div>
+        </md-card-content>
 
-            <md-progress-bar md-mode="indeterminate" v-if="loading.sending" />
-            
-            <!-- <vue-recaptcha
-              ref="recaptcha"
-              @verify="logUserIn"
-              @expired="onCaptchaExpired"
-              size="invisible"
-              sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">
-            </vue-recaptcha> -->
+        <md-progress-bar
+          v-if="loading.sending"
+          md-mode="indeterminate"
+        />
 
-            <md-card-actions>
-              <md-button type="submit" class="md-primary" :disabled="loading.sending">Log In</md-button>
-            </md-card-actions>
-        </md-card>
-        <md-snackbar :md-active.sync="userSaved">{{ lastUser }} you are log in successfully!</md-snackbar>
-        <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
-        </form>
-    </div>
+        <!-- <vue-recaptcha
+          ref="recaptcha"
+          @verify="logUserIn"
+          @expired="onCaptchaExpired"
+          size="invisible"
+          sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">
+        </vue-recaptcha> -->
+
+        <md-card-actions>
+          <md-button
+            type="submit"
+            class="md-primary"
+            :disabled="loading.sending"
+          >
+            Log In
+          </md-button>
+        </md-card-actions>
+      </md-card>
+      <md-snackbar :md-active.sync="userSaved">
+        {{ lastUser }} you are log in successfully!
+      </md-snackbar>
+      <md-snackbar
+        class="error"
+        :md-active.sync="showError"
+      >
+        {{ errors }}
+      </md-snackbar>
+    </form>
+  </div>
 </template>
 <script>
 
@@ -52,10 +109,10 @@ import axios from "@/node_modules/axios"
 
 export default {
   name: 'Login',
-  mixins: [validationMixin,cookie],
   components: {
     'vue-recaptcha': VueRecaptcha
   },
+  mixins: [validationMixin,cookie],
   data(){
     return{
       errors:'',
@@ -82,6 +139,33 @@ export default {
       }
     }
   },
+  mounted(){
+    if(this.$store.getters.getUid){
+      this.$router.push('/user/'+ this.$store.getters.getUid)
+    }
+    else{
+      //this is just work for admins that login in api.edu befor(has session and doesnt have token)
+      //this code is gonna set token for them
+      // axios.defaults.crossDomain = true;
+      // axios.defaults.withCredentials  = true;
+      // this.$axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
+      // {
+      //   headers:{
+      //     'Content-type': 'application/json'
+      //   }
+      // })
+      // .then((data) => {
+      //   if(data.data.uid != 0){
+      //     this.setCookie('token', data.data.token , 23)
+      //     //under line is not working, I think.
+      //     this.$emit('do_navbar')
+      //   }
+      // })
+      // .catch(e => {
+      //   console.log('errors for nav_bar_info : ' + e)
+      // })
+    }
+  },
   methods:{
     getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
@@ -96,46 +180,49 @@ export default {
         this.form.username_email = null
         this.form.password = null
     },
-    logUserIn(recaptchaToken){
-          this.loading.sending = true
-        axios.defaults.crossDomain = true;
-        axios.defaults.withCredentials = true;
-        axios.post('http://ed808.com:91/latin/user/login',
-            {
-                hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
-                username_email : this.form.username_email,
-                password : this.form.password,
-                reCaptchaToken : "admin@ed808"
-            },
-            {
-                headers: {
-                    'Content-type': 'application/json'
-                }
-            }).then((data) => {
-                //console.log(data)
-                //this line doesn't work
-                this.$store.commit('SET_USER',data.data.uid)
-                this.setCookie('token', data.data.token , 23)
-                this.lastUser = `${this.form.username_email}`
-                this.userSaved = true
-                this.loading.sending = false
-                // redirect after successfull login
-                this.$router.push('/user/'+ data.data.uid)
-                this.clearForm()
+    async logUserIn(recaptchaToken){
+      this.loading.sending = true
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials = true;
+      await axios.post('http://ed808.com:91/latin/user/login',
+        {
+          hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
+          username_email : this.form.username_email,
+          password : this.form.password,
+          reCaptchaToken : "admin@ed808"
+        },
+        {
+          headers: {
+              'Content-type': 'application/json'
+          }
+        }).then((data) => {
+          //console.log(data)
+          //this line doesn't work
+          this.$store.commit('SET_USER',data.data.uid)
+          this.setCookie('token', data.data.token , 23)
+          this.lastUser = `${this.form.username_email}`
+          this.userSaved = true
+          this.loading.sending = false
+          // redirect after successfull login
 
-            }).catch(e => {
-            if(e.hasOwnProperty('response')){
-                if(e.response.hasOwnProperty('data'))
-                    this.errors = e.response.data
-                else{
-                    this.errors = e.response
-                }
-            }
-            else{
-                this.errors = e
-            }
-            //this.showError = true
-            })
+          // Todo: "Mohsen:" I changed this part to window.location for fixing nav update problem but we should fix it later
+          // this.$router.push('/user/'+ data.data.uid)
+          window.location.replace('/user/'+ data.data.uid)
+          // this.clearForm()
+
+        }).catch(e => {
+        if(e.hasOwnProperty('response')){
+          if(e.response.hasOwnProperty('data'))
+            this.errors = e.response.data
+          else{
+            this.errors = e.response
+          }
+        }
+        else{
+          this.errors = e
+        }
+        //this.showError = true
+        })
 
 
       // this.loading.sending = true
@@ -191,33 +278,6 @@ export default {
     // onCaptchaExpired: function () {
     //   this.$refs.recaptcha.reset();
     // }
-  },
-  mounted(){
-    if(this.$store.getters.getUid){
-      this.$router.push('/user/'+ this.$store.getters.getUid)
-    }
-    else{
-      //this is just work for admins that login in api.edu befor(has session and doesnt have token)
-      //this code is gonna set token for them
-      // axios.defaults.crossDomain = true;
-      // axios.defaults.withCredentials  = true;
-      // this.$axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
-      // {
-      //   headers:{
-      //     'Content-type': 'application/json'
-      //   }
-      // })
-      // .then((data) => {
-      //   if(data.data.uid != 0){
-      //     this.setCookie('token', data.data.token , 23)
-      //     //under line is not working, I think.
-      //     this.$emit('do_navbar')
-      //   }
-      // })
-      // .catch(e => {
-      //   console.log('errors for nav_bar_info : ' + e)
-      // })
-    }
   },
 }
 </script>

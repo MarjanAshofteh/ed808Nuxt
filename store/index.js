@@ -64,12 +64,12 @@ export const mutations = {
   //commit triggers a mutation
   //You never commit from any of your components / routes. It is done only from within an action, and only when you have some data to commit
   //commit is synchronous and may freeze your frontend till it is done.
-    SET_USER(state, uid) {
-      state.user.uid = uid
-    },
-    SET_USER_DATA(state, user){
-      state.user = user
-    },
+  SET_USER(state, uid) {
+    state.user.uid = uid
+  },
+  SET_USER_DATA(state, user){
+    state.user = user;
+  },
   LOGOUT(state) {
     state.user.uid = 0
   },
