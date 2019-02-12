@@ -27,7 +27,7 @@ export default {
   data(){
     return{
       title:'Home',
-      pic:'http://ed808.com/api/sites/default/files/field/image/node_19760.jpg'
+      pic:'http://ed808.com:91/sites/default/files/field/image/node_19760.jpg'
     }
   },
   components: {

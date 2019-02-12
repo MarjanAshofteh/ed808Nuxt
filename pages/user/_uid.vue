@@ -372,7 +372,7 @@ export default {
       //needs validation here
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials  = true;
-      axios.post('http://api.ed808.com/latin/file/upload?parameter[hash]=020042f70a981fd6806ecf5e53f2267b377da9d9f981e15297d70c3f7c2a87d0',
+      axios.post('http://ed808.com:91/latin/file?parameter[hash]=020042f70a981fd6806ecf5e53f2267b377da9d9f981e15297d70c3f7c2a87d0',
         formData,
         {
           headers: {
@@ -461,7 +461,7 @@ export default {
           [fieldName] : this.user[fieldName]
         }
       }
-      axios.put('http://api.ed808.com/latin/user/'+ this.$route.params.uid,
+      axios.put('http://ed808.com:91/latin/user/'+ this.$route.params.uid,
       data,
       {
         headers: {
@@ -514,7 +514,7 @@ export default {
     getProfile(){
       // axios.defaults.crossDomain = true;
       // axios.defaults.withCredentials  = true;
-      axios.get('http://api.ed808.com/latin/user/'+ this.uid)
+      axios.get('http://ed808.com:91/latin/user/'+ this.uid)
       .then((data) => {
         this.user = data.data
         this.userapi = Object.assign({}, this.user)
@@ -533,7 +533,7 @@ export default {
     },
     createlink: function (value) {
       if (!value) return ''
-      return "http://api.ed808.com/sites/default/files/" + value.substring(9)
+      return "http://ed808.com:91/sites/default/files/" + value.substring(9)
     }
   }
 }

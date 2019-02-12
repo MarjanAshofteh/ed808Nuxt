@@ -59,7 +59,7 @@ export default {
     getNews(){
       if(this.nid != 0){
         this.loading = true
-        fetch("http://api.ed808.com/latin/contents/" + this.nid)
+        fetch("http://ed808.com:91/latin/contents/" + this.nid)
           .then(response => response.json())
           .then((data) => {
             this.news = data.content
@@ -74,7 +74,7 @@ export default {
   filters: {
     converturl: function(value){
         if (!value) return '';
-        var thestart = 'http://api.ed808.com/sites/default/files/styles/808/public';
+        var thestart = 'http://ed808.com:91/sites/default/files/styles/808/public';
         var theend = value.substr(8);
         return thestart + theend;
     }

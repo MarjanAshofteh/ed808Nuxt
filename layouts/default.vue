@@ -97,10 +97,10 @@
     </header>
 
     <!--Content Goes Here-->
-    <!--<nuxt/>-->
+    <!--<router-view/>-->
     <!-- end of content-->
-
-    <router-view/>
+    
+    <nuxt/>
 
     <md-snackbar :md-active.sync="IsLogOut">You log out successfully!</md-snackbar>
 
@@ -129,7 +129,7 @@
     data(){
       return{
         IsLogin:false,
-          IsLogOut:false,
+        IsLogOut:false,
         menu_flag:false,
         queryClasses: '',
         inputBox:'',
@@ -156,8 +156,8 @@
         this.toggleCard = !this.toggleCard
       },
       logUserOut(){
-          axios.defaults.crossDomain = true
-          axios.defaults.withCredentials  = true
+        axios.defaults.crossDomain = true
+        axios.defaults.withCredentials  = true
         axios.post('http://ed808.com:91/latin/user/logout',
           true,{
             headers:{
@@ -181,9 +181,12 @@
           });
       },
       addEmail() {
-        axios.post('http://api.ed808.com/latin/user/subscribe_email',
+        axios.post('http://ed808.com:91/latin/web_form',
           {
-            'email':this.inputBox
+            "nid" : 20162,
+            "reCaptchaToken" : "admin@ed808",
+            "name" : "this field is not connect yet",
+            "email" : this.inputBox
           },
           {
             headers: {

@@ -87,9 +87,8 @@
     // },
     async asyncData({params}) {
       try {
-        const {data} = await axios.get('http://api.ed808.com/latin/tag/' + params.tid ,{
+        const {data} = await axios.get('http://ed808.com:91/latin/tag/' + params.tid ,{
           headers: {
-            'Access-Control-Allow-Origin' : 'http://api.ed808.com',
             'Content-type': 'application/json',
           }
         })

@@ -175,16 +175,18 @@ export default {
           }
         })
         .then((data) => {
-          this.loguserin(data)
+          //console.log(data)
+          //this line doesn't work
+          this.$store.commit('SET_USER',data.data.uid)
+          this.setCookie('token', data.data.token , 23)
           this.lastUser = `${this.form.fullName}`
           this.userSaved = true
           this.sending = false
-          this.$emit('do_navbar')
-          if(data.data.uid != 0){
-            this.setUid(data.data.uid)
-            this.$router.push('/user/'+ data.data.uid)
-          }
-          this.clearForm()
+          // redirect after successfull login
+          // Todo: "Mohsen:" I changed this part to window.location for fixing nav update problem but we should fix it later
+          // this.$router.push('/user/'+ data.data.uid)
+          window.location.replace('/user/'+ data.data.uid)
+          // this.clearForm()
         })
         .catch(e => {
           if(e.hasOwnProperty('response')){
@@ -211,37 +213,10 @@ export default {
     onCaptchaExpired: function () {
       this.$refs.recaptcha.reset();
     },
-    loguserin(data){
-      this.setUid(data.data.uid)
-      //save data to cookie storage
-      this.setCookie("token", data.data.token , 23)
-    }
   },
   mounted(){
     if(this.$store.getters.getUid){
       this.$router.push('/user/'+ this.$store.getters.getUid)
-    }
-    else{
-      //this is just work for admins that login in api.edu befor(has session and doesnt have token)
-      //this code is gonna set token for them
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials  = true;
-      axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
-      {
-        headers:{
-          'Content-type': 'application/json'
-        }
-      })
-      .then((data) => {
-        if(data.data.uid != 0){
-          this.setCookie("token", data.data.token , 23)
-          //under line is not working, I think.
-          this.$emit('do_navbar')
-        }
-      })
-      .catch(e => {
-        console.log('errors for nav_bar_info : ' + e)
-      })
     }
   }
 }
