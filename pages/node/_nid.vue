@@ -284,11 +284,12 @@ export default {
         let target = this;
         return target.replace(new RegExp(search, "g"), replacement);
       };
-      return value
-        .replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
+      return value != null ? value
+        .replaceAll('href="http://api.ed808.com', 'href="https://ed808.com')
+        .replaceAll('href="https://ed808.com:92', 'href="https://ed808.com')
+        .replaceAll('href="http://ed808.com:92', 'href="https://ed808.com')
         .replaceAll('="/sites', '="https://ed808.com:92/sites')
-        .replaceAll('http://api.ed808.com/', 'https://ed808.com:92/')
-        .replaceAll('="/node', '="http://ed808.com/node');
+        .replaceAll('="/node', '="https://ed808.com/node') : ''
     },
     getRelatedNodes(){
       axios.get('https://ed808.com:92/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
@@ -306,16 +307,16 @@ export default {
         //these three line doesn't work
         {
           rel: "canonical",
-          href: "http://ed808.com/node/" + this.$route.params.nid
+          href: "https://ed808.com/node/" + this.$route.params.nid
         },
         {
           rel: "alternate",
-          href: "http://ed808.com/node/" + this.$route.params.nid,
+          href: "https://ed808.com/node/" + this.$route.params.nid,
           hreflang: "en"
         },
         {
           rel: "shortlink",
-          href: "http://ed808.com/node/" + this.$route.params.nid
+          href: "https://ed808.com/node/" + this.$route.params.nid
         }
       ],
       title: this.node_content.title,
@@ -335,7 +336,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "http://ed808.com/node/" + this.$route.params.nid,
+          content: "https://ed808.com/node/" + this.$route.params.nid,
           hid: "og:url"
         },
         {
