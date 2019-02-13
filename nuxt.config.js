@@ -56,7 +56,9 @@ module.exports = {
   */
   css: [
     '@/assets/scss/app.scss',
-    '@/assets/scss/vars.scss'
+    '@/assets/scss/vars.scss',
+    '@/assets/css/material-design-iconic-font.min.css'
+
   ],
 
   /*
