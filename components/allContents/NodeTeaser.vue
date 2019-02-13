@@ -59,6 +59,7 @@ export default {
         },
         converturl: function(value){
             if (!value || value == "") return '/nophoto.png'
+            return value
         },
         priceFormat: function(value){
             return parseFloat(value, 10).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").toString()//Math.round()
