@@ -348,13 +348,7 @@ export default {
     }
   },
   mounted(){
-    this.$store.watch(
-      (state) => {return state.user.uid},
-      () => { this.isSameUser()}, 
-      { deep: true} 
-    )
-    
-    this.getProfile()
+    this.isSameUser()
   },
   methods:{
     handleFileUpload(fieldName){
@@ -398,6 +392,7 @@ export default {
           this.sameUser = true
           console.log(this.sameUser)
       }
+      this.getProfile()
     },
     editThis(fieldName){
       this.editingEl = fieldName
