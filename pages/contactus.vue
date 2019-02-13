@@ -112,6 +112,7 @@
 
   export default {
     name: 'contactus',
+    scrollToTop: true,
     mixins: [validationMixin],
     data: () => ({
       form: {
@@ -170,30 +171,30 @@
       sendForm(){
         axios.defaults.crossDomain = true
         axios.defaults.withCredentials  = true
-        axios.post('http://ed808.com:91/latin/web_form',
-              {
-                  "nid" : 19768,
-                  "reCaptchaToken" : "admin@ed808",
-                  "name" : this.form.fullName,
-                  "email" : this.form.email,
-                  "phone" : this.form.phone,
-                  "company": this.form.company,
-                  "description":this.form.description
-              },
-              {
-                  headers: {
-                      'Content-Type': 'application/json'
-                  }
-              }
-          ).then((data) =>{
-              this.lastUser = `${this.form.fullName}`
-              this.userSaved = true
-              this.sending = false
-              this.clearForm()
-          })
-          .catch((e) =>{
-            console.log('FAILURE!!' + e)
-          });
+        axios.post('https://ed808.com:92/latin/web_form',
+        {
+          "nid" : 19768,
+          "reCaptchaToken" : "admin@ed808",
+          "name" : this.form.fullName,
+          "email" : this.form.email,
+          "phone" : this.form.phone,
+          "company": this.form.company,
+          "description":this.form.description
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+        ).then((data) =>{
+          this.lastUser = `${this.form.fullName}`
+          this.userSaved = true
+          this.sending = false
+          this.clearForm()
+        })
+        .catch((e) =>{
+          console.log('FAILURE!!' + e)
+        });
       },
       validateUser () {
         this.$v.$touch()

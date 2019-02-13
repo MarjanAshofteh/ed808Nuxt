@@ -69,13 +69,13 @@
           md-mode="indeterminate"
         />
 
-        <!-- <vue-recaptcha
+        <vue-recaptcha
           ref="recaptcha"
           @verify="logUserIn"
           @expired="onCaptchaExpired"
           size="invisible"
           sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">
-        </vue-recaptcha> -->
+        </vue-recaptcha>
 
         <md-card-actions>
           <md-button
@@ -109,6 +109,7 @@ import axios from "@/node_modules/axios"
 
 export default {
   name: 'Login',
+  scrollToTop: true,
   components: {
     'vue-recaptcha': VueRecaptcha
   },
@@ -143,74 +144,51 @@ export default {
     if(this.$store.getters.getUid){
       this.$router.push('/user/'+ this.$store.getters.getUid)
     }
-    else{
-      //this is just work for admins that login in api.edu befor(has session and doesnt have token)
-      //this code is gonna set token for them
-      // axios.defaults.crossDomain = true;
-      // axios.defaults.withCredentials  = true;
-      // this.$axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
-      // {
-      //   headers:{
-      //     'Content-type': 'application/json'
-      //   }
-      // })
-      // .then((data) => {
-      //   if(data.data.uid != 0){
-      //     this.setCookie('token', data.data.token , 23)
-      //     //under line is not working, I think.
-      //     this.$emit('do_navbar')
-      //   }
-      // })
-      // .catch(e => {
-      //   console.log('errors for nav_bar_info : ' + e)
-      // })
-    }
   },
   methods:{
     getValidationClass (fieldName) {
-        const field = this.$v.form[fieldName]
-        if (field) {
-            return {
-                'md-invalid': field.$invalid && field.$dirty
-            }
+      const field = this.$v.form[fieldName]
+      if (field) {
+        return {
+          'md-invalid': field.$invalid && field.$dirty
         }
+      }
     },
     clearForm(){
-        // this.$v.$reset()
-        this.form.username_email = null
-        this.form.password = null
+      this.$v.$reset()
+      this.form.username_email = null
+      this.form.password = null
+      this.showError = false
+      this.errors = ''
     },
     async logUserIn(recaptchaToken){
       this.loading.sending = true
+      this.$refs.recaptcha.reset();
+
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
-      await axios.post('http://ed808.com:91/latin/user/login',
-        {
-          hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
-          username_email : this.form.username_email,
-          password : this.form.password,
-          reCaptchaToken : "admin@ed808"
-        },
-        {
-          headers: {
-              'Content-type': 'application/json'
-          }
-        }).then((data) => {
-          //console.log(data)
-          //this line doesn't work
-          this.$store.commit('SET_USER',data.data.uid)
-          this.setCookie('token', data.data.token , 23)
-          this.lastUser = `${this.form.username_email}`
-          this.userSaved = true
-          this.loading.sending = false
-          // redirect after successfull login
-
-          // Todo: "Mohsen:" I changed this part to window.location for fixing nav update problem but we should fix it later
-          // this.$router.push('/user/'+ data.data.uid)
-          window.location.replace('/user/'+ data.data.uid)
-          // this.clearForm()
-
-        }).catch(e => {
+      await axios.post('https://ed808.com:92/latin/user/login',
+      {
+        hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
+        username_email : this.form.username_email,
+        password : this.form.password,
+        reCaptchaToken : recaptchaToken
+      },
+      {
+        headers: {
+            'Content-type': 'application/json'
+        }
+      }).then((data) => {
+        //set uid in store
+        this.$store.commit('SET_USER',data.data.uid)
+        //set token in cookie
+        this.setCookie('token', data.data.token , 23)
+        this.lastUser = `${this.form.username_email}`
+        this.userSaved = true
+        this.loading.sending = false
+        // redirect after successfull login
+        window.location.replace('/user/'+ data.data.uid)
+      }).catch(e => {
         if(e.hasOwnProperty('response')){
           if(e.response.hasOwnProperty('data'))
             this.errors = e.response.data
@@ -221,63 +199,21 @@ export default {
         else{
           this.errors = e
         }
-        //this.showError = true
-        })
-
-
-      // this.loading.sending = true
-      // this.$refs.recaptcha.reset();
-
-      //sending to login api
-      
-      // this.$axios.post('/latin/user/login',
-      // {
-      //   hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
-      //   username_email : this.form.username_email,
-      //   password : this.form.password,
-      //   reCaptchaToken : "admin@ed808"
-      // },
-      // {
-      //   headers: {
-      //     'Content-type': 'application/json'
-      //   }
-      // })
-      // .then((data) => {
-        
-        
-      // })
-      // .catch(e => {
-      //   if(e.hasOwnProperty('response')){
-      //     if(e.response.hasOwnProperty('data'))
-      //       this.errors = e.response.data
-      //     else{
-      //       this.errors = e.response
-      //     }
-      //   }
-      //   else{
-      //     this.errors = e
-      //   }
-      //   this.showError = true
-
-
-
-
-        //this.clearForm()
-        /*todo : showing error without [""] */
-      // });
+        this.showError = true
+      })
+      this.clearForm()
     },
     formSubmit(){
       //validating form
       this.$v.$touch()
-      this.logUserIn()
       // run recaptcha and let it to fire up 'logUserIn' function with google token
-      // if (!this.$v.$invalid){
-      //   this.$refs.recaptcha.execute();
-      // }
+      if (!this.$v.$invalid){
+        this.$refs.recaptcha.execute();
+      }
     },
-    // onCaptchaExpired: function () {
-    //   this.$refs.recaptcha.reset();
-    // }
+    onCaptchaExpired: function () {
+      this.$refs.recaptcha.reset();
+    }
   },
 }
 </script>

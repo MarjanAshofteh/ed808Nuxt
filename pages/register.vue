@@ -94,6 +94,7 @@ import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name: 'register',
+  scrollToTop: true,
   mixins: [validationMixin,cookie],
   components: {
     'vue-recaptcha': VueRecaptcha
@@ -136,6 +137,11 @@ export default {
       }
     }
   },
+  mounted(){
+    if(this.$store.getters.getUid){
+      this.$router.push('/user/'+ this.$store.getters.getUid)
+    }
+  },
   methods: {
     getValidationClass (fieldName) {
       const field = this.$v.form[fieldName]
@@ -156,11 +162,11 @@ export default {
       this.showError = false
       this.errors = ''
     },
-    saveUser(recaptchaToken) {
+    async saveUser(recaptchaToken) {
       this.sending = true
       this.$refs.recaptcha.reset();
 
-      axios.post('http://ed808.com:91/latin/user/register',
+      await axios.post('https://ed808.com:92/latin/user/register',
         {
           hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
           username : this.form.username,
@@ -175,18 +181,15 @@ export default {
           }
         })
         .then((data) => {
-          //console.log(data)
-          //this line doesn't work
+          //set uid in store
           this.$store.commit('SET_USER',data.data.uid)
+          //set token in cookie
           this.setCookie('token', data.data.token , 23)
           this.lastUser = `${this.form.fullName}`
           this.userSaved = true
           this.sending = false
           // redirect after successfull login
-          // Todo: "Mohsen:" I changed this part to window.location for fixing nav update problem but we should fix it later
-          // this.$router.push('/user/'+ data.data.uid)
           window.location.replace('/user/'+ data.data.uid)
-          // this.clearForm()
         })
         .catch(e => {
           if(e.hasOwnProperty('response')){
@@ -200,12 +203,13 @@ export default {
             this.errors = e
           }
           this.showError = true
-        });
+        })
+        this.clearForm()
     },
     formSubmit() {
       //validating form
       this.$v.$touch()
-      //run recaptcha and let it to fire up 'logUserIn' function with google token
+      //run recaptcha and let it to fire up 'saveUser' function with google token
       if (!this.$v.$invalid) {
         this.$refs.recaptcha.execute();
       }
@@ -213,11 +217,6 @@ export default {
     onCaptchaExpired: function () {
       this.$refs.recaptcha.reset();
     },
-  },
-  mounted(){
-    if(this.$store.getters.getUid){
-      this.$router.push('/user/'+ this.$store.getters.getUid)
-    }
   }
 }
 </script>

@@ -1,7 +1,6 @@
 <template>
   <div>
     <section id="banner">
-      <!--<img src="http://civil808.com/en/staticfile/top-banner.jpg" alt="">-->
       <div>
         <h1>808 Educational and Engineering institute</h1>
         <span>specialized training in Civil and Architecture
@@ -24,10 +23,11 @@ import NodeList from '@/components/allContents/NodeList'
 
 export default {
   name: 'home',
+  scrollToTop: true,
   data(){
     return{
       title:'Home',
-      pic:'http://ed808.com:91/sites/default/files/field/image/node_19760.jpg'
+      pic:'https://ed808.com/images/front-page.jpg'
     }
   },
   components: {
@@ -37,16 +37,16 @@ export default {
   head(){
     return{
       links: [
-        { rel: 'canonical', href: 'http://ed808.com'},
-        { rel: 'alternate', href: 'http://ed808.com', hreflang:'en'},
-        { rel: 'shortlink', href: 'http://ed808.com'}
+        { rel: 'canonical', href: 'https://ed808.com'},
+        { rel: 'alternate', href: 'https://ed808.com', hreflang:'en'},
+        { rel: 'shortlink', href: 'https://ed808.com'}
       ],
       title: this.title,
       meta: [
 
         // OpenGraph data (Most widely used)
         {property: 'og:title', content: this.title, hid: 'og:title'},
-        {property: 'og:url', content: 'http://ed808.com', hid: 'og:url'},
+        {property: 'og:url', content: 'https://ed808.com', hid: 'og:url'},
         {property: 'og:image', content: this.pic, hid: 'og:image'},
 
         // Twitter card
@@ -64,7 +64,7 @@ export default {
 
 <style lang="scss">
   section#banner{
-    background-image: url(http://ed808.com/staticfile/top-banner.jpg);
+    background-image: url(/images/top-banner.jpg);
     background-size: cover;
     height: 400px;
     display: flex;

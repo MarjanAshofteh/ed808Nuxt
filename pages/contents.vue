@@ -19,6 +19,7 @@ import filters from '@/components/allContents/filters'
 
 export default {
   name: 'contents',
+  scrollToTop: true,
   components: {
     NodeList,
     filters
@@ -34,7 +35,7 @@ export default {
           'template': '%s - ed808',
           'vmid': 'og:title'
         },
-        {property: 'og:url', content: 'http://ed808.com/contents', vmid: 'og:url'},
+        {property: 'og:url', content: 'https://ed808.com/contents', vmid: 'og:url'},
         {
           'name': 'twitter:title',
           'content': this.title,
@@ -50,7 +51,7 @@ export default {
         },
       ],
       links: [
-        {rel: 'canonical', href: 'http://ed808.com/contents'}
+        {rel: 'canonical', href: 'https://ed808.com/contents'}
       ]
     }
   }

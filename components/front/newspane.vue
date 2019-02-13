@@ -3,7 +3,11 @@
       <section id="events">
       <div class="md-headline">
         <h5>Upcoming Civil Engineering Events</h5>
-        <div class="more-link"><router-link tag="md-button" to="/contents?type=4058">See All</router-link></div>
+        <div class="more-link">
+          <!--<router-link tag="md-button" to="/contents?type=4058">See All</router-link>-->
+          <!-- this link is temporary. it will change after events page create -->
+          <router-link tag="md-button" to="/contents">See All</router-link>
+        </div>
       </div>
 
       <div class="events-pane loading" v-if="loading">
@@ -53,7 +57,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://ed808.com:91/latin/contents/list/event')
+    fetch('https://ed808.com:92/latin/contents/list/event')
       .then(response => response.json())
       .then((data) => {
           this.events = data

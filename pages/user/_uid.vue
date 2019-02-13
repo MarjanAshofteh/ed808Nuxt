@@ -23,7 +23,7 @@
 
         <img v-if="user.hasOwnProperty('picture') && !loading && (user.picture!=0)" v-bind:src="user.picture" v-bind:alt="'image of ' + user.name" v-bind:title="'image of ' + user.name">
 
-        <img v-else src="http://ed808.com/staticfile/avatar.png" v-bind:alt="'image of ' + user.name">
+        <img v-else src="/images/avatar.png" v-bind:alt="'image of ' + user.name">
         
         <div v-if="sameUser" class="edit-picture">
           <input type="file" id="file" ref="file2" v-on:change="handleFileUpload('picture')"/>
@@ -318,6 +318,7 @@
 
 export default {
   name:'profile',
+  scrollToTop: true,
   mixins: [cookie],
   data(){
     return{
@@ -348,7 +349,7 @@ export default {
   },
   mounted(){
     this.$store.watch(
-      (state) => {return state.uid}, 
+      (state) => {return state.user.uid},
       () => { this.isSameUser()}, 
       { deep: true} 
     )
@@ -372,7 +373,7 @@ export default {
       //needs validation here
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials  = true;
-      axios.post('http://ed808.com:91/latin/file?parameter[hash]=020042f70a981fd6806ecf5e53f2267b377da9d9f981e15297d70c3f7c2a87d0',
+      axios.post('https://ed808.com:92/latin/file?parameter[hash]=020042f70a981fd6806ecf5e53f2267b377da9d9f981e15297d70c3f7c2a87d0',
         formData,
         {
           headers: {
@@ -461,7 +462,7 @@ export default {
           [fieldName] : this.user[fieldName]
         }
       }
-      axios.put('http://ed808.com:91/latin/user/'+ this.$route.params.uid,
+      axios.put('https://ed808.com:92/latin/user/'+ this.$route.params.uid,
       data,
       {
         headers: {
@@ -492,8 +493,8 @@ export default {
         }
         if((fieldName == 'picture') || (fieldName == 'background_image')){
           console.log(this.afterUpload[fieldName].uri)
-          console.log(this.createlink(this.afterUpload[fieldName].uri))
-          this.user[fieldName] = this.createlink(this.afterUpload[fieldName].uri)
+          console.log(this.afterUpload[fieldName].uri)
+          this.user[fieldName] = this.afterUpload[fieldName].uri
           console.log('New '+ fieldName + ' was saved SUCCESSly')
         }
       })
@@ -512,9 +513,14 @@ export default {
       })
     },
     getProfile(){
-      // axios.defaults.crossDomain = true;
-      // axios.defaults.withCredentials  = true;
-      axios.get('http://ed808.com:91/latin/user/'+ this.uid)
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials  = true;
+      axios.get('https://ed808.com:92/latin/user/'+ this.uid,
+      {
+        headers: {
+          'Content-type': 'application/json'
+        }
+      })
       .then((data) => {
         this.user = data.data
         this.userapi = Object.assign({}, this.user)
@@ -530,10 +536,6 @@ export default {
       .catch(e => {
         this.errors = e.response.data
       });
-    },
-    createlink: function (value) {
-      if (!value) return ''
-      return "http://ed808.com:91/sites/default/files/" + value.substring(9)
     }
   }
 }

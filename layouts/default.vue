@@ -3,7 +3,7 @@
     <header id="header">
       <div class="inner md-layout">
 
-        <img src="http://ed808.com/staticfile/logo.png" class="logo">
+        <img src="/images/logo.png" class="logo">
 
         <div class="md-layout md-gutter large-screen">
           <div class="header-menu-text md-layout-item md-size-100" style="text-align: right;">
@@ -40,11 +40,11 @@
             <div v-else class="md-menu user-links">
               <md-menu md-size="big" md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
                 <div @click="opening_menu" style="cursor: pointer;">
-                  <span v-if="$store.state.user.full_name" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{$store.state.user.username}}</span>
+                  <span v-if="$store.state.user.full_name" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{$store.state.user.full_name}}</span>
                   <md-button class="md-icon-button">
                     <md-avatar>
                       <img v-if="$store.state.user.picture" v-bind:src="$store.state.user.picture" alt="user_image">
-                      <img v-else src="http://civil808.com/en/staticfile/avatar.png" alt="user_image">
+                      <img v-else src="/images/avatar.png" alt="user_image">
                     </md-avatar>
                   </md-button>
                 </div>
@@ -95,10 +95,6 @@
 
       </div>
     </header>
-
-    <!--Content Goes Here-->
-    <!--<router-view/>-->
-    <!-- end of content-->
     
     <nuxt/>
 
@@ -158,7 +154,7 @@
       logUserOut(){
         axios.defaults.crossDomain = true
         axios.defaults.withCredentials  = true
-        axios.post('http://ed808.com:91/latin/user/logout',
+        axios.post('https://ed808.com:92/latin/user/logout',
           true,{
             headers:{
               'Content-type': 'application/json',
@@ -167,21 +163,18 @@
           })
           .then((data) => {
             this.eraseCookie('token')
-            this.$store.commit('LOGOUT', false)
+            this.$store.commit('LOGOUT')
             this.IsLogin = false
+            //This line show the log out snackbar
             this.IsLogOut = true
-
-            // ToDo: it should be changed later
-            // this.$router.push('/')
             window.location.replace('/')
-
           })
           .catch(e => {
             console.log('errors for logout : ' + e)
           });
       },
       addEmail() {
-        axios.post('http://ed808.com:91/latin/web_form',
+        axios.post('https://ed808.com:92/latin/web_form',
           {
             "nid" : 20162,
             "reCaptchaToken" : "admin@ed808",

@@ -2,14 +2,15 @@
   <md-content class="author md-elevation-2">
     <div class="md-layout">
       <div class="md-layout-item md-size-15 userimage">
-        <a :href="'http://ed808.com/user/'+uid" target="_blank">
+        <a :href="'/user/'+uid" target="_blank">
           <md-avatar class="md-large">
-            <img :src="picture | createlink" />
+            <img v-if="picture" :src="picture" alt="user_image" />
+            <img v-else src="/images/avatar.png" alt="user_image" />
           </md-avatar>
         </a>
       </div>
       <md-content class="md-layout-item md-size-85">
-        <a :href="'http://ed808.com/user/'+uid" target="_blank">
+        <a :href="'/user/'+uid" target="_blank">
           <h4>{{name}}</h4>
         </a>
         <p>{{about_me}}</p>
@@ -22,12 +23,6 @@
 export default {
   name: 'author',
   props: ['uid','name','picture','about_me'],
-  filters:{
-    createlink: function (value) {
-      if (!value) return ''
-      return "http://api.ed808.com/sites/default/files/styles/200x200/public/" + value.substring(9)
-    }
-  }
 }
 </script>
 
