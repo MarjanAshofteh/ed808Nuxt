@@ -32,6 +32,7 @@
     "vue-meta": "^1.5.5",
     "vue-recaptcha": "^1.1.1",
     "vue-scrollactive": "^0.8.0",
+    "vue-socialmedia-share": "^1.0.1",
     "vue-youtube-embed": "^2.2.1",
     "vuejs-countdown": "^0.2.1",
     "vuelidate": "^0.7.4"
