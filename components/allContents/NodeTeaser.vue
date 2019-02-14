@@ -58,8 +58,8 @@ export default {
             return value.split('-')[2]
         },
         converturl: function(value){
-            if (!value || value == "") return 'http://ed808.com/staticfile/nophoto.png'
-            return value.replace('meysam.dev', 'civil808')
+            if (!value || value == "") return '/nophoto.png'
+            return value
         },
         priceFormat: function(value){
             return parseFloat(value, 10).toFixed(0).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,").toString()//Math.round()

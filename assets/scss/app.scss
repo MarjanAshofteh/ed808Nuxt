@@ -11,8 +11,7 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(./material.woff2) format('woff2'),url(http://ed808.com/staticfile/material.woff2) format('woff2');
-  //src: url(http://ed808.com/staticfile/material.woff2) format('woff2');
+  src: url(/fonts/material.woff2) format('woff2'),url(https://ed808.com/fonts/material.woff2) format('woff2');
 }
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after,
@@ -94,4 +93,60 @@ header#header{
 .md-list-item .md-list-item-content {
   height: 36px;
   min-height: 36px !important;
+}
+.md-field.md-has-textarea:after,
+.md-field.md-has-textarea:before {
+  height: auto;
+  pointer-events: none;
+  top: 0;
+  bottom: 0;
+  padding: 5px;
+  -webkit-transform: none;
+  transform: none;
+  background: none !important;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+.md-field.md-has-textarea:before {
+  border-width: 2px;
+}
+.md-field.md-has-textarea label {
+  top: 16px;
+  left: 16px;
+}
+.md-field.md-has-textarea .md-textarea {
+  min-height: 100px;
+  padding: 0 16px;
+  resize: vertical;
+}
+.md-field.md-has-textarea > .md-icon {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+}
+.md-field.md-has-textarea .md-count {
+  right: 6px;
+  bottom: 2px;
+}
+.md-field.md-has-textarea .md-clear {
+  top: 6px;
+  right: 6px;
+}
+.md-field.md-has-textarea.md-focused label,
+.md-field.md-has-textarea.md-has-value label {
+  top: 6px;
+}
+.md-field.md-has-textarea.md-focused .md-textarea,
+.md-field.md-has-textarea.md-has-value .md-textarea {
+  padding-top: 10px;
+}
+.md-field.md-theme-default.md-focused.md-has-textarea:before {
+  border-width: 2px;
+  border-color: #92278f;
+  border-color: #92278f;
+  border-color: var(--md-theme-default-primary, #92278f);
+}
+.md-field.md-has-textarea:after{
+  border-color: #d9d9d9!important;
 }

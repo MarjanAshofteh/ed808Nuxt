@@ -59,7 +59,7 @@
 
   export default {
     name: 'Tags',
-      scrollToTop: true,
+    scrollToTop: true,
     components: {
       NodeList,
       breadcrumb
@@ -87,9 +87,8 @@
     // },
     async asyncData({params}) {
       try {
-        const {data} = await axios.get('http://api.ed808.com/latin/tag/' + params.tid ,{
+        const {data} = await axios.get('https://ed808.com:92/latin/tag/' + params.tid ,{
           headers: {
-            'Access-Control-Allow-Origin' : 'http://api.ed808.com',
             'Content-type': 'application/json',
           }
         })
@@ -126,9 +125,11 @@
           var target = this;
           return target.replace(new RegExp(search, 'g'), replacement);
         };
-        return value != null ? value.replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
-          .replaceAll('="/sites', '="http://api.ed808.com/sites')
-          .replaceAll('="/node', '="http://ed808.com/node') : ''
+        return value != null ? value.replaceAll('href="http://api.ed808.com', 'href="https://ed808.com')
+          .replaceAll('href="https://ed808.com:92', 'href="https://ed808.com')
+          .replaceAll('href="http://ed808.com:92', 'href="https://ed808.com')
+          .replaceAll('="/sites', '="https://ed808.com:92/sites')
+          .replaceAll('="/node', '="https://ed808.com/node') : ''
       },
       replaceUrlSpace(value, reverse){
         if(reverse == undefined) reverse = false
@@ -142,15 +143,12 @@
         if(this.getCookie("token") != null){
           axios.defaults.crossDomain = true;
           axios.defaults.withCredentials  = true;
-          await axios.post('http://api.ed808.com/latin/flag',
+          await axios.post('https://ed808.com:92/latin/tag' + this.tid + '/bookmark',
             {
-              entity_id : this.tid,
-              action : this.bookmarked? "unflag": "flag",
-              type : "taxonomy"
+              action : this.bookmarked? "unbookmark": "bookmark",
             },
             {
               headers: {
-                'Access-Control-Allow-Origin':'http://api.ed808.com',
                 'Content-type': 'application/json',
                 'X-CSRF-Token' : this.getCookie("token")
               }
@@ -169,9 +167,9 @@
       return{
         links: [
           //these three line doesn't work
-          { rel: 'canonical', href: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname},
-          { rel: 'alternate', href: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname, hreflang:'en'},
-          { rel: 'shortlink', href: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname}
+          { rel: 'canonical', href: 'https://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname},
+          { rel: 'alternate', href: 'https://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname, hreflang:'en'},
+          { rel: 'shortlink', href: 'https://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname}
         ],
         title: this.name,
         meta: [
@@ -180,7 +178,7 @@
           // OpenGraph data (Most widely used)
           {property: 'og:type', content: 'article', hid: 'og:type'},
           {property: 'og:title', content: this.name, hid: 'og:title'},
-          {property: 'og:url', content: 'http://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname , hid: 'og:url'},
+          {property: 'og:url', content: 'https://ed808.com/tag/' + this.$route.params.tid + '/' + this.$route.params.tname , hid: 'og:url'},
           {property: 'og:image', content: this.image, hid: 'og:image'},
           {property: 'og:description', content: this.metaDescription, hid:'og:description'},
 

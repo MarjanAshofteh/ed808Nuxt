@@ -94,6 +94,7 @@ import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name: 'register',
+  scrollToTop: true,
   mixins: [validationMixin,cookie],
   components: {
     'vue-recaptcha': VueRecaptcha
@@ -136,6 +137,11 @@ export default {
       }
     }
   },
+  mounted(){
+    if(this.$store.getters.getUid){
+      this.$router.push('/user/'+ this.$store.getters.getUid)
+    }
+  },
   methods: {
     getValidationClass (fieldName) {
       const field = this.$v.form[fieldName]
@@ -156,11 +162,11 @@ export default {
       this.showError = false
       this.errors = ''
     },
-    saveUser(recaptchaToken) {
+    async saveUser(recaptchaToken) {
       this.sending = true
       this.$refs.recaptcha.reset();
 
-      axios.post('http://ed808.com:91/latin/user/register',
+      await axios.post('https://ed808.com:92/latin/user/register',
         {
           hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
           username : this.form.username,
@@ -175,16 +181,15 @@ export default {
           }
         })
         .then((data) => {
-          this.loguserin(data)
+          //set uid in store
+          this.$store.commit('SET_USER',data.data.uid)
+          //set token in cookie
+          this.setCookie('token', data.data.token , 23)
           this.lastUser = `${this.form.fullName}`
           this.userSaved = true
           this.sending = false
-          this.$emit('do_navbar')
-          if(data.data.uid != 0){
-            this.setUid(data.data.uid)
-            this.$router.push('/user/'+ data.data.uid)
-          }
-          this.clearForm()
+          // redirect after successfull login
+          window.location.replace('/user/'+ data.data.uid)
         })
         .catch(e => {
           if(e.hasOwnProperty('response')){
@@ -198,12 +203,13 @@ export default {
             this.errors = e
           }
           this.showError = true
-        });
+        })
+        this.clearForm()
     },
     formSubmit() {
       //validating form
       this.$v.$touch()
-      //run recaptcha and let it to fire up 'logUserIn' function with google token
+      //run recaptcha and let it to fire up 'saveUser' function with google token
       if (!this.$v.$invalid) {
         this.$refs.recaptcha.execute();
       }
@@ -211,38 +217,6 @@ export default {
     onCaptchaExpired: function () {
       this.$refs.recaptcha.reset();
     },
-    loguserin(data){
-      this.setUid(data.data.uid)
-      //save data to cookie storage
-      this.setCookie("token", data.data.token , 23)
-    }
-  },
-  mounted(){
-    if(this.$store.getters.getUid){
-      this.$router.push('/user/'+ this.$store.getters.getUid)
-    }
-    else{
-      //this is just work for admins that login in api.edu befor(has session and doesnt have token)
-      //this code is gonna set token for them
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials  = true;
-      axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
-      {
-        headers:{
-          'Content-type': 'application/json'
-        }
-      })
-      .then((data) => {
-        if(data.data.uid != 0){
-          this.setCookie("token", data.data.token , 23)
-          //under line is not working, I think.
-          this.$emit('do_navbar')
-        }
-      })
-      .catch(e => {
-        console.log('errors for nav_bar_info : ' + e)
-      })
-    }
   }
 }
 </script>

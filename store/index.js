@@ -37,24 +37,24 @@ export const actions = {
   async nuxtServerInit({ commit } , { req }) {
     if (req.headers && req.headers.cookie) {
       let parsedCookie = cookieparser.parse(req.headers.cookie)
-        console.log(parsedCookie)
+      console.log(parsedCookie)
       if (parsedCookie.token) {
-          try {
-              axios.defaults.withCredentials = true
-                  let {data} = await axios.get('http://ed808.com:91/latin/user/login/nav_bar_info', {
-                    headers: {
-                      'Content-type': 'application/json',
-                        'Access-Control-Allow-Credentials' : true,
-                        Cookie : req.headers.cookie
-                    }
-                  })
-                    if(data){
-                        console.log(data)
-                        commit('SET_USER_DATA', data)
-                    }
-            } catch (e) {
-              console.log(e)
+        try {
+          axios.defaults.withCredentials = true
+          let {data} = await axios.get('https://ed808.com:92/latin/user/login/nav_bar_info', {
+            headers: {
+              'Content-type': 'application/json',
+                'Access-Control-Allow-Credentials' : true,
+                Cookie : req.headers.cookie
             }
+          })
+          if(data){
+              console.log(data)
+              commit('SET_USER_DATA', data)
+          }
+        }catch (e) {
+          console.log(e)
+        }
       }
     }
   }

@@ -16,6 +16,7 @@ import axios from "@/node_modules/axios"
 
 export default {
   name: "aboutus",
+  scrollToTop: true,
   data() {
     return {
       text: "",
@@ -26,7 +27,7 @@ export default {
   async asyncData({ params }) {
     try {
       const { data } = await axios.get(
-        "http://ed808.com:91/latin/page?args=about_us"
+        "https://ed808.com:92/latin/page?args=about_us"
       );
       if (data) {
         return {
@@ -43,9 +44,9 @@ export default {
   head() {
     return {
       links: [
-        { rel: "canonical", href: "http://ed808.com/aboutus" },
-        { rel: "alternate", href: "http://ed808.com/aboutus", hreflang: "en" },
-        { rel: "shortlink", href: "http://ed808.com/aboutus" }
+        { rel: "canonical", href: "https://ed808.com/aboutus" },
+        { rel: "alternate", href: "https://ed808.com/aboutus", hreflang: "en" },
+        { rel: "shortlink", href: "https://ed808.com/aboutus" }
       ],
       title: "about us",
       meta: [
@@ -53,7 +54,7 @@ export default {
         { property: "og:title", content: this.title, hid: "og:title" },
         {
           property: "og:url",
-          content: "http://ed808.com/about-us",
+          content: "https://ed808.com/about-us",
           hid: "og:url"
         },
         {

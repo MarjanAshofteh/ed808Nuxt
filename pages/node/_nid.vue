@@ -41,9 +41,11 @@
         />
         <img id="image"
           v-if="node_content.hasOwnProperty('image') && (node_content.image != null)"
-          :src="node_content.image"
+          :src="convertDomain(node_content.image)"
           :alt="node_content.title"
         >
+        <!-- Doesnt Work Correctly ! -->
+        <!-- Anchor Side Elements -->
 
         <!--<affix-->
           <!--class="sidebar-menu affix-bottom"-->
@@ -91,14 +93,57 @@
             :tid="tag.tid"
           />
         </div>
+        <div class="share">
+
+          <div class="social">
+            <md-button class="md-icon-button md-twitter-icon">
+              <i class="zmdi zmdi-twitter"></i>
+              <md-tooltip md-direction="bottom">
+                Share on Twitter
+              </md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button md-facebook-icon">
+              <i class="zmdi zmdi-facebook"></i>
+              <md-tooltip md-direction="bottom">
+                Share on Facebook
+              </md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button md-linkedin-icon">
+              <i class="zmdi zmdi-linkedin"></i>
+              <md-tooltip md-direction="bottom">
+                Share on LinkedIn
+              </md-tooltip>
+            </md-button>
+          </div>
+          <div class="actions">
+            <md-button class="md-icon-button">
+              <i class="zmdi zmdi-bookmark-outline"></i>
+              <md-tooltip md-direction="bottom">
+                Bookmark this article
+              </md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button clap">
+              <i class="zmdi zmdi-star-circle"></i>
+              <md-tooltip md-direction="bottom">
+                Star
+              </md-tooltip>
+            </md-button>
+            <span class="clap-counts">
+              26 claps!
+            </span>
+          </div>
+        </div>
       </md-content>
 
-      <!--<author
+      <author
       :uid="author.uid"
       :name="author.full_name"
       :picture="author.picture"
       :about_me="author.about_me"
-      />-->
+      />
 
       <sharing :url="'https://ed808.com/node/' + nid" :title="node_content.title"></sharing>
 
@@ -107,7 +152,9 @@
       </h2>
 
 
-      <div class="md-layout node-page" style="position: relative;">
+      <div
+        class="md-layout node-page"
+        style="position: relative;">
         <teaser
           v-if="relatedNodes[0]"
           :title="relatedNodes[0].title"
@@ -142,9 +189,8 @@
       <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
     </div>
 
-    <!-- Doesnt Work Correctly ! -->
-    <!-- Ancho Side Elements -->
-    
+
+
 
   </div>
 </template>
@@ -189,7 +235,7 @@ export default {
   async asyncData({ params }) {
     try {
       const { data } = await axios.get(
-        "http://ed808.com:91/latin/contents/" + params.nid
+        "https://ed808.com:92/latin/contents/" + params.nid
       );
       if (data) {
         let contentTypes = [];
@@ -214,11 +260,12 @@ export default {
       }
     } catch (e) {
       console.log(e);
+      throw { statusCode: 404, message: "Page not found" };
     }
   },
   mounted(){
     this.getRelatedNodes()
-    this.getHeadings()
+    // this.getHeadings()
   },
   methods: {
     onItemChanged(event, currentItem, lastActiveItem) {
@@ -245,13 +292,15 @@ export default {
         let target = this;
         return target.replace(new RegExp(search, "g"), replacement);
       };
-      return value
-        .replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
-        .replaceAll('="/sites', '="http://api.ed808.com/sites')
-        .replaceAll('="/node', '="http://ed808.com/node');
+      return value != null ? value
+        .replaceAll('href="http://api.ed808.com', 'href="https://ed808.com')
+        .replaceAll('href="https://ed808.com:92', 'href="https://ed808.com')
+        .replaceAll('href="http://ed808.com:92', 'href="https://ed808.com')
+        .replaceAll('="/sites', '="https://ed808.com:92/sites')
+        .replaceAll('="/node', '="https://ed808.com/node') : ''
     },
     getRelatedNodes(){
-      axios.get('http://ed808.com:91/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
+      axios.get('https://ed808.com:92/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
         .then(response => response.data)
         .then((response)=>{
           // console.log( response )
@@ -266,16 +315,16 @@ export default {
         //these three line doesn't work
         {
           rel: "canonical",
-          href: "http://ed808.com/node/" + this.$route.params.nid
+          href: "https://ed808.com/node/" + this.$route.params.nid
         },
         {
           rel: "alternate",
-          href: "http://ed808.com/node/" + this.$route.params.nid,
+          href: "https://ed808.com/node/" + this.$route.params.nid,
           hreflang: "en"
         },
         {
           rel: "shortlink",
-          href: "http://ed808.com/node/" + this.$route.params.nid
+          href: "https://ed808.com/node/" + this.$route.params.nid
         }
       ],
       title: this.node_content.title,
@@ -295,7 +344,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "http://ed808.com/node/" + this.$route.params.nid,
+          content: "https://ed808.com/node/" + this.$route.params.nid,
           hid: "og:url"
         },
         {
@@ -566,11 +615,85 @@ body {
   position: fixed;
 }
 
+.share {
+  @include main-center-content();
+  text-align: right;
+  margin: 20px auto;
+  min-height: 40px;
+  .social {
+    float: right;
+  }
+  .actions {
+    float: left;
+    .md-button.clap {
+      &:hover {
+        animation: clapAnim infinite 2s;
+      }
+    }
+    span.clap-counts {
+      display: inline-block;
+      line-height: 40px;
+      margin-left: 5px;
+    }
+  }
+  .md-ripple {
+    .md-button-content {
+      .zmdi {
+        color: rgba(0, 0, 0, 0.54);
+        color: rgba(0, 0, 0, 0.54);
+        color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54));
+      }
+      .zmdi-facebook {
+        color: #3b5998;
+      }
+      .zmdi-linkedin {
+        color: #0976b4;
+
+      }
+      .zmdi-twitter {
+        color: #55acee;
+      }
+    }
+  }
+}
+
+.zmdi {
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  font-size: 24px!important;
+  margin: auto;
+  display: inline-flex;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
 @media (max-width: 1440px){
   .node-page .content-teaser {
     width: 31.3%;
     flex: 0 1 31.3%;
   }
 }
+@keyframes clapAnim {
+  0% {
+    -webkit-box-shadow: 0 0;
+    box-shadow: 0 0;
+  }
+  70% {
+    -webkit-box-shadow: 0 0 5px 10px rgba(255,255,255,0);
+    box-shadow: 0 0 5px 10px rgba(255,255,255,0);
+  }
+
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    box-shadow: 0 0 0 0 rgba(255,255,255,0);
+  }
+}
+
 
 </style>

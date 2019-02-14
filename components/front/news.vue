@@ -59,7 +59,7 @@ export default {
     getNews(){
       if(this.nid != 0){
         this.loading = true
-        fetch("http://api.ed808.com/latin/contents/" + this.nid)
+        fetch("https://ed808.com:92/latin/contents/" + this.nid)
           .then(response => response.json())
           .then((data) => {
             this.news = data.content
@@ -70,14 +70,6 @@ export default {
     clear_news(){
       this.$emit('clearNid');
     } 
-  },
-  filters: {
-    converturl: function(value){
-        if (!value) return '';
-        var thestart = 'http://api.ed808.com/sites/default/files/styles/808/public';
-        var theend = value.substr(8);
-        return thestart + theend;
-    }
   }
 }
 </script>

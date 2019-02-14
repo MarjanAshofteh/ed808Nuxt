@@ -1,33 +1,34 @@
 <template>
-  <md-content class="author md-elevation-2">
-    <div class="md-layout">
-      <div class="md-layout-item md-size-15 userimage">
-        <a :href="'http://ed808.com/user/'+uid" target="_blank">
-          <md-avatar class="md-large">
-            <img :src="picture | createlink" />
-          </md-avatar>
-        </a>
+  <div class="author">
+    <md-content class="md-elevation-2">
+      <div class="author-details">
+        <div class="userimage">
+          <a :href="'/user/'+uid" target="_blank">
+            <md-avatar class="md-large">
+              <img v-if="picture" :src="picture" alt="user_image" />
+              <img v-else src="/images/avatar.png" alt="user_image" />
+            </md-avatar>
+          </a>
+        </div>
+        <md-content class="userdetails">
+          <p>Written By:</p>
+          <a :href="'/user/'+uid" target="_blank">
+            {{name}}
+          </a>
+          <md-button class="md-primary">Follow</md-button>
+        </md-content>
       </div>
-      <md-content class="md-layout-item md-size-85">
-        <a :href="'http://ed808.com/user/'+uid" target="_blank">
-          <h4>{{name}}</h4>
-        </a>
+      <div class="about-author">
         <p>{{about_me}}</p>
-      </md-content>
+      </div>
+    </md-content>
   </div>
-  </md-content>
 </template>
 
 <script>
 export default {
   name: 'author',
   props: ['uid','name','picture','about_me'],
-  filters:{
-    createlink: function (value) {
-      if (!value) return ''
-      return "http://api.ed808.com/sites/default/files/styles/200x200/public/" + value.substring(9)
-    }
-  }
 }
 </script>
 
@@ -37,14 +38,44 @@ export default {
     text-align: left;
     direction: ltr;
     margin: auto;
+    padding: 0 15px;
   }
   .author{
     @include main-center-content();
   }
-  .md-layout{
+  .author-details{
     align-items: center;
+    padding: 20px!important;
+    display: flex;
+    border-bottom: 1px solid #f5f5f5;
   }
   .userimage{
     text-align: center;
+    width: 64px;
   }
+  .userdetails {
+    width: calc(100% - 64px);
+    padding-left: 20px;
+    position: relative;
+    a {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    p {
+      margin: 0;
+    }
+    .md-button {
+      margin: 0;
+      position: absolute;
+      right: 0;
+      top: 2.5px;
+    }
+  }
+  .about-author {
+    padding: 20px;
+    p {
+      margin: 0;
+    }
+  }
+
 </style>

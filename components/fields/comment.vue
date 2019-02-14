@@ -32,11 +32,11 @@
             </div>
           </md-card-header>
           <md-card-header v-else>
-            <div>You need
+            <div>You need to
               <nuxt-link to="/login">Login</nuxt-link>
               or
               <nuxt-link to="/register">Register</nuxt-link>
-              to submit your comment.</div>
+              for submiting your comment.</div>
           </md-card-header>
           <md-card-content v-if="$store.getters.getUid">
             <md-field>
@@ -78,7 +78,13 @@
                   <div class="user-details">
                     <md-avatar>
                       <img
+                        v-if="c.author_pic"
                         :src="c.author_pic"
+                        alt="Avatar"
+                      >
+                      <img
+                        v-else
+                        src="/images/avatar.png"
                         alt="Avatar"
                       >
                     </md-avatar>
@@ -93,9 +99,12 @@
                   </div>
                 </div>
                 <div class="md-layout-item">
+
                   <!-- comment body -->
                   <div class="md-comment-body">
-                    <p v-html="c.body" v-if="onEditing != c.cid"/>
+                    <p v-if="onEditing != c.cid" v-html="c.body">
+
+                    </p>
                     <md-field
                       v-if="onEditing == c.cid"
                       class="reply-box"
@@ -109,6 +118,7 @@
                         :disabled="onSubmit"
                       />
                     </md-field>
+
                     <!-- reply box -->
                     <transition name="fade">
                       <md-field
@@ -125,12 +135,13 @@
                       </md-field>
                     </transition>
                     <!-- end of reply box -->
+
                     <!-- comment actions -->
-                    <div class="comment-action" v-if="$store.getters.getUid">
+                    <div class="comment-action">
 
                       <!--Submit Edit-->
                       <md-button
-                        v-if="onEditing == c.cid"
+                        v-if="onEditing == c.cid && $store.getters.getUid"
                         class="md-icon-button md-primary md-dense"
                         @click="editComment(c.cid)"
                       >
@@ -144,7 +155,7 @@
 
                       <!--Cancel Edit-->
                       <md-button
-                        v-if="onEditing == c.cid"
+                        v-if="onEditing == c.cid && $store.getters.getUid"
                         class="md-icon-button md-primary md-dense"
                         @click="onEditing = false"
                       >
@@ -158,7 +169,7 @@
 
                       <!--Send Reply-->
                       <md-button
-                        v-if="onReply == c.cid && replyText != '' "
+                        v-if="onReply == c.cid && replyText != '' && $store.getters.getUid"
                         class="md-icon-button md-primary md-dense"
                         @click="submitComment(c.cid)"
                       >
@@ -172,7 +183,7 @@
 
                       <!--Cancel Reply-->
                       <md-button
-                        v-if="onReply == c.cid "
+                        v-if="onReply == c.cid && $store.getters.getUid "
                         class="md-icon-button md-primary md-dense"
                         @click="onReply = false"
                       >
@@ -184,16 +195,43 @@
                         </md-tooltip>
                       </md-button>
 
-                      <!--More Functions Menu-->
+
+                      <!--like Btn-->
+                      <md-badge md-content="1" md-dense >
+                        <md-button
+                          :disabled="!$store.getters.getUid || c.uid == $store.getters.getUid "
+                          class="md-icon-button md-danger md-dense md-like"
+                          @click=""
+                        >
+                          <md-icon v-if="">favorite</md-icon>
+                          <md-tooltip md-direction="bottom">
+                           Like this comment
+                          </md-tooltip>
+                        </md-button>
+                        <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
+                          Please login to like this comment
+                        </md-tooltip>
+                        <md-tooltip md-direction="bottom" v-if="c.uid == $store.getters.getUid">
+                          This is your comment
+                        </md-tooltip>
+                      </md-badge>
+
+                      <!--Reply Btn-->
                       <md-button
                         class="md-icon-button md-primary md-dense"
                         @click="showReplyBox(c.cid); onEditing = false"
                       >
                         <md-icon>reply</md-icon>
-                        <md-tooltip md-direction="bottom">
+                        <md-tooltip v-if="$store.getters.getUid" md-direction="bottom">
                           Reply to this Comment
                         </md-tooltip>
+                        <md-tooltip v-if="!$store.getters.getUid" md-direction="bottom">
+                          Please login to reply this comment
+                        </md-tooltip>
                       </md-button>
+
+
+                      <!--More Functions Menu-->
                       <md-menu
                         md-size="small"
                         :md-offset-x="127"
@@ -303,6 +341,27 @@
                         </md-tooltip>
                       </md-button>
 
+
+                      <!--like Btn-->
+                      <md-badge md-content="1" md-dense>
+                        <md-button
+                          :disabled="!$store.getters.getUid || r.uid == $store.getters.getUid "
+                          class="md-icon-button md-danger md-dense md-like"
+                          @click=""
+                        >
+                          <md-icon v-if="">favorite</md-icon>
+                          <md-tooltip md-direction="bottom">
+                            Like this comment
+                          </md-tooltip>
+                        </md-button>
+                        <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
+                          Please login to like this comment
+                        </md-tooltip>
+                        <md-tooltip md-direction="bottom" v-if="r.uid == $store.getters.getUid">
+                          This is your comment
+                        </md-tooltip>
+                      </md-badge>
+
                       <!--More Functions Menu for reply-->
                       <md-menu
                         md-size="small"
@@ -377,13 +436,13 @@ export default {
   methods: {
     submitComment(pid){
       this.onSubmit = true;
-      console.log('Submit');
+      console.log(this.commentText);
       axios.defaults.withCredentials = true;
       axios
-        .post("http://ed808.com:91/latin/comments" ,{
+        .post("https://ed808.com:92/latin/comments" ,{
           "nid" : this.nid,
           "pid" : pid,
-          "body" : pid != 0 ? this.replyText : this.commentText
+          "body" : pid != 0 ? this.replyText.replace(/\n/g, "<br />") : this.commentText.replace(/\n/g, "<br />")
         }, {
           headers: {
             'Content-Type': 'application/json',
@@ -413,7 +472,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .put("http://ed808.com:91/latin/comments/"+cid ,{
+        .put("https://ed808.com:92/latin/comments/"+cid ,{
           "body": this.editingCommentBody
         }, {
           headers: {
@@ -441,7 +500,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .delete("http://ed808.com:91/latin/comments/"+cid , {
+        .delete("https://ed808.com:92/latin/comments/"+cid , {
           headers: {
             'Content-Type': 'application/json',
             'X-CSRF-Token' : this.getCookie('token')
@@ -462,9 +521,13 @@ export default {
         });
     },
     showReplyBox(commentID) {
-      this.commentText = '';
-      this.replyText = '';
-      this.onReply = commentID;
+      if(!this.$store.getters.getUid){
+        this.$router.replace('/login')
+      }else{
+        this.commentText = '';
+        this.replyText = '';
+        this.onReply = commentID;
+      }
       // this.$nextTick(() => {
       //   this.$refs.reply.focus()
       // })
@@ -473,7 +536,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .get("http://ed808.com:91/latin/contents/"+ this.nid +"/comments")
+        .get("https://ed808.com:92/latin/contents/"+ this.nid +"/comments")
         .then(response => {
           this.commentErr = false;
           this.commentLoading = false;
@@ -576,6 +639,17 @@ export default {
     }
     .comment-action {
       text-align: right;
+      .md-like {
+        .md-icon {
+          font-size: 18px!important;
+        }
+      }
+      .md-badge.md-theme-default {
+        color: #fff;
+        color: var(--md-theme-default-text-primary-on-accent,#fff);
+        background-color:  #f44336;
+        background-color: var(--md-theme-default-accent, #f44336);
+      }
     }
   }
   .reply-comment {
@@ -585,6 +659,7 @@ export default {
       margin-top: 2px;
       p{
         margin: 0;
+        margin-bottom: 10px;
       }
     }
   }
@@ -606,6 +681,21 @@ export default {
   }
 }
 
+.md-button.md-theme-default.md-danger {
+  &:hover, &.active {
+    .md-icon-font {
+      color: #f44336;
+      color: var(--md-theme-default-danger-on-background, #f44336);
+    }
+  }
+  &.active {
+    span {
+      color: #f44336;
+      color: var(--md-theme-default-danger-on-background, #f44336);
+    }
+  }
+}
+
 .md-button.md-theme-default.md-primary:hover {
   .md-icon-font {
     color: #92278f;
@@ -613,6 +703,7 @@ export default {
     color: var(--md-theme-default-primary-on-background, #92278f);
   }
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -621,7 +712,7 @@ export default {
   opacity: 0;
 }
 .md-field.reply-box {
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 .md-field.md-theme-default.md-has-textarea:not(.md-autogrow):after {
   border-color: #d9d9d9;
