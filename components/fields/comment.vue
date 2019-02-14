@@ -84,7 +84,7 @@
                       >
                       <img
                         v-else
-                        src="http://ed808.com/staticfile/avatar.png"
+                        src="/images/avatar.png"
                         alt="Avatar"
                       >
                     </md-avatar>
@@ -439,7 +439,7 @@ export default {
       console.log(this.commentText);
       axios.defaults.withCredentials = true;
       axios
-        .post("http://ed808.com:91/latin/comments" ,{
+        .post("https://ed808.com:92/latin/comments" ,{
           "nid" : this.nid,
           "pid" : pid,
           "body" : pid != 0 ? this.replyText.replace(/\n/g, "<br />") : this.commentText.replace(/\n/g, "<br />")
@@ -472,7 +472,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .put("http://ed808.com:91/latin/comments/"+cid ,{
+        .put("https://ed808.com:92/latin/comments/"+cid ,{
           "body": this.editingCommentBody
         }, {
           headers: {
@@ -500,7 +500,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .delete("http://ed808.com:91/latin/comments/"+cid , {
+        .delete("https://ed808.com:92/latin/comments/"+cid , {
           headers: {
             'Content-Type': 'application/json',
             'X-CSRF-Token' : this.getCookie('token')
@@ -536,7 +536,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .get("http://ed808.com:91/latin/contents/"+ this.nid +"/comments")
+        .get("https://ed808.com:92/latin/contents/"+ this.nid +"/comments")
         .then(response => {
           this.commentErr = false;
           this.commentLoading = false;
