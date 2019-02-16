@@ -118,10 +118,20 @@
             </md-button>
           </div>
           <div class="actions">
-            <md-button class="md-icon-button">
-              <i class="zmdi zmdi-bookmark-outline"></i>
-              <md-tooltip md-direction="bottom">
+            <md-button
+              class="md-icon-button"
+              :class="{ 'bookmark-active' : node_content.user_bookmark }"
+              @click="bookmarkContent()"
+            >
+              <i
+                class="zmdi"
+                :class="node_content.user_bookmark ? 'zmdi-bookmark' : 'zmdi-bookmark-outline'"
+              ></i>
+              <md-tooltip md-direction="bottom" v-if="!node_content.user_bookmark">
                 Bookmark this article
+              </md-tooltip>
+              <md-tooltip md-direction="bottom" v-else>
+                Remove from bookmarks
               </md-tooltip>
             </md-button>
 
@@ -145,7 +155,7 @@
       :about_me="author.about_me"
       />
 
-      <sharing :url="'https://ed808.com/node/' + nid" :title="node_content.title"></sharing>
+      <!--<sharing :url="'https://ed808.com/node/' + nid" :title="node_content.title"></sharing>-->
 
       <h2 class="section-title">
         Related Contents:
@@ -205,9 +215,11 @@ import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
+import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name: "node",
+  mixins: [cookie],
   components: {
     teaser,
     eventData,
@@ -283,6 +295,30 @@ export default {
         el.setAttribute('id','head'+i)
       })
       this.articleHeadings = headObject
+    },
+    bookmarkContent(){
+      console.log(this.node_content)
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials = true;
+      axios
+        .post("https://ed808.com:92/latin/contents/" + this.nid + "/bookmark" ,{
+
+          'action' : this.node_content.user_bookmark ? 'unbookmark' : 'bookmark'
+
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token' : this.getCookie('token')
+          }
+        })
+        .then(()=> {
+          console.log('sent')
+          this.node_content.user_bookmark = !this.node_content.user_bookmark;
+        })
+        .catch((err)=> {
+          console.log(err)
+        })
+
     },
     convertDomain(value) {
       //this work but its performance is slow
@@ -628,6 +664,11 @@ body {
     .md-button.clap {
       &:hover {
         animation: clapAnim infinite 2s;
+      }
+    }
+    .bookmark-active {
+      .zmdi {
+        color: #FBC02D!important;
       }
     }
     span.clap-counts {
