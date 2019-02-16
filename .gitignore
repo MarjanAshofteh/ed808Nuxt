@@ -90,3 +90,6 @@ dist
 api/
 staticfile/
 vue97*/
+
+# Dev enviroment
+dev/
