@@ -200,7 +200,7 @@
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
-import sharing from "@/components/elements/sharing";
+// import sharing from "@/components/elements/sharing";
 import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
@@ -215,7 +215,7 @@ export default {
     tag,
     comment,
     scroll,
-    sharing,
+    // sharing,
     // ScrollActive,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
