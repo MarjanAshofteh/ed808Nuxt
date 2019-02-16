@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="relative">
 
     <!--section title-->
     <h2 class="section-title">
@@ -9,6 +9,9 @@
 
     <!--form and comments-->
     <div class="comment-list">
+      <transition name="fade">
+        <div class="loading-overlay" v-if="onSubmit || onEditing"></div>
+      </transition>
 
       <!--Comment form-->
       <div class="comment-card comment-form">
@@ -16,14 +19,20 @@
           <md-card-header v-if="$store.getters.getUid">
             <md-avatar>
               <img
+                v-if="$store.state.user.picture"
                 :src="$store.state.user.picture"
+                alt="Avatar"
+              >
+              <img
+                v-else
+                src="/images/avatar.png"
                 alt="Avatar"
               >
             </md-avatar>
             <div class="md-commentor" v-text="$store.state.user.full_name"></div>
             <div class="md-right">
               <md-button
-                :disabled="commentText == ''"
+                :disabled="commentText == '' || onSubmit"
                 class="md-dense md-primary"
                 @click="submitComment(0)"
               >
@@ -46,6 +55,7 @@
                 :class="{'active': textareaActive}"
                 :disabled="onSubmit"
                 @focus="textareaActive = true"
+                md-autogrow
               />
               <md-snackbar
                 class="error"
@@ -70,7 +80,7 @@
       <!--end of loading box-->
 
       <!--Parent Comment-->
-      <div v-for="c in commentList">
+      <div v-for="(index, c) in commentList" :key="c.cid">
           <div>
             <div class="comment-card">
               <div class="md-layout">
@@ -84,7 +94,7 @@
                       >
                       <img
                         v-else
-                        src="http://ed808.com/staticfile/avatar.png"
+                        src="/images/avatar.png"
                         alt="Avatar"
                       >
                     </md-avatar>
@@ -116,6 +126,7 @@
                         ref="reply"
                         v-model="editingCommentBody"
                         :disabled="onSubmit"
+                        md-autogrow
                       />
                     </md-field>
 
@@ -131,6 +142,7 @@
                           ref="reply"
                           v-model="replyText"
                           :disabled="onSubmit"
+                          md-autogrow
                         />
                       </md-field>
                     </transition>
@@ -197,22 +209,35 @@
 
 
                       <!--like Btn-->
-                      <md-badge md-content="1" md-dense >
-                        <md-button
+                      <md-badge :md-content="c.likes" md-dense >
+                        <md-button v-if="!c.user_like"
                           :disabled="!$store.getters.getUid || c.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
-                          @click=""
+                          :class="{ 'active' : c.user_like }"
+                          @click="likeComment(c.cid, index, false)"
                         >
-                          <md-icon v-if="">favorite</md-icon>
+                          <md-icon>favorite</md-icon>
                           <md-tooltip md-direction="bottom">
                            Like this comment
                           </md-tooltip>
+                        </md-button>
+                        <md-button
+                          v-else
+                          :disabled="!$store.getters.getUid || c.uid == $store.getters.getUid "
+                          class="md-icon-button md-danger md-dense md-like"
+                          :class="{ 'active' : c.user_like }"
+                          @click="dislikeComment(c.cid, index, false)"
+                        >
+                          <md-icon>favorite</md-icon>
                         </md-button>
                         <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
                           Please login to like this comment
                         </md-tooltip>
                         <md-tooltip md-direction="bottom" v-if="c.uid == $store.getters.getUid">
                           This is your comment
+                        </md-tooltip>
+                        <md-tooltip md-direction="bottom" v-if="c.user_like">
+                          Click to dislike this comment
                         </md-tooltip>
                       </md-badge>
 
@@ -269,8 +294,9 @@
 
           <!--Replies of parent-->
           <div
-            v-for="r in c.replies"
+            v-for="(rIndex,r) in c.replies"
             class="reply-comment"
+            :key="r.cid"
           >
             <div class="comment-card">
               <div class="md-layout">
@@ -343,16 +369,28 @@
 
 
                       <!--like Btn-->
-                      <md-badge md-content="1" md-dense>
-                        <md-button
+                      <md-badge
+                        :md-content="r.likes"
+                        md-dense
+                      >
+                        <md-button v-if="!r.user_like"
                           :disabled="!$store.getters.getUid || r.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
-                          @click=""
+                          :class="{ 'active' : r.user_like }"
+                          @click="likeComment(r.cid, index, rIndex)"
                         >
-                          <md-icon v-if="">favorite</md-icon>
+                          <md-icon>favorite</md-icon>
                           <md-tooltip md-direction="bottom">
                             Like this comment
                           </md-tooltip>
+                        </md-button>
+                        <md-button v-else
+                          :disabled="!$store.getters.getUid || r.uid == $store.getters.getUid "
+                          class="md-icon-button md-danger md-dense md-like"
+                          :class="{ 'active' : r.user_like }"
+                          @click="dislikeComment(r.cid, index, rIndex)"
+                        >
+                          <md-icon>favorite</md-icon>
                         </md-button>
                         <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
                           Please login to like this comment
@@ -434,12 +472,65 @@ export default {
     this.getComments();
   },
   methods: {
+    likeComment(cid){
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials = true;
+      axios
+        .post("https://ed808.com:92/latin/comments/" + cid + "/like" ,{
+
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token' : this.getCookie('token')
+          }
+        })
+        .then(response => {
+          this.commentErr = false;
+          this.getComments();
+        })
+        .catch(err => {
+          console.log(err.response);
+          if(err.response.statusText){
+            this.commentErr = err.response.statusText;
+          }else {
+            this.commentErr = 'Error While Sending Request';
+          }
+        });
+    },
+    dislikeComment(cid){
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials = true;
+      axios
+        .post("https://ed808.com:92/latin/comments/" + cid + "/like" ,{
+
+          'action' : 'dislike'
+
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token' : this.getCookie('token')
+          }
+        })
+        .then(response => {
+          this.commentErr = false;
+          this.getComments();
+        })
+        .catch(err => {
+          console.log(err.response);
+          if(err.response.statusText){
+            this.commentErr = err.response.statusText;
+          }else {
+            this.commentErr = 'Error While Sending Request';
+          }
+        });
+    },
     submitComment(pid){
       this.onSubmit = true;
       console.log(this.commentText);
+      axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .post("http://ed808.com:91/latin/comments" ,{
+        .post("https://ed808.com:92/latin/comments" ,{
           "nid" : this.nid,
           "pid" : pid,
           "body" : pid != 0 ? this.replyText.replace(/\n/g, "<br />") : this.commentText.replace(/\n/g, "<br />")
@@ -472,7 +563,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .put("http://ed808.com:91/latin/comments/"+cid ,{
+        .put("https://ed808.com:92/latin/comments/"+cid ,{
           "body": this.editingCommentBody
         }, {
           headers: {
@@ -493,14 +584,16 @@ export default {
           }else {
             this.commentErr = 'Error While Sending Request';
           }
+          this.onEditing = false;
           this.onSubmit = false;
         });
     },
     deleteComment(cid){
+      onEditing = true;
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .delete("http://ed808.com:91/latin/comments/"+cid , {
+        .delete("https://ed808.com:92/latin/comments/"+cid , {
           headers: {
             'Content-Type': 'application/json',
             'X-CSRF-Token' : this.getCookie('token')
@@ -508,6 +601,7 @@ export default {
         })
         .then(response => {
           this.commentErr = false;
+          onEditing = false;
           this.getComments();
         })
         .catch(err => {
@@ -536,7 +630,7 @@ export default {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .get("http://ed808.com:91/latin/contents/"+ this.nid +"/comments")
+        .get("https://ed808.com:92/latin/contents/"+ this.nid +"/comments")
         .then(response => {
           this.commentErr = false;
           this.commentLoading = false;
@@ -567,6 +661,8 @@ export default {
 
 .comment-list {
   @include main-center-content();
+  position: relative;
+
   .comment-card {
     padding: 10px 0;
     padding-bottom: 5px;
@@ -645,10 +741,8 @@ export default {
         }
       }
       .md-badge.md-theme-default {
-        color: #fff;
-        color: var(--md-theme-default-text-primary-on-accent,#fff);
-        background-color:  #f44336;
-        background-color: var(--md-theme-default-accent, #f44336);
+        color: #f44336;
+        background-color: #f5f5f5 !important;
       }
     }
   }
@@ -719,5 +813,28 @@ export default {
 }
 .md-field.reply-box.md-has-textarea:not(.md-autogrow) .md-textarea {
   min-height: 50px;
+}
+.md-field.md-has-textarea:after, .md-field.md-has-textarea:before {
+  height: auto;
+  pointer-events: none;
+  top: 0;
+  bottom: 0;
+  -webkit-transform: none;
+  transform: none;
+  background: none!important;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+.relative {
+  position: relative;
+}
+.loading-overlay {
+  position: absolute;
+  background-color: rgba(169,169,169,0.3);
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  right: 15px;
+  z-index: 2;
 }
 </style>

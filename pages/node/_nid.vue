@@ -69,16 +69,19 @@
           v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
           v-html="convertDomain(node_content.body_value)"
         ></article>
+        
         <div
           v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
           class="reference"
-          v-for="(reference , index) in node_content.references"
-          :key="index"
         >
           <h3>Reference:</h3>
-          <a :href="reference" target="_blank" rel="nofollow">{{reference}}</a>
+          <a 
+            v-for="(reference , index) in node_content.references"
+            :key="index"
+            :href="reference" target="_blank" rel="nofollow">{{reference}}</a>
           <span v-if="index > 0">,</span>
         </div>
+        
         <div
           class="tags"
           v-if="node_content.hasOwnProperty('tags') && (node_content.tags.length != 0)"
@@ -141,6 +144,9 @@
       :picture="author.picture"
       :about_me="author.about_me"
       />
+
+      <sharing :url="'https://ed808.com/node/' + nid" :title="node_content.title"></sharing>
+
       <h2 class="section-title">
         Related Contents:
       </h2>
@@ -194,6 +200,7 @@
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
+import sharing from "@/components/elements/sharing";
 import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
@@ -208,6 +215,7 @@ export default {
     tag,
     comment,
     scroll,
+    sharing,
     // ScrollActive,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
@@ -284,11 +292,12 @@ export default {
         let target = this;
         return target.replace(new RegExp(search, "g"), replacement);
       };
-      return value
-        .replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
+      return value != null ? value
+        .replaceAll('href="http://api.ed808.com', 'href="https://ed808.com')
+        .replaceAll('href="https://ed808.com:92', 'href="https://ed808.com')
+        .replaceAll('href="http://ed808.com:92', 'href="https://ed808.com')
         .replaceAll('="/sites', '="https://ed808.com:92/sites')
-        .replaceAll('http://api.ed808.com/', 'https://ed808.com:92/')
-        .replaceAll('="/node', '="http://ed808.com/node');
+        .replaceAll('="/node', '="https://ed808.com/node') : ''
     },
     getRelatedNodes(){
       axios.get('https://ed808.com:92/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
@@ -306,16 +315,16 @@ export default {
         //these three line doesn't work
         {
           rel: "canonical",
-          href: "http://ed808.com/node/" + this.$route.params.nid
+          href: "https://ed808.com/node/" + this.$route.params.nid
         },
         {
           rel: "alternate",
-          href: "http://ed808.com/node/" + this.$route.params.nid,
+          href: "https://ed808.com/node/" + this.$route.params.nid,
           hreflang: "en"
         },
         {
           rel: "shortlink",
-          href: "http://ed808.com/node/" + this.$route.params.nid
+          href: "https://ed808.com/node/" + this.$route.params.nid
         }
       ],
       title: this.node_content.title,
@@ -335,7 +344,7 @@ export default {
         },
         {
           property: "og:url",
-          content: "http://ed808.com/node/" + this.$route.params.nid,
+          content: "https://ed808.com/node/" + this.$route.params.nid,
           hid: "og:url"
         },
         {

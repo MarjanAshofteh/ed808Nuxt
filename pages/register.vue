@@ -166,6 +166,8 @@ export default {
       this.sending = true
       this.$refs.recaptcha.reset();
 
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials = true;
       await axios.post('https://ed808.com:92/latin/user/register',
         {
           hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
