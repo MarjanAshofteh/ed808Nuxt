@@ -10,6 +10,10 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/png', href: '/favlogo.png' }
     ],
+    script: [
+      //{ src: 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit', async , defer}
+      { src: 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit'}
+    ],
     title: '808 Educational and Engineering institute',
     titleTemplate: '%s | 808 Educational and Engineering institute',
     meta: [

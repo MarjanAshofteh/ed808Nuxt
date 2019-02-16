@@ -322,6 +322,7 @@ export default {
   mixins: [cookie],
   data(){
     return{
+      //for keeping field data temporary, after editing it
       userapi:{},
       errors:'',
       roles:[],
@@ -351,6 +352,14 @@ export default {
     this.isSameUser()
   },
   methods:{
+    isSameUser(){
+      if(this.$store.getters.getUid){
+        if(this.$store.getters.getUid == this.$route.params.uid)
+          this.sameUser = true
+          //console.log(this.sameUser)
+      }
+      this.getProfile()
+    },
     handleFileUpload(fieldName){
       this.updateField[fieldName] = true
       if(fieldName == 'picture'){
@@ -386,16 +395,9 @@ export default {
           console.log('FAILURE!!' + e)
         });
     },
-    isSameUser(){
-      if(this.$store.getters.getUid){
-        if(this.$store.getters.getUid == this.$route.params.uid)
-          this.sameUser = true
-          console.log(this.sameUser)
-      }
-      this.getProfile()
-    },
     editThis(fieldName){
       this.editingEl = fieldName
+      //why?
       this.updateField = false
     },
     cancleEditingThis(fieldName){
@@ -468,7 +470,10 @@ export default {
       .then((data) => {
         this.updateField = false
         this.updateField[fieldName] = false
+        //this line is not working
+        console.log('before' + this.editingEl)
         this.editingEl = ''
+        console.log('after' + this.editingEl)
         if(fieldName == 'education'){
           this.userapi['university'] = this.user['university']
           this.userapi['education_degree'] = this.user['education_degree']
