@@ -15,7 +15,7 @@
         <md-list class="md-scrollbar" style="max-height: 250px;overflow: overlay; overflow-x: hidden;">
           <md-checkbox 
             v-for="sub_item in item.children" :key="sub_item.tid" 
-            v-model="$store.state.selected[item.name]" 
+            v-model="$store.state.selected[item.name]"
             :value="sub_item.tid">
               {{sub_item.name | formatName}}
           </md-checkbox>
@@ -49,6 +49,11 @@ export default {
 
         setTimeout(() => {this.filtersLoading = false}, 300)
     })
+
+    /*@todo: we use v-model="$store.state.selected[item.name]" and this is wrong with 'store strict mode : on'
+    * instead use setters and getters
+    * https://vuex.vuejs.org/guide/forms.html
+    */
   },
   filters: {
     formatName: function(str) {

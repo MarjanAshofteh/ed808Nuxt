@@ -83,4 +83,4 @@ export const getters = {
   getUid: state => (state.user.uid > 0) ? state.user.uid : false
 }
 
-
+export const strict = false

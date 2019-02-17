@@ -113,7 +113,6 @@
 
 <script>
 import NodeTeaser from "@/components/allContents/NodeTeaser";
-import Vue from "vue";
 
 export default {
   name: "NodeList",
@@ -131,6 +130,7 @@ export default {
     };
   },
   mounted() {
+    //this section is for handling url for the direct links
     var query = this.$route.query;
     var selected = this.$store.state.selected;
     Object.keys(query).map(key => {
@@ -149,6 +149,7 @@ export default {
           break;
       }
     });
+
     //after handling url queries its time to filter contents
     this.getContents();
 
@@ -174,7 +175,7 @@ export default {
   methods: {
     getContents() {
       this.set_loading();
-      var selected = this.$store.state.selected;
+      var selected = (this.filterEnabled)? this.$store.state.selected : {};//we don't want to cache selected filters on other places
       var filters = this.$store.state.filters;
       var url = "";
       var query = {};
@@ -224,9 +225,11 @@ export default {
       //submitting changes
       if (this.filterEnabled)
         this.$router.replace({ name: this.router, query: query });
+
       this.$nextTick(() => {
         this.$nuxt.$loading.start();
       });
+
       fetch("https://ed808.com:92/latin/contents?" + url )
         .then(response => response.json())
         .then(data => {
