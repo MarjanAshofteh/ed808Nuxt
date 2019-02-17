@@ -75,8 +75,15 @@ export const mutations = {
   },
   SET_FILTERS(state, filters) {
     state.filters = filters
+  },
+  CHANGE_USER_DATA(state, uri, full_name){
+    if(uri){
+      state.user.picture = uri
+    }
+    if(full_name){
+      state.user.full_name = full_name
+    }
   }
-
 }
 
 export const getters = {
