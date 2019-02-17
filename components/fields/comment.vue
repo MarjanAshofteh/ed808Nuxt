@@ -80,7 +80,7 @@
       <!--end of loading box-->
 
       <!--Parent Comment-->
-      <div v-for="c in commentList" :key="c.cid">
+      <div v-for="(c,index) in commentList" :key="c.cid">
           <div>
             <div class="comment-card">
               <div class="md-layout">
@@ -214,7 +214,7 @@
                           :disabled="!$store.getters.getUid || c.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : c.user_like }"
-                          @click="likeComment(c.cid)"
+                          @click="likeComment(c.cid, false, index, false)"
                         >
                           <md-icon>favorite</md-icon>
                           <md-tooltip md-direction="bottom">
@@ -226,7 +226,7 @@
                           :disabled="!$store.getters.getUid || c.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : c.user_like }"
-                          @click="dislikeComment(c.cid, index, false)"
+                          @click="likeComment(c.cid, true, index, false)"
                         >
                           <md-icon>favorite</md-icon>
                         </md-button>
@@ -294,7 +294,7 @@
 
           <!--Replies of parent-->
           <div
-            v-for="r in c.replies"
+            v-for="(r,rIndex) in c.replies"
             class="reply-comment"
             :key="r.cid"
           >
@@ -377,7 +377,7 @@
                           :disabled="!$store.getters.getUid || r.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : r.user_like }"
-                          @click="likeComment(r.cid)"
+                          @click="likeComment(r.cid, false, index, rIndex)"
                         >
                           <md-icon>favorite</md-icon>
                           <md-tooltip md-direction="bottom">
@@ -388,7 +388,7 @@
                           :disabled="!$store.getters.getUid || r.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : r.user_like }"
-                          @click="dislikeComment(r.cid)"
+                          @click="likeComment(r.cid, true, index, rIndex)"
                         >
                           <md-icon>favorite</md-icon>
                         </md-button>
@@ -472,11 +472,17 @@ export default {
     this.getComments();
   },
   methods: {
-    likeComment(cid,index,rindex){
+    // cid = comment id
+    // dislike = if wants to dislike = true  else = false
+    // index = index of comment
+    // rindex = index of reply
+    likeComment(cid, dislike, index, rindex){
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
         .post("https://ed808.com:92/latin/comments/" + cid + "/like" ,{
+
+          'action' : dislike ? 'dislike' : ''
 
         }, {
           headers: {
@@ -486,38 +492,19 @@ export default {
         })
         .then(response => {
           this.commentErr = false;
-          // console.log(this.commentList[index])
-          // this.getComments();
-        })
-        .catch(err => {
-          console.log(err.response);
-          if(err.response.statusText){
-            this.commentErr = err.response.statusText;
-          }else {
-            this.commentErr = 'Error While Sending Request';
-          }
-        });
-    },
-    dislikeComment(cid){
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials = true;
-      axios
-        .post("https://ed808.com:92/latin/comments/" + cid + "/like" ,{
-
-          'action' : 'dislike'
-
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token' : this.getCookie('token')
+          /* this is for likes counter and btn color */
+          if (rindex !== false) {
+            this.commentList[index].replies[rindex].user_like = dislike ? false : true;
+            dislike ? this.commentList[index].replies[rindex].likes --
+              : this.commentList[index].replies[rindex].likes ++;
+          }else{
+            this.commentList[index].user_like = dislike ? false : true;
+            dislike ? this.commentList[index].likes --
+              : this.commentList[index].likes ++;
           }
         })
-        .then(response => {
-          this.commentErr = false;
-          this.getComments();
-        })
         .catch(err => {
-          console.log(err.response);
+          console.log(err);
           if(err.response.statusText){
             this.commentErr = err.response.statusText;
           }else {
@@ -527,7 +514,7 @@ export default {
     },
     submitComment(pid){
       this.onSubmit = true;
-      // console.log(this.commentText);
+      console.log(this.commentText);
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
