@@ -2,17 +2,26 @@
 <template>
   <div>
     <div :class="'main-container node_type_' + types[0]">
-      <scroll></scroll>
+      <scroll />
       <div class="top_header">
-        <h1 v-if="node_content.hasOwnProperty('title')">{{node_content.title}}</h1>
-        <div class="date_and_category" v-if="!types.includes('event')">
-          <span v-if="node_content.hasOwnProperty('created')">{{node_content.created}}</span>
+        <h1 v-if="node_content.hasOwnProperty('title')">
+          {{ node_content.title }}
+        </h1>
+        <div
+          v-if="!types.includes('event')"
+          class="date_and_category"
+        >
+          <span v-if="node_content.hasOwnProperty('created')">
+            {{ node_content.created }}
+          </span>
           <nuxt-link
             v-if="node_content.hasOwnProperty('topic') && (node_content.topic.length != 0)"
             :to="'/contents?topic='+ node_content.topic[0].tid"
             target="_blank"
             :title="node_content.topic[0].name"
-          >{{node_content.topic[0].name}}</nuxt-link>
+          >
+            {{ node_content.topic[0].name }}
+          </nuxt-link>
         </div>
         <eventData
           v-if="types.includes('event')"
@@ -26,7 +35,10 @@
       </div>
 
 
-      <md-content class="node-body" id="node_body">
+      <md-content
+        id="node_body"
+        class="node-body"
+      >
         <!--<div 
       v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
         <wavesurferPlayer 
@@ -39,8 +51,9 @@
           v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
           :url="node_content.video_link"
         />
-        <img id="image"
+        <img
           v-if="node_content.hasOwnProperty('image') && (node_content.image != null)"
+          id="image"
           :src="convertDomain(node_content.image)"
           :alt="node_content.title"
         >
@@ -48,27 +61,28 @@
         <!-- Anchor Side Elements -->
 
         <!--<affix-->
-          <!--class="sidebar-menu affix-bottom"-->
-          <!--relative-element-selector="#article"-->
-          <!--:offset="{ top: 20, bottom: 20 }"-->
-          <!--style=""-->
+        <!--class="sidebar-menu affix-bottom"-->
+        <!--relative-element-selector="#article"-->
+        <!--:offset="{ top: 20, bottom: 20 }"-->
+        <!--style=""-->
         <!--&gt;-->
-          <!--<scrollactive-->
-            <!--class="my-nav"-->
-            <!--@:itemchanged="onItemChanged"-->
-            <!--active-class="active"-->
-            <!--:offset="20">-->
+        <!--<scrollactive-->
+        <!--class="my-nav"-->
+        <!--@:itemchanged="onItemChanged"-->
+        <!--active-class="active"-->
+        <!--:offset="20">-->
 
 
-            <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
+        <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
 
-          <!--</scrollactive>-->
+        <!--</scrollactive>-->
         <!--</affix>-->
 
-        <article id="article"
+        <article
           v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
+          id="article"
           v-html="convertDomain(node_content.body_value)"
-        ></article>
+        />
         
         <div
           v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
@@ -76,83 +90,130 @@
         >
           <h3>Reference:</h3>
           <a 
-            v-for="(reference , index) in node_content.references"
+            v-for="(reference, index) in node_content.references"
             :key="index"
-            :href="reference" target="_blank" rel="nofollow">{{reference}}</a>
-          <span v-if="index > 0">,</span>
+            :href="reference"
+            target="_blank"
+            rel="nofollow"
+          >
+            {{ reference }}
+          </a>
+          <span v-if="index > 0">
+            ,
+          </span>
         </div>
         
         <div
-          class="tags"
           v-if="node_content.hasOwnProperty('tags') && (node_content.tags.length != 0)"
+          class="tags"
         >
           <tag
-            v-for="(tag , index) in node_content.tags"
+            v-for="(tag, index) in node_content.tags"
             :key="index"
             :name="tag.name"
             :tid="tag.tid"
           />
         </div>
         <div class="share">
-
           <div class="social">
             <md-button class="md-icon-button md-twitter-icon">
-              <i class="zmdi zmdi-twitter"></i>
+              <i class="zmdi zmdi-twitter" />
               <md-tooltip md-direction="bottom">
                 Share on Twitter
               </md-tooltip>
             </md-button>
 
             <md-button class="md-icon-button md-facebook-icon">
-              <i class="zmdi zmdi-facebook"></i>
+              <i class="zmdi zmdi-facebook" />
               <md-tooltip md-direction="bottom">
                 Share on Facebook
               </md-tooltip>
             </md-button>
 
             <md-button class="md-icon-button md-linkedin-icon">
-              <i class="zmdi zmdi-linkedin"></i>
+              <i class="zmdi zmdi-linkedin" />
               <md-tooltip md-direction="bottom">
                 Share on LinkedIn
               </md-tooltip>
             </md-button>
           </div>
           <div class="actions">
-            <md-button
-              class="md-icon-button"
-              :class="{ 'bookmark-active' : node_content.user_bookmark }"
-              @click="bookmarkContent()"
-            >
-              <i
-                class="zmdi"
-                :class="node_content.user_bookmark ? 'zmdi-bookmark' : 'zmdi-bookmark-outline'"
-              ></i>
-              <md-tooltip md-direction="bottom" v-if="!node_content.user_bookmark">
-                Bookmark this article
-              </md-tooltip>
-              <md-tooltip md-direction="bottom" v-else>
-                Remove from bookmarks
-              </md-tooltip>
-            </md-button>
+            <span class="clap">
+              <md-button
+                :disabled="!$store.getters.getUid"
+                class="md-icon-button"
+                :class="{ 'bookmark-active' : node_content.user_bookmark }"
+                @click="bookmarkContent()"
+              >
+                <i
+                  class="zmdi"
+                  :class="node_content.user_bookmark ? 'zmdi-bookmark' : 'zmdi-bookmark-outline'"
+                  :style="!$store.getters.getUid ? 'opacity: 0.5' : ''"
+                />
+                <md-tooltip
+                  v-if="!node_content.user_bookmark"
+                  md-direction="bottom"
+                >
+                  Bookmark this article
+                </md-tooltip>
+                <md-tooltip
+                  v-else
+                  md-direction="bottom"
+                >
+                  Remove from bookmarks
+                </md-tooltip>
+              </md-button>
+              <md-tooltip
+                v-if="!$store.getters.getUid"
+                md-direction="bottom"
+              >
+                  Please login to bookmark this content.
+                </md-tooltip>
+            </span>
 
-            <md-button class="md-icon-button clap">
-              <i class="zmdi zmdi-star-circle"></i>
-              <md-tooltip md-direction="bottom">
-                Star
+            <span class="clap">
+              <md-button
+                class="md-icon-button clap"
+                :disabled="node_content.user_clap >= 10 || !$store.getters.getUid"
+                @click="clapContent()"
+              >
+                <img
+                  v-if="node_content.user_clap < 10 && $store.getters.getUid"
+                  :src="node_content.user_clap != 0 ? '/images/clap-active.png' : '/images/clap.png'"
+                  height="23px"
+                >
+                <img
+                  v-else
+                  :src="!$store.getters.getUid ? '/images/clap-disabled.png' : '/images/clap-active.png'"
+                  height="23px"
+                  style="opacity: 0.6;"
+                >
+                <md-tooltip md-direction="bottom">
+                  Clap
+                </md-tooltip>
+              </md-button>
+              <md-tooltip md-direction="bottom" v-if="node_content.user_clap >= 10">
+                You clapped so much!
               </md-tooltip>
-            </md-button>
-            <span class="clap-counts">
-              26 claps!
+              <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
+                Please login to clap.
+              </md-tooltip>
+            </span>
+            <span
+              v-if="node_content.clap_point != 0"
+              class="clap-counts"
+            >
+              {{ node_content.clap_point }} {{ node_content.clap_point == 1 ? 'clap!' : 'claps!' }}
             </span>
           </div>
         </div>
       </md-content>
 
       <author
-      :uid="author.uid"
-      :name="author.full_name"
-      :picture="author.picture"
-      :about_me="author.about_me"
+        :uid="author.uid"
+        :name="author.full_name"
+        :picture="author.picture"
+        :about_me="author.about_me"
       />
 
       <!--<sharing :url="'https://ed808.com/node/' + nid" :title="node_content.title"></sharing>-->
@@ -164,7 +225,8 @@
 
       <div
         class="md-layout node-page"
-        style="position: relative;">
+        style="position: relative;"
+      >
         <teaser
           v-if="relatedNodes[0]"
           :title="relatedNodes[0].title"
@@ -191,17 +253,17 @@
           :nid="relatedNodes[2].nid"
           :type="relatedNodes[2].types"
         />
-
       </div>
       <div id="comments">
         <comment :nid="nid" />
       </div>
-      <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
+      <md-snackbar
+        class="error"
+        :md-active.sync="showError"
+      >
+        {{ errors }}
+      </md-snackbar>
     </div>
-
-
-
-
   </div>
 </template>
 
@@ -215,11 +277,10 @@ import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
-import { cookie } from '@/components/mixins/cookie.js'
+import { cookie } from "@/components/mixins/cookie.js";
 
 export default {
-  name: "node",
-  mixins: [cookie],
+  name: "Node",
   components: {
     teaser,
     eventData,
@@ -231,6 +292,7 @@ export default {
     // ScrollActive,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
+  mixins: [cookie],
   data() {
     return {
       nid: this.$route.params.nid,
@@ -244,10 +306,16 @@ export default {
       articleHeadings: []
     };
   },
-  async asyncData({ params }) {
+  async asyncData({ params, query, req }) {
     try {
       const { data } = await axios.get(
-        "https://ed808.com:92/latin/contents/" + params.nid
+        "https://ed808.com:92/latin/contents/" + params.nid,
+        {
+          headers: {
+            'Cookie' : typeof req !== 'undefined' ? req.headers.cookie : '',
+            'Cache-Control': 'no-cache'
+          }
+        }
       );
       if (data) {
         let contentTypes = [];
@@ -267,58 +335,82 @@ export default {
           author: data.author,
           loading: false
         };
-      } else {
-        throw { statusCode: 404, message: "Page not found" };
       }
-    } catch (e) {
+    }
+    catch (e) {
       console.log(e);
-      throw { statusCode: 404, message: "Page not found" };
+    //   throw { statusCode: 404, message: "Page not found" };
     }
   },
-  mounted(){
-    this.getRelatedNodes()
+  mounted() {
+    this.getRelatedNodes();
     // this.getHeadings()
   },
   methods: {
     onItemChanged(event, currentItem, lastActiveItem) {
       // your logic
     },
-    getHeadings(){
-      let headings = document.getElementById('article').getElementsByTagName('h2')
-      let headObject = []
-      Array.from(headings).forEach(function (el,i) {
+    getHeadings() {
+      let headings = document
+        .getElementById("article")
+        .getElementsByTagName("h2");
+      let headObject = [];
+      Array.from(headings).forEach(function(el, i) {
         let obj = {
-          id: 'head'+i,
+          id: "head" + i,
           text: el.innerHTML
-        }
-        headObject.push(obj)
-        el.setAttribute('id','head'+i)
-      })
-      this.articleHeadings = headObject
+        };
+        headObject.push(obj);
+        el.setAttribute("id", "head" + i);
+      });
+      this.articleHeadings = headObject;
     },
-    bookmarkContent(){
-      console.log(this.node_content)
+    clapContent() {
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
-        .post("https://ed808.com:92/latin/contents/" + this.nid + "/bookmark" ,{
-
-          'action' : this.node_content.user_bookmark ? 'unbookmark' : 'bookmark'
-
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token' : this.getCookie('token')
+        .post(
+          "https://ed808.com:92/latin/contents/" + this.nid + "/clap",
+          {},
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": this.getCookie("token")
+            }
           }
+        )
+        .then(() => {
+          this.node_content.user_clap++;
+          this.node_content.clap_point++;
         })
-        .then(()=> {
-          console.log('sent')
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    bookmarkContent() {
+      console.log(this.node_content);
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials = true;
+      axios
+        .post(
+          "https://ed808.com:92/latin/contents/" + this.nid + "/bookmark",
+          {
+            action: this.node_content.user_bookmark ? "unbookmark" : "bookmark"
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": this.getCookie("token")
+            }
+          }
+        )
+        .then(() => {
+          console.log("sent");
           this.node_content.user_bookmark = !this.node_content.user_bookmark;
         })
-        .catch((err)=> {
-          console.log(err)
-        })
-
+        .catch(err => {
+          console.log(err);
+        });
     },
     convertDomain(value) {
       //this work but its performance is slow
@@ -328,20 +420,27 @@ export default {
         let target = this;
         return target.replace(new RegExp(search, "g"), replacement);
       };
-      return value != null ? value
-        .replaceAll('href="http://api.ed808.com', 'href="https://ed808.com')
-        .replaceAll('href="https://ed808.com:92', 'href="https://ed808.com')
-        .replaceAll('href="http://ed808.com:92', 'href="https://ed808.com')
-        .replaceAll('="/sites', '="https://ed808.com:92/sites')
-        .replaceAll('="/node', '="https://ed808.com/node') : ''
+      return value != null
+        ? value
+            .replaceAll('href="http://api.ed808.com', 'href="https://ed808.com')
+            .replaceAll('href="https://ed808.com:92', 'href="https://ed808.com')
+            .replaceAll('href="http://ed808.com:92', 'href="https://ed808.com')
+            .replaceAll('="/sites', '="https://ed808.com:92/sites')
+            .replaceAll('="/node', '="https://ed808.com/node')
+        : "";
     },
-    getRelatedNodes(){
-      axios.get('https://ed808.com:92/latin/contents/'+ this.nid +'/relative?parameter[page]=1')
+    getRelatedNodes() {
+      axios
+        .get(
+          "https://ed808.com:92/latin/contents/" +
+            this.nid +
+            "/relative?parameter[page]=1"
+        )
         .then(response => response.data)
-        .then((response)=>{
+        .then(response => {
           // console.log( response )
-          this.relatedNodes = response
-        })
+          this.relatedNodes = response;
+        });
     }
   },
 
@@ -445,7 +544,6 @@ body {
   padding: 0px 0 15px 0;
   .md-layout {
     @include main-center-content();
-
   }
   h2.section-title {
     @include main-center-content();
@@ -635,7 +733,7 @@ body {
 .vue-affix {
   padding-top: 20px;
   position: absolute;
-  width: calc(((100% - 800px)/2) - 15px);
+  width: calc(((100% - 800px) / 2) - 15px);
   margin-left: 15px;
   a.scrollactive-item {
     display: block;
@@ -668,13 +766,20 @@ body {
     }
     .bookmark-active {
       .zmdi {
-        color: #FBC02D!important;
+        color: #fbc02d !important;
       }
     }
     span.clap-counts {
       display: inline-block;
       line-height: 40px;
       margin-left: 5px;
+    }
+    span.clap {
+      position: relative;
+      top: -2px;
+      padding-top: 7px;
+      padding-bottom: 13px;
+      min-height: 40px;
     }
   }
   .md-ripple {
@@ -689,7 +794,6 @@ body {
       }
       .zmdi-linkedin {
         color: #0976b4;
-
       }
       .zmdi-twitter {
         color: #55acee;
@@ -702,7 +806,7 @@ body {
   width: 24px;
   min-width: 24px;
   height: 24px;
-  font-size: 24px!important;
+  font-size: 24px !important;
   margin: auto;
   display: inline-flex;
   -webkit-user-select: none;
@@ -714,7 +818,7 @@ body {
   vertical-align: middle;
 }
 
-@media (max-width: 1440px){
+@media (max-width: 1440px) {
   .node-page .content-teaser {
     width: 31.3%;
     flex: 0 1 31.3%;
@@ -726,15 +830,13 @@ body {
     box-shadow: 0 0;
   }
   70% {
-    -webkit-box-shadow: 0 0 5px 10px rgba(255,255,255,0);
-    box-shadow: 0 0 5px 10px rgba(255,255,255,0);
+    -webkit-box-shadow: 0 0 5px 10px rgba(255, 255, 255, 0);
+    box-shadow: 0 0 5px 10px rgba(255, 255, 255, 0);
   }
 
   100% {
-    -webkit-box-shadow: 0 0 0 0 rgba(255,255,255,0);
-    box-shadow: 0 0 0 0 rgba(255,255,255,0);
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
 }
-
-
 </style>
