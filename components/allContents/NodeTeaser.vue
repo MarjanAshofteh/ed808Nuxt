@@ -104,6 +104,16 @@ export default {
 	    -ms-flex: 0 1 31.3%;
     	flex: 0 1 31.3%;
     }
+    @media (max-width: 992px){
+      width: 48%;
+      -ms-flex: 0 1 48%;
+      flex: 0 1 48%;
+    }
+    @media (max-width: 600px){
+      width: 100%;
+      -ms-flex: 0 1 100%;
+      flex: 0 1 100%;
+    }
     .content-subheader{
         text-align: left;
         margin: -5px 0 10px;

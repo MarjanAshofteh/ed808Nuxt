@@ -87,6 +87,39 @@
                       <nuxt-link to="/contents"><md-button>All contents</md-button></nuxt-link>
                     </md-menu>
                   </li>
+                  <li class="md-list-item md-menu-item md-theme-default">
+                    <md-menu md-direction="bottom-start">
+                      <nuxt-link to="/contactus"><md-button>Contact us</md-button></nuxt-link>
+                    </md-menu>
+
+                  </li>
+
+                  <li  v-if="!$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
+                      <md-menu md-direction="bottom-start">
+                        <nuxt-link to="/login"><md-button>Login</md-button></nuxt-link>
+                      </md-menu>
+                  </li>
+                  <li  v-if="!$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
+                    <md-menu md-direction="bottom-start">
+                      <nuxt-link to="/register">
+                        <md-button class="md-raised">Register</md-button>
+                      </nuxt-link>
+                    </md-menu>
+                  </li>
+
+                  <li v-if="$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
+                      <md-menu md-direction="bottom-start">
+                        <nuxt-link :to="'/user/'+ $store.state.user.uid">
+                          <md-button class="md-raised">My Profile</md-button>
+                        </nuxt-link>
+                      </md-menu>
+                  </li>
+                  <li v-if="$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
+                      <md-menu md-direction="bottom-start"  @click="logUserOut">
+                          <md-button class="md-raised">Log out</md-button>
+                      </md-menu>
+                  </li>
+
                 </ul>
               </div>
             </md-menu-content>
@@ -701,6 +734,9 @@
         font-size: 18px !important;
       }
     }
+  }
+  ul.md-list.md-theme-default{
+    padding: 0;
   }
 
 </style>

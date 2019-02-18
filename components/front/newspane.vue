@@ -18,8 +18,8 @@
         </md-progress-spinner>
       </div>
 
-      <carousel 
-        :per-page="4" 
+      <carousel
+        :per-page="4"
         :navigationEnabled="true" 
         navigationNextLabel="navigate_next"
         navigationPrevLabel="navigate_before"
@@ -85,9 +85,24 @@ export default {
 
 <style lang="scss">
 
+.VueCarousel {
+  width: 100%;
+}
+.VueCarousel-inner{
+  @media screen and (max-width: 600px) {
+    flex-basis: auto !important;
+
+  }
+}
+
 .VueCarousel-slide{
   padding: 10px;
-  width:316px !important;
+  @media screen and (max-width: 992px){
+    width: 50% !important;
+  }
+  @media screen and (max-width: 600px) {
+    width: 100% !important;
+  }
 }
 button.VueCarousel-navigation-button{
   box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
@@ -123,6 +138,9 @@ section#events{
 	margin: 0px auto 20px auto;
 	padding: 0 36px;
   min-height: 300px;
+  @media screen and (max-width: 600px) {
+    padding: 0;
+  }
 }
 .md-headline{
 	padding: 35px 0;

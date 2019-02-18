@@ -702,9 +702,17 @@ export default {
       left: 14%;
       z-index: 2;
       overflow: hidden;
-      border-radius: 50%;
-      border: 3px solid white;
       min-width: 132px;
+
+      @media screen and (max-width: 600px) {
+        top: 90px;
+        left: calc(50% - 66px);
+      }
+      img {
+        border-radius: 50%;
+        border: 3px solid white;
+
+      }
       &:hover{
         .edit-picture{
           opacity: 1;
@@ -759,18 +767,38 @@ export default {
   .bottom{
     max-width: 1130px;
     margin: 27px auto;
+    padding: 5px;
     text-align: left;
     display: flex;
+    flex-wrap: wrap;
+    .min-col {
+      width: 28%;
+      margin-right: 2%;
+      @media screen and (max-width: 992px){
+        width: 38%;
+        margin-right: 2%;
+      }
+      @media screen and (max-width: 600px){
+        width: 100%;
+        margin-right: 0;
+      }
+    }
     .max-col{
+      max-width: 70%;
+      @media screen and (max-width: 992px){
+        width: 60%;
+      }
+      @media screen and (max-width: 600px){
+        width: 100%;
+      }
       .box{
-        min-width: 776px;
+        min-width: 100%;
       }
     }
     .box{
       position: relative;
-      min-width: 300px;
       display: inline-block;
-      width: auto;
+      width: 100%;
       margin: 0 27px 27px 0;
       transition: .3s cubic-bezier(.25,.8,.5,1);
       &:hover .box-head .edit{

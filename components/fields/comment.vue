@@ -660,6 +660,34 @@ export default {
     border-radius: 3px;
     border: 1px solid #d9d9d9;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.09);
+    @media screen and (max-width: 720px) {
+      .md-layout-item.md-size-20 {
+        min-width: 100%;
+        max-width: 100%;
+        flex: 0 1 100%;
+      }
+      .user-details{
+        position: relative;
+        .md-avatar {
+          display: inline-block;
+          position: absolute;
+          left: 0;
+          top: 8px;
+          min-height: 32px;
+          width: 40px;
+          height: 40px;
+          margin: auto;
+        }
+        .md-title {
+          text-align: left;
+          margin-left: 50px;
+        }
+        .md-date {
+          text-align: left;
+          margin-left: 50px;
+        }
+      }
+    }
   }
   .comment-form {
     padding: 0;

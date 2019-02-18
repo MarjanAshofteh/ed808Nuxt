@@ -13,13 +13,13 @@
         <md-content class="userdetails">
           <p>Written By:</p>
           <a :href="'/user/'+uid" target="_blank">
-            {{name}}
+            {{ name }}
           </a>
-          <md-button class="md-primary">Follow</md-button>
+          <!--<md-button class="md-primary">Follow</md-button>-->
         </md-content>
       </div>
       <div class="about-author">
-        <p>{{about_me}}</p>
+        <p>{{ about_me }}</p>
       </div>
     </md-content>
   </div>
@@ -27,8 +27,13 @@
 
 <script>
 export default {
-  name: 'author',
-  props: ['uid','name','picture','about_me'],
+  name: 'Author',
+  props: [
+    'uid',
+    'name',
+    'picture',
+    'about_me'
+  ],
 }
 </script>
 

@@ -307,16 +307,24 @@ export default {
     };
   },
   async asyncData({ params, query, req }) {
+    console.log( req )
+    // console.log( document.cookie )
     try {
-      const { data } = await axios.get(
+      axios.withCredentials = true
+      axios.crossDomain = true
+      const { data } = req && req.headers && req.headers.cookie ?  await axios.get(
         "https://ed808.com:92/latin/contents/" + params.nid,
         {
-          headers: {
-            'Cookie' : typeof req !== 'undefined' ? req.headers.cookie : '',
+          headers:  {
+            'Cookie' :  req.headers.cookie,
             'Cache-Control': 'no-cache'
           }
         }
-      );
+      ) : await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
+          withCredentials: true,
+        }
+      )
+
       if (data) {
         let contentTypes = [];
         if (
