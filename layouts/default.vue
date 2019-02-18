@@ -79,12 +79,12 @@
                   </md-menu>
                   <li class="md-list-item md-menu-item md-theme-default">
                     <md-menu md-direction="bottom-start">
-                      <nuxt-link to="/aboutus"><md-button>about us</md-button></nuxt-link>
+                      <nuxt-link to="/aboutus"><md-button>About Us</md-button></nuxt-link>
                     </md-menu>
                   </li>
                   <li class="md-list-item md-menu-item md-theme-default">
                     <md-menu md-direction="bottom-start">
-                      <nuxt-link to="/contents"><md-button>all contents</md-button></nuxt-link>
+                      <nuxt-link to="/contents"><md-button>All contents</md-button></nuxt-link>
                     </md-menu>
                   </li>
                 </ul>

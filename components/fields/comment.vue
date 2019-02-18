@@ -10,7 +10,7 @@
     <!--form and comments-->
     <div class="comment-list">
       <transition name="fade">
-        <div class="loading-overlay" v-if="onSubmit || onEditing"></div>
+        <div class="loading-overlay" v-if="onSubmit"></div>
       </transition>
 
       <!--Comment form-->
@@ -548,6 +548,7 @@ export default {
         });
     },
     editComment(cid){
+      this.onSubmit = true;
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
@@ -562,6 +563,7 @@ export default {
         .then(response => {
           this.commentErr = false;
           this.onEditing = false;
+          this.onSubmit = false;
           this.editingCommentBody = false
           this.getComments();
         })
@@ -577,7 +579,7 @@ export default {
         });
     },
     deleteComment(cid){
-      onEditing = true;
+      this.onSubmit = true;
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials = true;
       axios
@@ -589,7 +591,7 @@ export default {
         })
         .then(response => {
           this.commentErr = false;
-          onEditing = false;
+          this.onSubmit = false;
           this.getComments();
         })
         .catch(err => {
@@ -823,6 +825,6 @@ export default {
   top: 0;
   bottom: 0;
   right: 15px;
-  z-index: 2;
+  z-index: 10;
 }
 </style>
