@@ -18,7 +18,7 @@ export const cookie = {
         var cookie = name + "=" + value + ";"
         if (days) {
           var expires = new Date()
-          expires = new Date(expires.getFullYear(),expires.getMonth(),expires.getDate()+days)
+          expires = new Date(expires.getUTCFullYear(),expires.getUTCMonth(),expires.getUTCDate()+days,expires.getUTCHours()+3,expires.getUTCMinutes()+33,expires.getUTCSeconds()+20,expires.getUTCMilliseconds())
           cookie += "expires=" + expires + ";"
         }
         document.cookie = cookie + expires + "; path=/"
