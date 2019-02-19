@@ -85,10 +85,12 @@
     //   this.name = to.params.tname,
     //     next()
     // },
-    async asyncData({params}) {
+    async asyncData({req, query, params}) {
       try {
         const {data} = await axios.get('https://ed808.com:92/latin/tag/' + params.tid ,{
+          withCredentials:true,
           headers: {
+            'Cookie': req && req.headers && req.headers.cookie ? req.headers.cookie : '',
             'Content-type': 'application/json',
           }
         })
@@ -98,7 +100,7 @@
             image: data.image != null ? data.image : '',
             description: data.description != null ? data.description : '',
             loading: {page: false, bookmark: false},
-            bookmarked: data.user_bookmark,
+            bookmarked: data.user_follow,
             collapse: true,
             metaDescription: data.meta_description != null ? data.meta_description : ''
           }
@@ -122,7 +124,7 @@
     methods:{
       convertDomain(value){
         String.prototype.replaceAll = function(search, replacement) {
-          var target = this;
+          let target = this;
           return target.replace(new RegExp(search, 'g'), replacement);
         };
         return value != null ? value.replaceAll('href="http://api.ed808.com', 'href="https://ed808.com')
@@ -143,9 +145,9 @@
         if(this.getCookie("token") != null){
           axios.defaults.crossDomain = true;
           axios.defaults.withCredentials  = true;
-          await axios.post('https://ed808.com:92/latin/tag' + this.tid + '/bookmark',
+          await axios.post('https://ed808.com:92/latin/tag/' + this.tid + '/follow',
             {
-              action : this.bookmarked? "unbookmark": "bookmark",
+              action : this.bookmarked? "unfollow": "follow",
             },
             {
               headers: {

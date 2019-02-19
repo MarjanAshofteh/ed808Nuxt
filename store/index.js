@@ -44,8 +44,8 @@ export const actions = {
           let {data} = await axios.get('https://ed808.com:92/latin/user/login/nav_bar_info', {
             headers: {
               'Content-type': 'application/json',
-                'Access-Control-Allow-Credentials' : true,
-                Cookie : req.headers.cookie
+              'Access-Control-Allow-Credentials' : true,
+              Cookie : req.headers.cookie
             }
           })
           if(data){
@@ -90,4 +90,4 @@ export const getters = {
   getUid: state => (state.user.uid > 0) ? state.user.uid : false
 }
 
-
+export const strict = false
