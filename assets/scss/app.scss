@@ -13,6 +13,12 @@
   font-weight: 400;
   src: url(/fonts/material.woff2) format('woff2'),url(https://ed808.com/fonts/material.woff2) format('woff2');
 }
+@font-face {
+  font-family: mat;
+  font-style: normal;
+  font-weight: 400;
+  src: url(/fonts/mat.woff) format('woff'),url(https://ed808.com/fonts/mat.woff) format('woff');
+}
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after,
 .md-progress-bar.md-theme-default.md-query .md-progress-bar-track:after,
@@ -152,4 +158,32 @@ header#header{
 }
 .__nuxt-error-page {
   position: relative!important;
+}
+.md-button.md-just-icon {
+  height: 41px;
+  min-width: 41px;
+  width: 41px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  line-height: 41px;
+  font-size: 20px!important;
+  position: relative;
+  top: 0;
+  i{
+    font-size: 20px!important;
+    position: relative;
+    top: 0;
+  }
+}
+.md-button.md-primary {
+  -webkit-box-shadow: 0 2px 2px 0 rgba(156,39,176,.14), 0 3px 1px -2px rgba(156,39,176,.2), 0 1px 5px 0 rgba(156,39,176,.12);
+  box-shadow: 0 2px 2px 0 rgba(156,39,176,.14), 0 3px 1px -2px rgba(156,39,176,.2), 0 1px 5px 0 rgba(156,39,176,.12);
+}
+.md-button.md-primary, .md-button.md-primary.active, .md-button.md-primary:active, .md-button.md-primary:focus, .md-button.md-primary:hover {
+  background-color: #9c27b0!important;
+  background-color: var(--md-theme-default-primary-on-background,#9c27b0) !important;
+}
+.md-button.md-primary, .md-button.md-primary.active, .md-button.md-primary.active i, .md-button.md-primary:active, .md-button.md-primary:active i, .md-button.md-primary:focus, .md-button.md-primary:focus i, .md-button.md-primary:hover, .md-button.md-primary:hover i, .md-button.md-primary i {
+  color: #fff!important;
 }
