@@ -56,14 +56,14 @@ $x360 : "(max-width: 360px)";
 }
 @mixin before($content, $font:'', $size:'', $color:''){
 	&:before{
-		content: #{"\"\\"}#{$content + "\""};
+		content: #{'\'\\'}#{$content + '\''};
     @if $font != '' {font-family: $font}
     @else {font-family: "mat"};
 		@if $size != '' {font-size: $size;}
 		@if $color != '' {color: $color;}
 	}
 }
-@mixin after($content, $font:"mat", $size:'', $color:''){
+@mixin after($content, $font:'mat', $size:'', $color:''){
 	&:before{
 		content: "#{content}";
 		font-family: $font;

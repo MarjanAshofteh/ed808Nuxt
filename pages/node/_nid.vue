@@ -115,28 +115,6 @@
           />
         </div>
         <div class="share">
-          <div class="social">
-            <md-button class="md-icon-button md-twitter-icon">
-              <i class="zmdi zmdi-twitter" />
-              <md-tooltip md-direction="bottom">
-                Share on Twitter
-              </md-tooltip>
-            </md-button>
-
-            <md-button class="md-icon-button md-facebook-icon">
-              <i class="zmdi zmdi-facebook" />
-              <md-tooltip md-direction="bottom">
-                Share on Facebook
-              </md-tooltip>
-            </md-button>
-
-            <md-button class="md-icon-button md-linkedin-icon">
-              <i class="zmdi zmdi-linkedin" />
-              <md-tooltip md-direction="bottom">
-                Share on LinkedIn
-              </md-tooltip>
-            </md-button>
-          </div>
           <div class="actions">
             <span class="clap">
               <md-button
@@ -206,8 +184,64 @@
               {{ node_content.clap_point }} {{ node_content.clap_point == 1 ? 'clap!' : 'claps!' }}
             </span>
           </div>
+
+          <div class="social">
+            <social-sharing
+              :url="'https://ed808.com/node/' + nid"
+              :description="node_content.meta_description"
+              :title="node_content.title"
+              inline-template>
+              <div>
+
+                <network network="linkedin">
+                  <md-button class="md-icon-button md-linkedin-icon">
+                    <i class="zmdi zmdi-linkedin" />
+                    <md-tooltip md-direction="bottom">
+                      Share on LinkedIn
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+
+                <network network="facebook">
+                  <md-button class="md-icon-button md-facebook-icon">
+                    <i class="zmdi zmdi-facebook" />
+                    <md-tooltip md-direction="bottom">
+                      Share on Facebook
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+                <network network="twitter">
+                  <md-button class="md-icon-button md-twitter-icon">
+                    <i class="zmdi zmdi-twitter" />
+                    <md-tooltip md-direction="bottom">
+                      Share on Twitter
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+                <network network="whatsapp">
+                  <md-button class="md-icon-button md-whatsapp-icon">
+                    <i class="zmdi zmdi-whatsapp" />
+                    <md-tooltip md-direction="bottom">
+                      Share on WhatsApp
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+              </div>
+            </social-sharing>
+
+
+
+
+
+          </div>
         </div>
       </md-content>
+
+
 
       <author
         :uid="author.uid"
@@ -272,7 +306,6 @@
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
-// import sharing from "@/components/elements/sharing";
 import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
@@ -288,8 +321,6 @@ export default {
     tag,
     comment,
     scroll,
-    // sharing,
-    // ScrollActive,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
   mixins: [cookie],
@@ -536,7 +567,11 @@ export default {
 };
 </script>
 
+
 <style lang="scss">
+@import '@/assets/scss/vars.scss';
+
+
 @mixin main-center-content() {
   max-width: 800px;
   text-align: left;
@@ -764,9 +799,19 @@ body {
   min-height: 40px;
   .social {
     float: right;
+    @media #{$x600} {
+      float: none;
+      text-align: center;
+      margin-bottom: 10px;
+    }
   }
   .actions {
     float: left;
+    @media #{$x600}  {
+      float: none;
+      text-align: center;
+      margin-bottom: 10px;
+    }
     .md-button.clap {
       &:hover {
         animation: clapAnim infinite 2s;
@@ -805,6 +850,9 @@ body {
       }
       .zmdi-twitter {
         color: #55acee;
+      }
+      .zmdi-whatsapp {
+        color: #25D366;
       }
     }
   }
