@@ -39,14 +39,14 @@
         id="node_body"
         class="node-body"
       >
-        <!--<div 
-      v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
-        <wavesurferPlayer 
-          layout="modal"
-          :src="node_content.files[0]"
-          >
-        </wavesurferPlayer>
-        </div>-->
+        <!--<div-->
+          <!--v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">-->
+          <!--<wavesurfer-->
+            <!--layout="modal"-->
+            <!--:src="node_content.files[0]"-->
+            <!--&gt;-->
+          <!--</wavesurfer>-->
+        <!--</div>-->
         <embedVideo
           v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
           :url="node_content.video_link"
@@ -83,6 +83,18 @@
           id="article"
           v-html="convertDomain(node_content.body_value)"
         />
+
+          <!--<div class="block-quote">-->
+            <!--<blockquote>-->
+              <!--<p>-->
+                <!--<i class="zmdi zmdi-quote start-quote"></i>-->
+                  <!--<span class="quote">-->
+                    <!--Lorem Ipsum Dolor...-->
+                  <!--</span>-->
+                <!--<i class="zmdi zmdi-quote"></i>-->
+              <!--</p>-->
+            <!--</blockquote>-->
+          <!--</div>-->
         
         <div
           v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
@@ -115,28 +127,6 @@
           />
         </div>
         <div class="share">
-          <div class="social">
-            <md-button class="md-icon-button md-twitter-icon">
-              <i class="zmdi zmdi-twitter" />
-              <md-tooltip md-direction="bottom">
-                Share on Twitter
-              </md-tooltip>
-            </md-button>
-
-            <md-button class="md-icon-button md-facebook-icon">
-              <i class="zmdi zmdi-facebook" />
-              <md-tooltip md-direction="bottom">
-                Share on Facebook
-              </md-tooltip>
-            </md-button>
-
-            <md-button class="md-icon-button md-linkedin-icon">
-              <i class="zmdi zmdi-linkedin" />
-              <md-tooltip md-direction="bottom">
-                Share on LinkedIn
-              </md-tooltip>
-            </md-button>
-          </div>
           <div class="actions">
             <span class="clap">
               <md-button
@@ -206,8 +196,64 @@
               {{ node_content.clap_point }} {{ node_content.clap_point == 1 ? 'clap!' : 'claps!' }}
             </span>
           </div>
+
+          <div class="social">
+            <social-sharing
+              :url="'https://ed808.com/node/' + nid"
+              :description="node_content.meta_description"
+              :title="node_content.title"
+              inline-template>
+              <div>
+
+                <network network="linkedin">
+                  <md-button class="md-icon-button md-linkedin-icon">
+                    <i class="zmdi zmdi-linkedin" />
+                    <md-tooltip md-direction="bottom">
+                      Share on LinkedIn
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+
+                <network network="facebook">
+                  <md-button class="md-icon-button md-facebook-icon">
+                    <i class="zmdi zmdi-facebook" />
+                    <md-tooltip md-direction="bottom">
+                      Share on Facebook
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+                <network network="twitter">
+                  <md-button class="md-icon-button md-twitter-icon">
+                    <i class="zmdi zmdi-twitter" />
+                    <md-tooltip md-direction="bottom">
+                      Share on Twitter
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+                <network network="whatsapp">
+                  <md-button class="md-icon-button md-whatsapp-icon">
+                    <i class="zmdi zmdi-whatsapp" />
+                    <md-tooltip md-direction="bottom">
+                      Share on WhatsApp
+                    </md-tooltip>
+                  </md-button>
+                </network>
+
+              </div>
+            </social-sharing>
+
+
+
+
+
+          </div>
         </div>
       </md-content>
+
+
 
       <author
         :uid="author.uid"
@@ -215,8 +261,6 @@
         :picture="author.picture"
         :about_me="author.about_me"
       />
-
-      <!--<sharing :url="'https://ed808.com/node/' + nid" :title="node_content.title"></sharing>-->
 
       <h2 class="section-title">
         Related Contents:
@@ -272,11 +316,11 @@
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
-// import sharing from "@/components/elements/sharing";
 import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
+import wavesurfer from "@/components/fields/wavesurferPlayer"
 import { cookie } from "@/components/mixins/cookie.js";
 
 export default {
@@ -288,8 +332,7 @@ export default {
     tag,
     comment,
     scroll,
-    // sharing,
-    // ScrollActive,
+    wavesurfer,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
   mixins: [cookie],
@@ -536,7 +579,11 @@ export default {
 };
 </script>
 
+
 <style lang="scss">
+@import '@/assets/scss/vars.scss';
+
+
 @mixin main-center-content() {
   max-width: 800px;
   text-align: left;
@@ -764,9 +811,19 @@ body {
   min-height: 40px;
   .social {
     float: right;
+    @media #{$x600} {
+      float: none;
+      text-align: center;
+      margin-bottom: 10px;
+    }
   }
   .actions {
     float: left;
+    @media #{$x600}  {
+      float: none;
+      text-align: center;
+      margin-bottom: 10px;
+    }
     .md-button.clap {
       &:hover {
         animation: clapAnim infinite 2s;
@@ -806,6 +863,35 @@ body {
       .zmdi-twitter {
         color: #55acee;
       }
+      .zmdi-whatsapp {
+        color: #25D366;
+      }
+    }
+  }
+}
+
+.block-quote {
+  @include main-center-content();
+  margin: 20px auto;
+  blockquote {
+    font-style: italic;
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border-left: 5px solid #eee;
+
+    p {
+        font-size: 1.35em;
+        line-height: 1.5em;
+        color: #555555;
+        margin-bottom: 30px;
+      .zmdi.zmdi-quote{
+        position: relative;
+        bottom: 5px;
+        &.start-quote {
+          transform: rotate(180deg);
+        }
+      }
     }
   }
 }
@@ -826,10 +912,23 @@ body {
   vertical-align: middle;
 }
 
-@media (max-width: 1440px) {
+@media (min-width: 1440px) {
+  .node-page .content-teaser {
+    width: 23%;
+    flex: 0 1 23%;
+  }
+}
+
+@media (min-width: 1200px) {
   .node-page .content-teaser {
     width: 31.3%;
     flex: 0 1 31.3%;
+  }
+}
+@media (max-width: 600px) {
+  .node-page .content-teaser {
+    width: 100%;
+    flex: 0 1 100%;
   }
 }
 @keyframes clapAnim {

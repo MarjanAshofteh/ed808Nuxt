@@ -200,7 +200,7 @@
 </script>
 
 <style lang="scss">
-  @import "@/assets/scss/vars.scss";
+  @import '@/assets/scss/vars.scss';
 
   .tags {
     text-align: left;
@@ -235,7 +235,7 @@
       margin: 0 !important;
       position: relative;
       text-align: left;
-      @include before("", inherit, '', #ddd);
+      /*@include before('', inherit, '', #ddd);*/
       &:before {@include absolute(100%, 1px, 53px);}
       h5{
         margin: 0;
@@ -278,7 +278,6 @@
         line-height: 1.75em;
         margin: 0;
         &:before {
-          content: "#";
           margin: 0 10px 0 0;
           font-weight: normal;
         }
@@ -338,7 +337,6 @@
           background: transparent !important;
         }
         &:not(:last-child):after {
-          content: "";
           background: #ccc;
           @include absolute(45%, 1px, '','',-4vw);
         }

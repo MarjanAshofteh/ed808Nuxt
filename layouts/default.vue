@@ -147,133 +147,90 @@
 
     <footer class="footer footer-white footer-big">
       <div class="container">
-        <!--<div class="content">-->
-          <!--<div class="md-layout">-->
-            <!--<div class="md-layout-item md-medium-size-25 md-large-size-25 md-small-size-100">-->
-              <!--<a href=""><h5>Material Kit PRO</h5></a>-->
-              <!--<p>-->
-                <!--Probably the best UI Kit in the world! We know you've been waiting for it, so don't be shy!-->
-              <!--</p>-->
-            <!--</div>-->
-            <!--<div class="md-layout-item md-medium-size-15 md-large-size-15 md-small-size-100">-->
-              <!--<h5>About</h5>-->
-              <!--<ul class="links-vertical">-->
-                <!--<li><a href="">-->
-                  <!--Blog-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--About Us-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--Presentation-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--Contact Us-->
-                <!--</a></li>-->
-              <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="md-layout-item md-medium-size-15 md-large-size-15 md-small-size-100">-->
-              <!--<h5>Market</h5>-->
-              <!--<ul class="links-vertical">-->
-                <!--<li><a href="">-->
-                  <!--Sales FAQ-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--How to Register-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--Sell Goods-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--Receive Payment-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--Transactions Issues-->
-                <!--</a></li>-->
-              <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="md-layout-item md-medium-size-15 md-large-size-15 md-small-size-100">-->
-              <!--<h5>Legal</h5>-->
-              <!--<ul class="links-vertical">-->
-                <!--<li><a href="">-->
-                  <!--Transactions FAQ-->
-                <!--</a></li>-->
-                <!--<li><a href="#pablo">-->
-                  <!--Terms &amp; Conditions-->
-                <!--</a></li>-->
-                <!--<li><a href="">-->
-                  <!--Licenses-->
-                <!--</a></li>-->
-              <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="md-layout-item md-medium-size-25 md-large-size-25 md-small-size-100">-->
-              <!--<h5>Subscribe to Newsletter</h5>-->
-              <!--<p>-->
-                <!--Join our newsletter and get news in your inbox every week! We hate spam too, so no worries about this.-->
-              <!--</p>-->
-              <!--<form action="" method="" class="form-newsletter">-->
-                <!--<div class="md-layout">-->
-                  <!--<div class="md-layout-item md-large-size-66 medium-size-50">-->
-                    <!--<div class="md-field md-theme-default md-has-placeholder">-->
-                      <!--<input type="text" id="md-input-zyl6y53yh" placeholder="Your Email.." class="md-input">-->
-                      <!--&lt;!&ndash;&ndash;&gt;-->
-                      <!--&lt;!&ndash;&ndash;&gt;-->
-                      <!--&lt;!&ndash;&ndash;&gt;-->
-                    <!--</div>-->
-                  <!--</div>-->
-                  <!--<div class="md-layout-item md-large-size-33 medium-size-50">-->
-                    <!--<button type="button" class="md-button md-primary md-just-icon md-block md-theme-default">-->
-                      <!--<div class="md-ripple">-->
-                        <!--<div class="md-button-content"><i class="md-icon md-icon-font md-theme-default">mail</i></div>-->
-                      <!--</div>-->
-                    <!--</button>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</form>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-        <!--<hr>-->
+        <div class="content">
+          <div class="md-layout">
+            <div class="md-layout-item md-medium-size-25 md-large-size-25 md-small-size-100">
+              <h5>About</h5>
+              <ul class="links-vertical">
+                <li>
+                  <nuxt-link to="/aboutus">About Us</nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/contactus">Contact Us</nuxt-link>
+                </li>
+                <li>
+                  <nuxt-link to="/faq">F&Q</nuxt-link>
+                </li>
+              </ul>
+            </div>
+            <div class="md-layout-item md-medium-size-25 md-large-size-25 md-small-size-100">
+              <h5>Legal</h5>
+              <ul class="links-vertical">
+                <li>
+                  <nuxt-link to="/terms-and-conditions">Terms &amp; Conditions</nuxt-link>
+                </li>
+              </ul>
+            </div>
+            <div class="md-layout-item md-medium-size-45 md-large-size-45 md-small-size-100">
+              <nuxt-link to="/"><h5>ED 808 .ltd</h5></nuxt-link>
+              <p>
+                808 is trying to connect engineering knowledge and industry through combining technology and the newest global experiences in all fields of civil and architectural engineering.
+              </p>
+            </div>
+            <div style="display: none;" class="md-layout-item md-medium-size-40 md-large-size-40 md-small-size-100">
+              <h5>Subscribe to Newsletter</h5>
+              <p>
+                Join our mailing list to receive the latest updates and personalized content right in your inbox.
+              </p>
+              <form action="" method="" class="form-newsletter">
+                <div class="md-layout">
+                  <div class="md-layout-item md-large-size-66 medium-size-50">
+                    <div class="md-field md-theme-default md-has-placeholder">
+                      <input type="text" id="md-input-zyl6y53yh" placeholder="Your Email.." class="md-input">
+                    </div>
+                  </div>
+                  <div class="md-layout-item md-large-size-33 medium-size-50">
+                    <button type="button" class="md-button md-primary md-just-icon md-block md-theme-default">
+                      <div class="md-ripple">
+                        <div class="md-button-content"><i class="md-icon md-icon-font md-theme-default">mail</i></div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <hr>
         <ul class="social-buttons">
           <li>
-
             <a href="http://telegram.me/ed808" class="md-telegram" target="_blank">
-              <md-button class="md-icon-button">
-                <img src="/images/telegram.svg" height="18" alt="">
-              </md-button>
+              <md-button class="md-icon-button"></md-button>
             </a>
           </li>
           <li>
             <a href="https://www.facebook.com/ED808.ltd" class="md-facebook" target="_blank">
-              <md-button class="md-icon-button">
-                <i class="zmdi zmdi-facebook"></i>
-              </md-button>
+              <md-button class="md-icon-button"></md-button>
             </a>
           </li>
           <li>
             <a href="https://www.instagram.com/ed808.ltd/" class="md-instagram" target="_blank">
-              <md-button class="md-icon-button">
-                <i class="zmdi zmdi-instagram"></i>
-              </md-button>
+              <md-button class="md-icon-button"></md-button>
             </a>
           </li>
           <li>
             <a href="https://www.linkedin.com/company/ed808" class="md-linkedin" target="_blank">
-              <md-button class="md-icon-button">
-                <i class="zmdi zmdi-linkedin"></i>
-              </md-button>
+              <md-button class="md-icon-button"></md-button>
             </a>
           </li>
           <li>
             <a href="https://www.youtube.com/channel/UCa-R4IdZ-bCbsVTpKzt4r4A" class="md-youtube" target="_blank">
-              <md-button class="md-icon-button">
-                <i class="zmdi zmdi-youtube"></i>
-              </md-button>
+              <md-button class="md-icon-button"></md-button>
             </a>
           </li>
         </ul>
         <div class="copyright">
-          Copyright © 2019 808 Educational and Engineering Institute All Rights Reserved.
+          Copyright © 2019 ED 808 .ltd All Rights Reserved.
         </div>
       </div>
     </footer>
@@ -370,6 +327,7 @@
 </script>
 
 <style lang="scss">
+  @import "@/assets/scss/vars.scss";
   .md-menu-content-bottom-start.md-menu-content-big.md-menu-content.md-theme-default {
     width: 100%;
     max-width: 100%;
@@ -414,9 +372,9 @@
     margin: 0;
   }
   section#subscribe{
-    background: #5a5f64;
+    background: #ddd;
     padding: 10px 0 30px 0;
-    color: #fff;
+    color: #3c4858;
     margin-top: auto;
     .input-wrapper{
       position: relative;
@@ -436,9 +394,9 @@
       -webkit-appearance: button-bevel;
       padding: 0 7%;
       font-size: 15px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.7);
       outline: none;
-      color: white;
+      color: #555;
       @media all and (max-width: 700px){
         width: 300px;
       }
@@ -482,83 +440,117 @@
     text-align: center;
     display: -webkit-box;
     display: -ms-flexbox;
-    display: flex
-  }
+    display: flex;
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
 
-  footer ul {
-    margin: 0;
-    padding: 0;
-    list-style: none
-  }
+      li {
+        display: inline-block;
 
-  footer ul li {
-    display: inline-block
-  }
+        a {
+          color: inherit !important;
+          padding: .9375rem;
+          font-weight: 500;
+          font-size: 12px;
+          text-transform: uppercase;
+          border-radius: 3px;
+          position: relative;
+          display: block;
+          text-decoration: none;
 
-  footer ul li a {
-    color: inherit!important;
-    padding: .9375rem;
-    font-weight: 500;
-    font-size: 12px;
-    text-transform: uppercase;
-    border-radius: 3px;
-    position: relative;
-    display: block;
-  }
+          &:hover {
+            text-decoration: none;
+          }
+        }
 
-  footer ul li a,footer ul li a:hover {
-    text-decoration: none
-  }
+        .btn {
+          margin: 0
+        }
+      }
 
-  footer ul li .btn {
-    margin: 0
-  }
-
-  footer ul.links-horizontal:first-child a {
-    padding-left: 0
-  }
-
-  footer ul.links-horizontal:last-child a {
-    padding-right: 0
-  }
-
-  footer ul.links-vertical li {
-    display: block;
-    margin-left: -5px;
-    margin-right: -5px
-  }
-
-  footer ul.links-vertical li a {
-    padding: 5px
-  }
-
-  footer .social-buttons .btn,footer .social-buttons a {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding: 0
-  }
-
-  footer .footer-brand {
-    padding: 15px;
-    font-size: 18px;
-    margin-left: -15px
-  }
-
-  footer .footer-brand,footer .footer-brand:focus,footer .footer-brand:hover {
-    color: #3c4858!important
-  }
-
-  footer .copyright {
-    padding: 15px 0
-  }
-
-  footer .copyright .md-icon {
-    font-size: 18px!important;
-    color: inherit!important
-  }
-
-  footer nav ul li a {
-    margin-left: -15px
+      &.links-horizontal {
+        &:first-child a {padding-left: 0}
+        &:last-child a {padding-right: 0}
+      }
+      &.links-vertical{
+        li {
+          display: block;
+          margin-left: -5px;
+          margin-right: -5px;
+          a { padding: 5px}
+        }
+      }
+    }
+    a:not(.md-button):hover {
+      text-decoration: none !important;
+      color: #9C27B0 !important;
+    }
+    .social-buttons{
+      .btn, a{
+        margin-top: 5px;
+        margin-bottom: 5px;
+        padding: 0
+      }
+    }
+    .footer-brand {
+      padding: 15px;
+      font-size: 18px;
+      margin-left: -15px;
+      color: #3c4858 !important;
+      font-weight: bold;
+      &:focus,
+      &:hover {
+        color: #3c4858!important;
+      }
+    }
+    .copyright {
+      padding: 15px 0;
+      .md-icon {
+        font-size: 18px!important;
+        color: inherit!important
+      }
+    }
+    nav ul li a {
+      margin-left: -15px
+    }
+    .container, .container-fluid {
+      padding-right: 15px;
+      padding-left: 15px;
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+    }
+    .md-layout {
+      margin-right: -15px;
+      margin-left: -15px;
+    }
+    .md-layout-item {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+    .md-field {
+      padding-top: 13px;
+      margin: -5px 0 10px;
+      min-height: auto;
+      .md-input{
+        height: 36px;
+        padding: 7px 0;
+        font-size: 14px!important;
+        -webkit-text-fill-color: #3c4858!important;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+    }
   }
 
   .footer-white {
@@ -568,125 +560,58 @@
   .footer-black {
     background-color: #232323;
     background: radial-gradient(ellipse at center,#585858 0,#232323 100%);
-    background-size: 550% 450%
-  }
-
-  .footer-black hr {
-    border-color: hsla(0,0%,100%,.2)
-  }
-
-  .footer-black a {
-    opacity: .86
-  }
-
-  .footer-black a:focus,.footer-black a:hover {
-    opacity: 1
-  }
-
-  .footer-black .copyright,.footer-black .footer-brand,.footer-black .footer-brand:focus,.footer-black .footer-brand:hover,.footer-black a,.footer-black h4,.footer-black h5,.footer-black i {
-    color: #fff!important
+    background-size: 550% 450%;
+    hr {border-color: hsla(0,0%,100%,.2)}
+    a {
+      opacity: .86;
+      &:focus,&:hover {opacity: 1;}
+    }
+    .copyright,
+    .footer-brand,
+    .footer-brand:focus,
+    .footer-brand:hover,
+    a,h4,h5,i {color: #fff!important;}
   }
 
   .footer-big {
-    padding: 1.875rem 0
-  }
-
-  .footer-big .gallery-feed img {
-    width: 20%;
-    margin-right: 5%;
-    margin-bottom: 5%;
-    float: left
-  }
-
-  .footer-big .content {
-    text-align: left
-  }
-
-  .footer-big .social-feed i {
-    font-size: 20px;
-    padding-right: 10px
-  }
-
-  .footer-big .feed-line {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex
-  }
-
-  .footer-big .feed-line p {
-    padding: 0 20px 0 5px
-  }
-
-
-
-  footer .container,footer .container-fluid {
-    padding-right: 15px;
-    padding-left: 15px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    position: relative;
-  }
-  .footer-big .container, .footer-big .container-fluid, .page-header .container, .page-header .container-fluid, .section .container, .section .container-fluid {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-  }
-
-  @media (min-width: 576px){
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 540px;
-    }}
-  @media (min-width: 768px){
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 720px;
-    }}
-
-  @media (min-width: 992px){
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 960px;
+    padding: 1.875rem 0;
+    .gallery-feed img {
+      width: 20%;
+      margin-right: 5%;
+      margin-bottom: 5%;
+      float: left
+    }
+    .content {
+      text-align: left
+    }
+    .social-feed i {
+      font-size: 20px;
+      padding-right: 10px
+    }
+    .feed-line {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      p {
+        padding: 0 20px 0 5px
+      }
+    }
+    h4 {
+      font-weight: bold;
+    }
+    h5, .h5{
+      color: #3c4858!important;
+      text-decoration: none;
+      font-size: 1.0625rem;
+      line-height: 1.55em;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+    p {
+      color: #999;
     }
   }
 
-  @media (min-width: 1200px){
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 1140px;
-    }
-  }
-  footer .md-layout {
-    margin-right: -15px;
-    margin-left: -15px;
-  }
-  footer .md-layout-item {
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-  .footer-big h5{
-    color: #3c4858!important;
-    text-decoration: none;
-  }
-  .card-title, .comment .comment-heading, .footer-big h4, .footer-big h5, .footer-brand, .info-title, .title {
-    font-weight: bold;
-  }
-  footer .h5, h5 {
-    font-size: 1.0625rem;
-    line-height: 1.55em;
-    margin-bottom: 15px;
-  }
-  .card-description, .description, .footer-big p {
-    color: #999;
-  }
-  footer a:not(.md-button):hover {
-    text-decoration: none !important;
-    color: #9C27B0 !important;
-  }
   hr {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -695,46 +620,54 @@
     border-top: 1px solid rgba(0,0,0,.1);
   }
 
-  .md-facebook .zmdi {
-    color: #3b5998;
-  }
-
-
-  .md-twitter .zmdi {
-    color: #55acee;
-  }
-
-
-  .md-google .zmdi {
-    color: #dd4b39;
-  }
-
-
-  .md-linkedin .zmdi {
-    color: #0976b4;
-  }
-
-
-  .md-youtube .zmdi{
-    color: #e52d27;
-  }
-
-
-  .md-instagram .zmdi {
-    color: #000
-  }
-
-  .md-telegram img {
-    height: 16px !important;
-  }
-
-  footer {
-    .md-icon-button {
-      .zmdi {
-        font-size: 18px !important;
-      }
+  .footer-big, .page-header, .section{
+    .container, .container-fluid {
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+      flex-direction: column;
     }
   }
+
+  @media #{$m600} {
+    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
+      max-width: 540px;
+    }
+  }
+  @media #{$m720} {
+    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
+      max-width: 720px;
+    }}
+  @media #{$m960} {
+    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
+      max-width: 960px;
+    }
+  }
+  @media #{$m1280} {
+    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
+      max-width: 1140px;
+    }
+  }
+
+  .social-buttons a{
+    &.md-telegram .md-button-content{
+      @include before(F501, '', 24px, #0188cc);
+    }
+    &.md-facebook .md-button-content{
+      @include before(f20c, '', 24px, #4a66a0);
+    }
+    &.md-instagram .md-button-content{
+      @include before(f2fe, '', 24px, #E91E63);
+    }
+    &.md-linkedin .md-button-content{
+      @include before(f33b, '', 24px, #0976b4);
+    }
+    &.md-youtube .md-button-content{
+      @include before(f5c3, '', 24px, #e52d27);
+    }
+
+  }
+
   ul.md-list.md-theme-default{
     padding: 0;
   }

@@ -16,10 +16,13 @@ $m1280 : "(min-width: 1280px)";
 $x1280 : "(max-width: 1280px)";
 $m1024 : "(min-width: 1024px)";
 $x1024 : "(max-width: 1024px)";
+$m960 : "(min-width: 960px)";
 $x960 : "(max-width: 960px)";
 $m840 : "(min-width: 840px)";
 $x840 : "(max-width: 840px)";
+$m720 : "(min-width: 720px)";
 $x720 : "(max-width: 720px)";
+$m600 : "(min-width: 600px)";
 $x600 : "(max-width: 600px)";
 $x480 : "(max-width: 480px)";
 $x400 : "(max-width: 400px)";
@@ -51,15 +54,16 @@ $x360 : "(max-width: 360px)";
 	@if $b != '' {bottom: $b;}
 	@if $l != '' {left: $l;}
 }
-@mixin before($content, $font:"mat", $size:'', $color:''){
+@mixin before($content, $font:'', $size:'', $color:''){
 	&:before{
-		content: "#{content}";
-		font-family: $font;
+		content: #{'\'\\'}#{$content + '\''};
+    @if $font != '' {font-family: $font}
+    @else {font-family: "mat"};
 		@if $size != '' {font-size: $size;}
 		@if $color != '' {color: $color;}
 	}
 }
-@mixin after($content, $font:"mat", $size:'', $color:''){
+@mixin after($content, $font:'mat', $size:'', $color:''){
 	&:before{
 		content: "#{content}";
 		font-family: $font;
