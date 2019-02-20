@@ -39,14 +39,14 @@
         id="node_body"
         class="node-body"
       >
-        <!--<div 
-      v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
-        <wavesurferPlayer 
-          layout="modal"
-          :src="node_content.files[0]"
-          >
-        </wavesurferPlayer>
-        </div>-->
+        <!--<div-->
+          <!--v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">-->
+          <!--<wavesurfer-->
+            <!--layout="modal"-->
+            <!--:src="node_content.files[0]"-->
+            <!--&gt;-->
+          <!--</wavesurfer>-->
+        <!--</div>-->
         <embedVideo
           v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
           :url="node_content.video_link"
@@ -83,6 +83,18 @@
           id="article"
           v-html="convertDomain(node_content.body_value)"
         />
+
+          <!--<div class="block-quote">-->
+            <!--<blockquote>-->
+              <!--<p>-->
+                <!--<i class="zmdi zmdi-quote start-quote"></i>-->
+                  <!--<span class="quote">-->
+                    <!--Lorem Ipsum Dolor...-->
+                  <!--</span>-->
+                <!--<i class="zmdi zmdi-quote"></i>-->
+              <!--</p>-->
+            <!--</blockquote>-->
+          <!--</div>-->
         
         <div
           v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
@@ -250,8 +262,6 @@
         :about_me="author.about_me"
       />
 
-      <!--<sharing :url="'https://ed808.com/node/' + nid" :title="node_content.title"></sharing>-->
-
       <h2 class="section-title">
         Related Contents:
       </h2>
@@ -310,6 +320,7 @@ import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
+import wavesurfer from "@/components/fields/wavesurferPlayer"
 import { cookie } from "@/components/mixins/cookie.js";
 
 export default {
@@ -321,6 +332,7 @@ export default {
     tag,
     comment,
     scroll,
+    wavesurfer,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
   mixins: [cookie],
@@ -858,6 +870,32 @@ body {
   }
 }
 
+.block-quote {
+  @include main-center-content();
+  margin: 20px auto;
+  blockquote {
+    font-style: italic;
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 17.5px;
+    border-left: 5px solid #eee;
+
+    p {
+        font-size: 1.35em;
+        line-height: 1.5em;
+        color: #555555;
+        margin-bottom: 30px;
+      .zmdi.zmdi-quote{
+        position: relative;
+        bottom: 5px;
+        &.start-quote {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}
+
 .zmdi {
   width: 24px;
   min-width: 24px;
@@ -874,10 +912,23 @@ body {
   vertical-align: middle;
 }
 
-@media (max-width: 1440px) {
+@media (min-width: 1440px) {
+  .node-page .content-teaser {
+    width: 23%;
+    flex: 0 1 23%;
+  }
+}
+
+@media (min-width: 1200px) {
   .node-page .content-teaser {
     width: 31.3%;
     flex: 0 1 31.3%;
+  }
+}
+@media (max-width: 600px) {
+  .node-page .content-teaser {
+    width: 100%;
+    flex: 0 1 100%;
   }
 }
 @keyframes clapAnim {
