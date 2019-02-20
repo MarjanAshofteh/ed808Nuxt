@@ -1,6 +1,6 @@
 <template>
   <div>
-    <md-content class="md-elevation-1 top">
+    <md-content class="top">
 
       <div class="background-image">
 
@@ -33,16 +33,34 @@
           <md-progress-spinner :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         </div>
       </div>
+
       <div class="user-tabs">
-        <md-tabs md-sync-route>
-          <md-tab id="tab-home" md-label="Personal info" to=""></md-tab>
+
+        <md-tabs md-active-tab="tab-personal">
+
+          <md-tab id="tab-posts" md-label="posts" to="">
+            <Posts></Posts>
+          </md-tab>
+
+          <md-tab id="tab-personal" md-label="Personal info" to="">
+            <Setting :uid="$route.params.uid"></Setting>
+          </md-tab>
+
+          <md-tab id="tab-bookmark" md-label="bookmark" to="">
+            <Bookmark></Bookmark>
+          </md-tab>
+
+          <md-tab id="tab-tags" md-label="following tags" to="">
+            <Following_tag></Following_tag>
+          </md-tab>
+
         </md-tabs>
       </div>
       <div class="loading" v-if="loading">
         <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
       </div>
     </md-content>
-    <div class="bottom">
+    <!--<div class="bottom">
       <div class="min-col">
         <md-content class="md-elevation-3 box">
           <div class="box-head">
@@ -273,12 +291,6 @@
                   <md-textarea v-model="user.skills"></md-textarea>
                 </md-field>
 
-                <!--<md-field>
-                  <label>Cv</label>
-                  <md-file v-if="user.cv_name" v-model="uploadCv" :placeholder="user.cv_name" :ref="file" @change="handleFileUpload()"/>
-                  <md-file v-else v-model="uploadCv"/>
-                </md-field>-->
-
                 <div class="container">
                   <div class="large-12 medium-12 small-12 cell">
                     <label>Upload Your CV</label>
@@ -307,7 +319,7 @@
           </div>
         </md-content>
       </div>
-    </div>
+    </div>-->
     <!--<span v-for="(role,index) in roles" :key="index">
       {{role}}
       <span v-if="(roles.length-1 != index)">,</span>
@@ -317,16 +329,21 @@
 
 <script>
 
-  import axios from "@/node_modules/axios";
+  import axios from "@/node_modules/axios"
   import { cookie } from '@/components/mixins/cookie.js'
+  import Setting from "@/components/user/setting"
+  import Posts from "@/components/user/posts"
+  import Bookmark from "@/components/user/bookmark"
+  import Following_tag from "../../components/user/following_tag"
 
 export default {
   name:'profile',
+  components: {Following_tag, Bookmark, Posts, Setting},
   scrollToTop: true,
   mixins: [cookie],
   data(){
     return{
-      //for keeping field data temporary, after editing it
+      //for keeping last field data temporary, after editing it
       user_copy:{},
       errors:'',
       roles:[],
@@ -757,121 +774,14 @@ export default {
     }
     .user-tabs{
       background: white;
-      .md-tabs{
-        width: 56%;
-        margin: auto;
-        max-width: 880px;
-      }
     }
   }
-  .bottom{
-    max-width: 1130px;
-    margin: 27px auto;
-    padding: 5px;
-    text-align: left;
+</style>
+<style>
+  .md-tabs.md-theme-default .md-tabs-navigation{
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
     display: flex;
-    flex-wrap: wrap;
-    .min-col {
-      width: 28%;
-      margin-right: 2%;
-      @media screen and (max-width: 992px){
-        width: 38%;
-        margin-right: 2%;
-      }
-      @media screen and (max-width: 600px){
-        width: 100%;
-        margin-right: 0;
-      }
-    }
-    .max-col{
-      max-width: 70%;
-      @media screen and (max-width: 992px){
-        width: 60%;
-      }
-      @media screen and (max-width: 600px){
-        width: 100%;
-      }
-      .box{
-        min-width: 100%;
-      }
-    }
-    .box{
-      position: relative;
-      display: inline-block;
-      width: 100%;
-      margin: 0 27px 27px 0;
-      transition: .3s cubic-bezier(.25,.8,.5,1);
-      &:hover .box-head .edit{
-        opacity: 1;
-      } 
-      .box-head{
-        border-bottom: 1px solid #eee;
-        min-height: 48px;
-        padding: 4px 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        transition: padding .4s cubic-bezier(.25,.8,.25,1);
-        .md-icon:first-child {
-          margin-right: 14px;
-          margin-top: 7px;
-        }
-        .item-text{
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          overflow: hidden;
-          line-height: 1.25em;
-          white-space: nowrap;
-        }
-        .edit{
-          opacity: 0;
-          transition: .3s cubic-bezier(.25,.8,.5,1);
-          margin: 0 -12px 0 0;
-          .md-icon{
-            margin: 0px !important;
-          }
-        } 
-      }
-      .box-text {
-        margin: 10px 0;
-        .box-row {
-          padding: 5px 25px;
-        }
-        .default-text{
-          color: #BDBDBD;
-        }
-        .label{
-          color:#888;
-          font-size:13px;
-        }
-        .box-edit{
-          padding: 5px 25px;
-          .md-field{
-            margin-bottom: 9px;
-          }
-          .md-field.md-has-textarea{
-            textarea{
-              font-size:16px !important;
-            }
-            &:not(.with-label){
-              padding: 7px 1px;
-            }
-            margin: 0;
-          }
-          .md-layout.md-alignment-center-space-between .md-layout-item{
-            flex:0;
-            button{
-              margin: 6px 0 0 0;
-              &.green{
-                background-color:#4caf50;
-                color: white !important;
-              }
-            }
-          }
-        }
-      }
-    }
+    justify-content: center;
+    padding-right: 21%;
   }
 </style>
