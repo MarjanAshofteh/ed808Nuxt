@@ -338,7 +338,7 @@
           background: transparent !important;
         }
         &:not(:last-child):after {
-          content: "";
+          content: " ";
           background: #ccc;
           @include absolute(45%, 1px, '','',-4vw);
         }
