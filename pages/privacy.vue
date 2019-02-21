@@ -1,5 +1,6 @@
+
 <template>
-  <div class="aboutus">
+  <div class="privacy">
     <div class="top-pic">
       <img :src="pic" width="100%" height="241">
       <h1>{{title}}</h1>
@@ -14,25 +15,25 @@
 import axios from "@/node_modules/axios"
 
 export default {
-  name: "aboutus",
+  name: "privacy",
   scrollToTop: true,
   data() {
     return {
       text: "",
       pic: "",
-      title: "About Us"
+      title: "Our Privacy Policy"
     };
   },
   async asyncData({ params }) {
     try {
       const { data } = await axios.get(
-        "https://ed808.com:92/latin/page/19760"
+        "https://ed808.com:92/latin/page/20166"
       );
       if (data) {
         return {
           text: data.body_value,
           pic: data.image,
-          title: data.title
+          title: data.title,
         };
       } else {
         throw { statusCode: 404, message: "Page not found" };
@@ -44,9 +45,9 @@ export default {
   head() {
     return {
       links: [
-        { rel: "canonical", href: "https://ed808.com/aboutus" },
-        { rel: "alternate", href: "https://ed808.com/aboutus", hreflang: "en" },
-        { rel: "shortlink", href: "https://ed808.com/aboutus" }
+        { rel: "canonical", href: "https://ed808.com/privacy" },
+        { rel: "alternate", href: "https://ed808.com/privacy", hreflang: "en" },
+        { rel: "shortlink", href: "https://ed808.com/privacy" }
       ],
       title: "about us",
       meta: [
@@ -54,7 +55,7 @@ export default {
         { property: "og:title", content: this.title, hid: "og:title" },
         {
           property: "og:url",
-          content: "https://ed808.com/about-us",
+          content: "https://ed808.com/privacy",
           hid: "og:url"
         },
         {
@@ -82,7 +83,7 @@ export default {
 
 <style scoped lang="scss">
 .atext {
-  margin: 50px 0 100px;
+  margin: 50px 0;
   text-align: left;
 }
 

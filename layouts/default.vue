@@ -167,7 +167,7 @@
               <h5>Legal</h5>
               <ul class="links-vertical">
                 <li>
-                  <nuxt-link to="/terms-and-conditions">Terms &amp; Conditions</nuxt-link>
+                  <nuxt-link to="/privacy">Privacy Policy</nuxt-link>
                 </li>
               </ul>
             </div>
@@ -626,26 +626,6 @@
       -webkit-box-direction: normal;
       -ms-flex-direction: column;
       flex-direction: column;
-    }
-  }
-
-  @media #{$m600} {
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 540px;
-    }
-  }
-  @media #{$m720} {
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 720px;
-    }}
-  @media #{$m960} {
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 960px;
-    }
-  }
-  @media #{$m1280} {
-    .footer .container, .md-toolbar-row, .page-header .container, .section .container {
-      max-width: 1140px;
     }
   }
 

@@ -8,7 +8,9 @@ module.exports = {
   */
   head: {
     link: [
-      { rel: 'icon', type: 'image/png', href: '/favlogo.png' }
+      { rel: 'icon', type: 'image/png', href: '/favlogo.png' },
+      { rel: "stylesheet", href : "//cdn.materialdesignicons.com/3.4.93/css/materialdesignicons.min.css"},
+      { rel: "stylesheet", type: "text/css", href: "https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700"}
     ],
     script: [
       //{ src: 'https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&render=explicit', async , defer}
@@ -53,7 +55,7 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#ba68c8' },
+  loading: { color: '#673AB7' },
 
   /*
   ** Global CSS
@@ -93,6 +95,6 @@ module.exports = {
     extractCSS: true
   },
   server: {
-    port: 2000
+    port: 3000
   }
 }

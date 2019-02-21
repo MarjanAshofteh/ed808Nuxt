@@ -186,8 +186,12 @@ export default {
         this.lastUser = `${this.form.username_email}`
         this.userSaved = true
         this.loading.sending = false
-        // redirect after successfull login
-        window.location.replace('/user/'+ data.data.uid)
+
+        //redirect after successful login
+        if(this.$route.query.hasOwnProperty('callback'))
+          window.location.replace(this.$route.query.callback)
+        else
+          window.location.replace('/user/'+ data.data.uid)
       }).catch(e => {
         if(e.hasOwnProperty('response')){
           if(e.response.hasOwnProperty('data'))

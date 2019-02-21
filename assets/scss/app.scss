@@ -6,6 +6,7 @@
 ));
 
 @import "~vue-material/dist/theme/all"; // Apply the theme
+@import "@/assets/scss/vars.scss";
 
 @font-face {
   font-family: 'Material Icons';
@@ -46,6 +47,11 @@ body{
   overflow-x: hidden;
   position: unset !important;
   background-color:#fafafa;
+}
+.md-body-1, body {
+  font-weight: 300;
+  line-height: 1.6em;
+  font-size: 17px;
 }
 #__layout > div {
   text-align: center;
@@ -186,4 +192,16 @@ header#header{
 }
 .md-button.md-primary:not(.md-dense), .md-button.md-primary.active:not(.md-dense), .md-button.md-primary.active:not(.md-dense) i, .md-button.md-primary:not(.md-dense):active, .md-button.md-primary:not(.md-dense):active i, .md-button.md-primary:not(.md-dense):focus, .md-button.md-primary:not(.md-dense):focus i, .md-button.md-primary:not(.md-dense):hover, .md-button.md-primary:not(.md-dense):hover i, .md-button.md-primary:not(.md-dense) i {
   color: #fff!important;
+}
+
+
+.container,
+.page-header .container,
+.section .container {
+  margin-right: auto;
+  margin-left: auto;
+  @media #{$m600} {max-width: 570px;}
+  @media #{$m720} {max-width: 700px;}
+  @media #{$m960} {max-width: 930px;}
+  @media #{$m1280} {max-width: 1140px;}
 }
