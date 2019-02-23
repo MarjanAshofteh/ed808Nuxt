@@ -93,8 +93,5 @@ module.exports = {
     ** You can extend webpack config here
     */
     extractCSS: true
-  },
-  server: {
-    port: 3000
   }
 }

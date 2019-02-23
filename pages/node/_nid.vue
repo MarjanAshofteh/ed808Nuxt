@@ -39,14 +39,28 @@
         id="node_body"
         class="node-body"
       >
-        <!--<div-->
-          <!--v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">-->
+
+        <!--<audioplayer-->
+          <!--:source="node_content.files[0]"-->
+        <!--&gt;-->
+
+        <!--</audioplayer>-->
+
+        <div
+          v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
           <!--<wavesurfer-->
             <!--layout="modal"-->
             <!--:src="node_content.files[0]"-->
             <!--&gt;-->
           <!--</wavesurfer>-->
-        <!--</div>-->
+
+          <audioplayer
+          :source="node_content.files[0]"
+          >
+
+          </audioplayer>
+
+        </div>
         <embedVideo
           v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
           :url="node_content.video_link"
@@ -217,7 +231,7 @@
 
                 <network network="facebook">
                   <md-button class="md-icon-button md-facebook-icon">
-                    <i class="zmdi zmdi-facebook" />
+                    <i class="mdi mdi-facebook" />
                     <md-tooltip md-direction="bottom">
                       Share on Facebook
                     </md-tooltip>
@@ -226,7 +240,7 @@
 
                 <network network="twitter">
                   <md-button class="md-icon-button md-twitter-icon">
-                    <i class="zmdi zmdi-twitter" />
+                    <i class="mdi mdi-twitter" />
                     <md-tooltip md-direction="bottom">
                       Share on Twitter
                     </md-tooltip>
@@ -235,7 +249,7 @@
 
                 <network network="whatsapp">
                   <md-button class="md-icon-button md-whatsapp-icon">
-                    <i class="zmdi zmdi-whatsapp" />
+                    <i class="mdi mdi-whatsapp" />
                     <md-tooltip md-direction="bottom">
                       Share on WhatsApp
                     </md-tooltip>
@@ -320,7 +334,7 @@ import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
-import wavesurfer from "@/components/fields/wavesurferPlayer"
+import audioplayer from "@/components/fields/audioplayer"
 import { cookie } from "@/components/mixins/cookie.js";
 
 export default {
@@ -332,7 +346,7 @@ export default {
     tag,
     comment,
     scroll,
-    wavesurfer,
+    audioplayer,
     embedVideo: () => import("@/components/fields/embedVideo")
   },
   mixins: [cookie],
@@ -346,7 +360,8 @@ export default {
       errors: "",
       showError: false,
       relatedNodes: [],
-      articleHeadings: []
+      articleHeadings: [],
+      source: ''
     };
   },
   async asyncData({ params, query, req }) {
@@ -597,6 +612,11 @@ body {
 .main-container {
   margin-bottom: 50px;
   padding: 0px 0 15px 0;
+  #audio-demos-vuejs {
+    max-width: 800px;
+    margin: auto;
+    padding: 15px;
+  }
   .md-layout {
     @include main-center-content();
   }
@@ -776,8 +796,8 @@ body {
   }
 }
 #audio-demos-vuejs {
-  margin: 45px auto 30px auto;
-  padding: 0 10%;
+  /*margin: 45px auto 30px auto;*/
+  /*padding: 0 10%;*/
   > div {
     /*box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);*/
     padding: 20px 15px;
@@ -830,7 +850,7 @@ body {
       }
     }
     .bookmark-active {
-      .zmdi {
+      .mdi {
         color: #fbc02d !important;
       }
     }
@@ -849,30 +869,27 @@ body {
   }
   .md-ripple {
     .md-button-content {
-      .zmdi {
+      .mdi {
         color: rgba(0, 0, 0, 0.54);
         color: rgba(0, 0, 0, 0.54);
         color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54));
       }
-      .zmdi-facebook {
+      .mdi-facebook {
         color: #3b5998;
       }
-      .zmdi-linkedin {
+      .mdi-linkedin {
         color: #0976b4;
       }
-      .zmdi-twitter {
+      .mdi-twitter {
         color: #55acee;
       }
-      .zmdi-whatsapp {
+      .mdi-whatsapp {
         color: #25D366;
       }
     }
   }
 }
 
-.block-quote {
-  @include main-center-content();
-  margin: 20px auto;
   blockquote {
     font-style: italic;
     padding: 10px 20px;
@@ -885,7 +902,7 @@ body {
         line-height: 1.5em;
         color: #555555;
         margin-bottom: 30px;
-      .zmdi.zmdi-quote{
+      .mdi.mdi-quote{
         position: relative;
         bottom: 5px;
         &.start-quote {
@@ -894,9 +911,9 @@ body {
       }
     }
   }
-}
 
-.zmdi {
+
+.mdi {
   width: 24px;
   min-width: 24px;
   height: 24px;
