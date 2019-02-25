@@ -1,102 +1,105 @@
 <template>
   <div>
-    <form
-      novalidate
-      class="md-layout"
-      @submit.prevent="formSubmit"
-    >
-      <md-card
-        class="md-layout-item md-size-30 md-small-size-100"
-        style="overflow: visible;"
-      >
-        <md-card-header>
-          <div
-            class="md-title"
-            style="margin: 0;color: white;font-size: 25px;"
-          >
-            Login
-          </div>
-        </md-card-header>
+    <div class="login-card-page">
+      <login :pageComponent="true"></login>
+    </div>
+    <!--<form-->
+      <!--novalidate-->
+      <!--class="md-layout"-->
+      <!--@submit.prevent="formSubmit"-->
+    <!--&gt;-->
+      <!--<md-card-->
+        <!--class="md-layout-item md-size-30 md-small-size-100"-->
+        <!--style="overflow: visible;"-->
+      <!--&gt;-->
+        <!--<md-card-header>-->
+          <!--<div-->
+            <!--class="md-title"-->
+            <!--style="margin: 0;color: white;font-size: 25px;"-->
+          <!--&gt;-->
+            <!--Login-->
+          <!--</div>-->
+        <!--</md-card-header>-->
 
-        <md-card-content>
-          <div class="md-layout-item md-small-size-100 md-size-100">
-            <md-field :class="getValidationClass('emailOrUsename')">
-              <label for="username_email">
-                Email or Username
-              </label>
-              <md-input
-                id="username_email"
-                v-model="form.username_email"
-                name="username_email"
-                autocomplete="email"
-                :disabled="loading.sending"
-                required
-              />
-              <span
-                v-if="!$v.form.username_email.required"
-                class="md-error"
-              >
-                The email or usename is required
-              </span>
-            </md-field>
-          </div>
-          <div class="md-layout-item md-small-size-100 md-size-100">
-            <md-field :class="getValidationClass('password')">
-              <label for="password">
-                Password
-              </label>
-              <md-input
-                id="password"
-                v-model="form.password"
-                type="password"
-                name="password"
-                :disabled="loading.sending"
-                autocomplete="current-password"
-                required
-              />
-              <span
-                v-if="!$v.form.password.required"
-                class="md-error"
-              >
-                The Password is required
-              </span>
-            </md-field>
-          </div>
-        </md-card-content>
+        <!--<md-card-content>-->
+          <!--<div class="md-layout-item md-small-size-100 md-size-100">-->
+            <!--<md-field :class="getValidationClass('emailOrUsename')">-->
+              <!--<label for="username_email">-->
+                <!--Email or Username-->
+              <!--</label>-->
+              <!--<md-input-->
+                <!--id="username_email"-->
+                <!--v-model="form.username_email"-->
+                <!--name="username_email"-->
+                <!--autocomplete="email"-->
+                <!--:disabled="loading.sending"-->
+                <!--required-->
+              <!--/>-->
+              <!--<span-->
+                <!--v-if="!$v.form.username_email.required"-->
+                <!--class="md-error"-->
+              <!--&gt;-->
+                <!--The email or usename is required-->
+              <!--</span>-->
+            <!--</md-field>-->
+          <!--</div>-->
+          <!--<div class="md-layout-item md-small-size-100 md-size-100">-->
+            <!--<md-field :class="getValidationClass('password')">-->
+              <!--<label for="password">-->
+                <!--Password-->
+              <!--</label>-->
+              <!--<md-input-->
+                <!--id="password"-->
+                <!--v-model="form.password"-->
+                <!--type="password"-->
+                <!--name="password"-->
+                <!--:disabled="loading.sending"-->
+                <!--autocomplete="current-password"-->
+                <!--required-->
+              <!--/>-->
+              <!--<span-->
+                <!--v-if="!$v.form.password.required"-->
+                <!--class="md-error"-->
+              <!--&gt;-->
+                <!--The Password is required-->
+              <!--</span>-->
+            <!--</md-field>-->
+          <!--</div>-->
+        <!--</md-card-content>-->
 
-        <md-progress-bar
-          v-if="loading.sending"
-          md-mode="indeterminate"
-        />
+        <!--<md-progress-bar-->
+          <!--v-if="loading.sending"-->
+          <!--md-mode="indeterminate"-->
+        <!--/>-->
 
-        <vue-recaptcha
-          ref="recaptcha"
-          @verify="logUserIn"
-          @expired="onCaptchaExpired"
-          size="invisible"
-          sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">
-        </vue-recaptcha>
+        <!--<vue-recaptcha-->
+          <!--ref="recaptcha"-->
+          <!--@verify="logUserIn"-->
+          <!--@expired="onCaptchaExpired"-->
+          <!--size="invisible"-->
+          <!--sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">-->
+        <!--</vue-recaptcha>-->
 
-        <md-card-actions>
-          <md-button
-            type="submit"
-            class="md-primary"
-            :disabled="loading.sending"
-          >
-            Log In
-          </md-button>
-        </md-card-actions>
-      </md-card>
-      <md-snackbar :md-active.sync="userSaved">
-        {{ lastUser }} you are log in successfully!
-      </md-snackbar>
-      <md-snackbar
-        class="error"
-        :md-active.sync="showError"
-      >
-        {{ errors }}
-      </md-snackbar>
-    </form>
+        <!--<md-card-actions>-->
+          <!--<md-button-->
+            <!--type="submit"-->
+            <!--class="md-primary"-->
+            <!--:disabled="loading.sending"-->
+          <!--&gt;-->
+            <!--Log In-->
+          <!--</md-button>-->
+        <!--</md-card-actions>-->
+      <!--</md-card>-->
+      <!--<md-snackbar :md-active.sync="userSaved">-->
+        <!--{{ lastUser }} you are log in successfully!-->
+      <!--</md-snackbar>-->
+      <!--<md-snackbar-->
+        <!--class="error"-->
+        <!--:md-active.sync="showError"-->
+      <!--&gt;-->
+        <!--{{ errors }}-->
+      <!--</md-snackbar>-->
+    <!--</form>-->
   </div>
 </template>
 <script>
@@ -105,14 +108,17 @@ import VueRecaptcha from 'vue-recaptcha'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
 import { cookie } from '@/components/mixins/cookie.js'
+import login from '@/components/fields/login'
 import axios from "@/node_modules/axios"
 
 export default {
   name: 'Login',
   scrollToTop: true,
   components: {
-    'vue-recaptcha': VueRecaptcha
+    'vue-recaptcha': VueRecaptcha,
+    login
   },
+  middleware: ['isauth'],
   mixins: [validationMixin,cookie],
   data(){
     return{
@@ -223,6 +229,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .login-card-page {
+    width: 30%;
+    margin: auto;
+    margin-top: 80px;
+    @media screen and (max-width: 992px) {
+      width: 60%;
+    }
+    @media screen and (max-width: 600px) {
+      width: 90%;
+    }
+  }
   .md-progress-bar {
     position: absolute;
     top: 0;

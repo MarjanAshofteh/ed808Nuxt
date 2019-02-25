@@ -1,145 +1,267 @@
 <template>
-  <div id="app" :class="[queryClasses]">
+  <div
+    id="app"
+    :class="[queryClasses]"
+  >
+
+    <!--login with overlay-->
+    <div
+      class="login-card-with-overlay"
+      :class="{ 'active' : loginActive }"
+    >
+      <div
+        class="login-card"
+        :class="{ 'active' : loginActive }"
+      >
+        <Login :pageComponent="false" :loginActive="loginActive" @hideLoginCard="hideLoginCard"/>
+      </div>
+    </div>
+
     <header id="header">
       <div class="inner md-layout">
-
-        <img src="/images/logo.png" class="logo">
+        <img
+          src="/images/logo.png"
+          class="logo"
+        >
 
         <div class="md-layout md-gutter large-screen">
-          <div class="header-menu-text md-layout-item md-size-100" style="text-align: right;">
-
+          <div
+            class="header-menu-text md-layout-item md-size-100"
+            style="text-align: right;"
+          >
             <md-menu md-direction="bottom-start">
-              <nuxt-link to="/"><md-button>Home</md-button></nuxt-link>
+              <nuxt-link to="/">
+                <md-button>Home</md-button>
+              </nuxt-link>
             </md-menu>
 
             <md-menu md-direction="bottom-start">
-              <nuxt-link to="/contents"><md-button>All Contents</md-button></nuxt-link>
+              <nuxt-link to="/contents">
+                <md-button>All Contents</md-button>
+              </nuxt-link>
             </md-menu>
 
             <md-menu md-direction="bottom-start">
-              <nuxt-link to="/aboutus"><md-button>About Us</md-button></nuxt-link>
+              <nuxt-link to="/aboutus">
+                <md-button>About Us</md-button>
+              </nuxt-link>
             </md-menu>
 
             <md-menu md-direction="bottom-start">
-              <nuxt-link to="/contactus"><md-button>Contact us</md-button></nuxt-link>
+              <nuxt-link to="/contactus">
+                <md-button>Contact us</md-button>
+              </nuxt-link>
             </md-menu>
 
 
-            <div v-if="!$store.getters.getUid" class="md-menu user-links">
+            <div
+              v-if="!$store.getters.getUid"
+              class="md-menu user-links"
+            >
               <md-menu md-direction="bottom-start">
-                <nuxt-link to="/login"><md-button>Login</md-button></nuxt-link>
+                <a @click="loginActive=true">
+                  <md-button>Login</md-button>
+                </a>
               </md-menu>
 
               <md-menu md-direction="bottom-start">
                 <nuxt-link to="/register">
-                  <md-button class="md-raised" style="background: #2196F3;color: #fff;">Register</md-button>
+                  <md-button
+                    class="md-raised"
+                    style="background: #2196F3;color: #fff;"
+                  >
+                    Register
+                  </md-button>
                 </nuxt-link>
               </md-menu>
             </div>
 
-            <div v-else class="md-menu user-links">
-              <md-menu md-size="big" md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
-                <div @click="opening_menu" style="cursor: pointer;">
-                  <span v-if="$store.state.user.full_name" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{$store.state.user.full_name}}</span>
+            <div
+              v-else
+              class="md-menu user-links"
+            >
+              <md-menu
+                md-size="big"
+                md-direction="bottom-end"
+                md-align-trigger
+                :md-active.sync="menu_flag"
+              >
+                <div
+                  style="cursor: pointer;"
+                  @click="opening_menu"
+                >
+                  <span
+                    v-if="$store.state.user.full_name"
+                    style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;"
+                  >
+                    {{ $store.state.user.full_name }}
+                  </span>
                   <md-button class="md-icon-button">
                     <md-avatar>
-                      <img v-if="$store.state.user.picture" v-bind:src="$store.state.user.picture" alt="user_image">
-                      <img v-else src="/images/avatar.png" alt="user_image">
+                      <img
+                        v-if="$store.state.user.picture"
+                        :src="$store.state.user.picture"
+                        alt="user_image"
+                      >
+                      <img
+                        v-else
+                        src="/images/avatar.png"
+                        alt="user_image"
+                      >
                     </md-avatar>
                   </md-button>
                 </div>
 
                 <md-menu-content>
                   <md-menu-item>
-                    <nuxt-link :to="'/user/'+ $store.state.user.uid" target="_blank">My Profile</nuxt-link>
+                    <nuxt-link
+                      :to="'/user/'+ $store.state.user.uid"
+                      target="_blank"
+                    >
+                      My Profile
+                    </nuxt-link>
                   </md-menu-item>
-                  <md-menu-item @click="logUserOut">Logout</md-menu-item>
+                  <md-menu-item @click="logUserOut">
+                    Logout
+                  </md-menu-item>
                 </md-menu-content>
               </md-menu>
-
             </div>
           </div>
         </div>
 
         <div class="small-screen">
           <!-- در حالت صفحه نمایش کوچیک هم منوی کاربری رو نمایش بده - هر دو حالتش رو -->
-          <md-menu md-size="big" :md-active.sync="toggleCard" @click="toggle">
-
+          <md-menu
+            md-size="big"
+            :md-active.sync="toggleCard"
+            @click="toggle"
+          >
             <md-button>
-              <md-icon v-if="!toggleCard" class="md-primary">menu</md-icon>
-              <md-icon v-else class="md-primary">close</md-icon>
+              <md-icon
+                v-if="!toggleCard"
+                class="md-primary"
+              >
+                menu
+              </md-icon>
+              <md-icon
+                v-else
+                class="md-primary"
+              >
+                close
+              </md-icon>
             </md-button>
 
             <md-menu-content>
-
               <div class="md-menu-content-container md-scrollbar md-theme-default">
                 <ul class="md-list md-theme-default">
                   <md-menu md-direction="bottom-start">
-                    <nuxt-link to="/"><md-button>Home</md-button></nuxt-link>
+                    <nuxt-link to="/">
+                      <md-button>Home</md-button>
+                    </nuxt-link>
                   </md-menu>
                   <li class="md-list-item md-menu-item md-theme-default">
                     <md-menu md-direction="bottom-start">
-                      <nuxt-link to="/aboutus"><md-button>About Us</md-button></nuxt-link>
+                      <nuxt-link to="/aboutus">
+                        <md-button>About Us</md-button>
+                      </nuxt-link>
                     </md-menu>
                   </li>
                   <li class="md-list-item md-menu-item md-theme-default">
                     <md-menu md-direction="bottom-start">
-                      <nuxt-link to="/contents"><md-button>All contents</md-button></nuxt-link>
+                      <nuxt-link to="/contents">
+                        <md-button>All contents</md-button>
+                      </nuxt-link>
                     </md-menu>
                   </li>
                   <li class="md-list-item md-menu-item md-theme-default">
                     <md-menu md-direction="bottom-start">
-                      <nuxt-link to="/contactus"><md-button>Contact us</md-button></nuxt-link>
-                    </md-menu>
-
-                  </li>
-
-                  <li  v-if="!$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
-                      <md-menu md-direction="bottom-start">
-                        <nuxt-link to="/login"><md-button>Login</md-button></nuxt-link>
-                      </md-menu>
-                  </li>
-                  <li  v-if="!$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
-                    <md-menu md-direction="bottom-start">
-                      <nuxt-link to="/register">
-                        <md-button class="md-raised">Register</md-button>
+                      <nuxt-link to="/contactus">
+                        <md-button>Contact us</md-button>
                       </nuxt-link>
                     </md-menu>
                   </li>
 
-                  <li v-if="$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
-                      <md-menu md-direction="bottom-start">
-                        <nuxt-link :to="'/user/'+ $store.state.user.uid">
-                          <md-button class="md-raised">My Profile</md-button>
-                        </nuxt-link>
-                      </md-menu>
+                  <li
+                    v-if="!$store.getters.getUid"
+                    class="md-list-item md-menu-item md-theme-default"
+                  >
+                    <md-menu md-direction="bottom-start">
+                      <nuxt-link to="/login">
+                        <md-button>Login</md-button>
+                      </nuxt-link>
+                    </md-menu>
                   </li>
-                  <li v-if="$store.getters.getUid" class="md-list-item md-menu-item md-theme-default">
-                      <md-menu md-direction="bottom-start"  @click="logUserOut">
-                          <md-button class="md-raised">Log out</md-button>
-                      </md-menu>
+                  <li
+                    v-if="!$store.getters.getUid"
+                    class="md-list-item md-menu-item md-theme-default"
+                  >
+                    <md-menu md-direction="bottom-start">
+                      <nuxt-link to="/register">
+                        <md-button class="md-raised">
+                          Register
+                        </md-button>
+                      </nuxt-link>
+                    </md-menu>
                   </li>
 
+                  <li
+                    v-if="$store.getters.getUid"
+                    class="md-list-item md-menu-item md-theme-default"
+                  >
+                    <md-menu md-direction="bottom-start">
+                      <nuxt-link :to="'/user/'+ $store.state.user.uid">
+                        <md-button class="md-raised">
+                          My Profile
+                        </md-button>
+                      </nuxt-link>
+                    </md-menu>
+                  </li>
+                  <li
+                    v-if="$store.getters.getUid"
+                    class="md-list-item md-menu-item md-theme-default"
+                  >
+                    <md-menu
+                      md-direction="bottom-start"
+                      @click="logUserOut"
+                    >
+                      <md-button class="md-raised">
+                        Log out
+                      </md-button>
+                    </md-menu>
+                  </li>
                 </ul>
               </div>
             </md-menu-content>
           </md-menu>
         </div>
-
       </div>
     </header>
-    
-    <nuxt/>
 
-    <md-snackbar :md-active.sync="IsLogOut">You log out successfully!</md-snackbar>
+
+    <nuxt />
+
+    <md-snackbar :md-active.sync="IsLogOut">
+      You log out successfully!
+    </md-snackbar>
 
     <section id="subscribe">
       <div class="inner">
         <h2>Subscribe Your Email</h2>
         <div class="input-wrapper">
-          <input @keyup.enter="addEmail" v-model="inputBox" placeholder="Submit Your Email..."  autocomplete="off"/>
-          <button v-on:click="addEmail"></button>
-          <div style="margin-top: 20px;" v-if="aftersubmit" >Thank You :)</div>
+          <input
+            v-model="inputBox"
+            placeholder="Submit Your Email..."
+            autocomplete="off"
+            @keyup.enter="addEmail"
+          >
+          <button @click="addEmail" />
+          <div
+            v-if="aftersubmit"
+            style="margin-top: 20px;"
+          >
+            Thank You :)
+          </div>
         </div>
         <p> Join our mailing list to receive the latest updates and personalized content right in your inbox </p>
       </div>
@@ -153,13 +275,19 @@
               <h5>About</h5>
               <ul class="links-vertical">
                 <li>
-                  <nuxt-link to="/aboutus">About Us</nuxt-link>
+                  <nuxt-link to="/aboutus">
+                    About Us
+                  </nuxt-link>
                 </li>
                 <li>
-                  <nuxt-link to="/contactus">Contact Us</nuxt-link>
+                  <nuxt-link to="/contactus">
+                    Contact Us
+                  </nuxt-link>
                 </li>
                 <li>
-                  <nuxt-link to="/faq">F&Q</nuxt-link>
+                  <nuxt-link to="/faq">
+                    F&Q
+                  </nuxt-link>
                 </li>
               </ul>
             </div>
@@ -167,32 +295,55 @@
               <h5>Legal</h5>
               <ul class="links-vertical">
                 <li>
-                  <nuxt-link to="/privacy">Privacy Policy</nuxt-link>
+                  <nuxt-link to="/privacy">
+                    Privacy Policy
+                  </nuxt-link>
                 </li>
               </ul>
             </div>
             <div class="md-layout-item md-medium-size-45 md-large-size-45 md-small-size-100">
-              <nuxt-link to="/"><h5>ED 808 .ltd</h5></nuxt-link>
+              <nuxt-link to="/">
+                <h5>ED 808 .ltd</h5>
+              </nuxt-link>
               <p>
                 808 is trying to connect engineering knowledge and industry through combining technology and the newest global experiences in all fields of civil and architectural engineering.
               </p>
             </div>
-            <div style="display: none;" class="md-layout-item md-medium-size-40 md-large-size-40 md-small-size-100">
+            <div
+              style="display: none;"
+              class="md-layout-item md-medium-size-40 md-large-size-40 md-small-size-100"
+            >
               <h5>Subscribe to Newsletter</h5>
               <p>
                 Join our mailing list to receive the latest updates and personalized content right in your inbox.
               </p>
-              <form action="" method="" class="form-newsletter">
+              <form
+                action=""
+                method=""
+                class="form-newsletter"
+              >
                 <div class="md-layout">
                   <div class="md-layout-item md-large-size-66 medium-size-50">
                     <div class="md-field md-theme-default md-has-placeholder">
-                      <input type="text" id="md-input-zyl6y53yh" placeholder="Your Email.." class="md-input">
+                      <input
+                        id="md-input-zyl6y53yh"
+                        type="text"
+                        placeholder="Your Email.."
+                        class="md-input"
+                      >
                     </div>
                   </div>
                   <div class="md-layout-item md-large-size-33 medium-size-50">
-                    <button type="button" class="md-button md-primary md-just-icon md-block md-theme-default">
+                    <button
+                      type="button"
+                      class="md-button md-primary md-just-icon md-block md-theme-default"
+                    >
                       <div class="md-ripple">
-                        <div class="md-button-content"><i class="md-icon md-icon-font md-theme-default">mail</i></div>
+                        <div class="md-button-content">
+                          <i class="md-icon md-icon-font md-theme-default">
+                            mail
+                          </i>
+                        </div>
                       </div>
                     </button>
                   </div>
@@ -204,28 +355,48 @@
         <hr>
         <ul class="social-buttons">
           <li>
-            <a href="http://telegram.me/ed808" class="md-telegram" target="_blank">
-              <md-button class="md-icon-button"></md-button>
+            <a
+              href="http://telegram.me/ed808"
+              class="md-telegram"
+              target="_blank"
+            >
+              <md-button class="md-icon-button" />
             </a>
           </li>
           <li>
-            <a href="https://www.facebook.com/ED808.ltd" class="md-facebook" target="_blank">
-              <md-button class="md-icon-button"></md-button>
+            <a
+              href="https://www.facebook.com/ED808.ltd"
+              class="md-facebook"
+              target="_blank"
+            >
+              <md-button class="md-icon-button" />
             </a>
           </li>
           <li>
-            <a href="https://www.instagram.com/ed808.ltd/" class="md-instagram" target="_blank">
-              <md-button class="md-icon-button"></md-button>
+            <a
+              href="https://www.instagram.com/ed808.ltd/"
+              class="md-instagram"
+              target="_blank"
+            >
+              <md-button class="md-icon-button" />
             </a>
           </li>
           <li>
-            <a href="https://www.linkedin.com/company/ed808" class="md-linkedin" target="_blank">
-              <md-button class="md-icon-button"></md-button>
+            <a
+              href="https://www.linkedin.com/company/ed808"
+              class="md-linkedin"
+              target="_blank"
+            >
+              <md-button class="md-icon-button" />
             </a>
           </li>
           <li>
-            <a href="https://www.youtube.com/channel/UCa-R4IdZ-bCbsVTpKzt4r4A" class="md-youtube" target="_blank">
-              <md-button class="md-icon-button"></md-button>
+            <a
+              href="https://www.youtube.com/channel/UCa-R4IdZ-bCbsVTpKzt4r4A"
+              class="md-youtube"
+              target="_blank"
+            >
+              <md-button class="md-icon-button" />
             </a>
           </li>
         </ul>
@@ -234,16 +405,18 @@
         </div>
       </div>
     </footer>
-
   </div>
 </template>
 
 <script>
 
+  import Login from '@/components/fields/login'
   import axios from '@/node_modules/axios'
   import { cookie } from '@/components/mixins/cookie.js'
+
   export default {
-    name: 'default',
+    name: 'Default',
+    components: {Login},
     mixins:[cookie],
     data(){
       return{
@@ -253,7 +426,8 @@
         queryClasses: '',
         inputBox:'',
         aftersubmit:false,
-        toggleCard: false
+        toggleCard: false,
+        loginActive: false
       }
     },
     created(){
@@ -268,6 +442,9 @@
             this.IsLogin = true
       },
     methods:{
+      hideLoginCard(){
+        this.loginActive = false
+      },
       opening_menu(){
         this.menu_flag = !this.menu_flag
       },
@@ -328,6 +505,41 @@
 
 <style lang="scss">
   @import "@/assets/scss/vars.scss";
+  .login-card-with-overlay{
+    z-index: -10;
+    opacity: 0;
+    transition-duration: 0.5s;
+    padding-top: calc(90px + 10vh);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.3);
+    &.active {
+      z-index: 10;
+      opacity: 1;
+    }
+    .login-card {
+      width: 30%;
+      margin: auto;
+      margin-top: -100px;
+      opacity: 0;
+      transition-duration: 0.5s;
+      &.active {
+        opacity: 1;
+        margin-top: 0;
+      }
+      @media screen and (max-width: 992px) {
+        width: 60%;
+      }
+      @media screen and (max-width: 600px) {
+        width: 90%;
+      }
+
+    }
+
+  }
   .md-menu-content-bottom-start.md-menu-content-big.md-menu-content.md-theme-default {
     width: 100%;
     max-width: 100%;

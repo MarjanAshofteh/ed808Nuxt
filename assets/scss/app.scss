@@ -182,18 +182,9 @@ header#header{
     top: 0;
   }
 }
-.md-button.md-primary:not(.md-dense) {
-  -webkit-box-shadow: 0 2px 2px 0 rgba(156,39,176,.14), 0 3px 1px -2px rgba(156,39,176,.2), 0 1px 5px 0 rgba(156,39,176,.12);
-  box-shadow: 0 2px 2px 0 rgba(156,39,176,.14), 0 3px 1px -2px rgba(156,39,176,.2), 0 1px 5px 0 rgba(156,39,176,.12);
+.md-snackbar.error {
+  background-color: #f44336;
 }
-.md-button.md-primary:not(.md-dense), .md-button.md-primary.active:not(.md-dense), .md-button.md-primary:active:not(.md-dense), .md-button.md-primary:not(.md-dense):focus, .md-button.md-primary:not(.md-dense):hover {
-  background-color: #9c27b0!important;
-  background-color: var(--md-theme-default-primary-on-background,#9c27b0) !important;
-}
-.md-button.md-primary:not(.md-dense), .md-button.md-primary.active:not(.md-dense), .md-button.md-primary.active:not(.md-dense) i, .md-button.md-primary:not(.md-dense):active, .md-button.md-primary:not(.md-dense):active i, .md-button.md-primary:not(.md-dense):focus, .md-button.md-primary:not(.md-dense):focus i, .md-button.md-primary:not(.md-dense):hover, .md-button.md-primary:not(.md-dense):hover i, .md-button.md-primary:not(.md-dense) i {
-  color: #fff!important;
-}
-
 
 .container,
 .page-header .container,

@@ -101,11 +101,11 @@
           <!--<div class="block-quote">-->
             <!--<blockquote>-->
               <!--<p>-->
-                <!--<i class="zmdi zmdi-quote start-quote"></i>-->
+                <!--<i class="mdi mdi-quote start-quote"></i>-->
                   <!--<span class="quote">-->
                     <!--Lorem Ipsum Dolor...-->
                   <!--</span>-->
-                <!--<i class="zmdi zmdi-quote"></i>-->
+                <!--<i class="mdi mdi-quote"></i>-->
               <!--</p>-->
             <!--</blockquote>-->
           <!--</div>-->
@@ -150,8 +150,8 @@
                 @click="bookmarkContent()"
               >
                 <i
-                  class="zmdi"
-                  :class="node_content.user_bookmark ? 'zmdi-bookmark' : 'zmdi-bookmark-outline'"
+                  class="mdi"
+                  :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
                   :style="!$store.getters.getUid ? 'opacity: 0.5' : ''"
                 />
                 <md-tooltip
@@ -221,7 +221,7 @@
 
                 <network network="linkedin">
                   <md-button class="md-icon-button md-linkedin-icon">
-                    <i class="zmdi zmdi-linkedin" />
+                    <i class="mdi mdi-linkedin" />
                     <md-tooltip md-direction="bottom">
                       Share on LinkedIn
                     </md-tooltip>
