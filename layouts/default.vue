@@ -24,12 +24,12 @@
           class="logo"
         >
 
-        <div class="md-layout md-gutter large-screen">
+        <div class="md-layout md-gutter">
           <div
             class="header-menu-text md-layout-item md-size-100"
             style="text-align: right;"
           >
-            <md-menu md-direction="bottom-start">
+            <md-menu md-direction="bottom-start" class="large-screen">
               <nuxt-link to="/">
                 <md-button>Home</md-button>
               </nuxt-link>
@@ -41,13 +41,13 @@
               </nuxt-link>
             </md-menu>
 
-            <md-menu md-direction="bottom-start">
+            <md-menu md-direction="bottom-start" class="large-screen">
               <nuxt-link to="/aboutus">
                 <md-button>About Us</md-button>
               </nuxt-link>
             </md-menu>
 
-            <md-menu md-direction="bottom-start">
+            <md-menu md-direction="bottom-start" class="large-screen">
               <nuxt-link to="/contactus">
                 <md-button>Contact us</md-button>
               </nuxt-link>
@@ -78,25 +78,19 @@
 
             <div
               v-else
-              class="md-menu user-links"
-            >
+              class="md-menu user-links loggedin">
               <md-menu
                 md-size="big"
                 md-direction="bottom-end"
                 md-align-trigger
-                :md-active.sync="menu_flag"
-              >
-                <div
-                  style="cursor: pointer;"
-                  @click="opening_menu"
-                >
-                  <span
-                    v-if="$store.state.user.full_name"
-                    style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;"
-                  >
-                    {{ $store.state.user.full_name }}
-                  </span>
-                  <md-button class="md-icon-button">
+                :md-active.sync="menu_flag">
+                <div @click="opening_menu">
+                  <md-button>
+                    <span
+                      v-if="$store.state.user.full_name"
+                      class="md-xsmall-hide">
+                      {{$store.state.user.full_name}}
+                    </span>
                     <md-avatar>
                       <img
                         v-if="$store.state.user.picture"
@@ -112,7 +106,7 @@
                   </md-button>
                 </div>
 
-                <md-menu-content>
+                <md-menu-content class="user-menu">
                   <md-menu-item>
                     <nuxt-link
                       :to="'/user/'+ $store.state.user.uid"
@@ -121,8 +115,8 @@
                       My Profile
                     </nuxt-link>
                   </md-menu-item>
-                  <md-menu-item @click="logUserOut">
-                    Logout
+                  <md-menu-item >
+                    <a @click="logUserOut">Logout</a>
                   </md-menu-item>
                 </md-menu-content>
               </md-menu>
@@ -130,7 +124,7 @@
           </div>
         </div>
 
-        <div class="small-screen">
+        <div class="small-screen" style="display: none !important;">
           <!-- در حالت صفحه نمایش کوچیک هم منوی کاربری رو نمایش بده - هر دو حالتش رو -->
           <md-menu
             md-size="big"
@@ -580,14 +574,13 @@
   .small-screen{
     display: none;
   }
-  .md-menu button {
-    margin: 0;
-  }
+
   section#subscribe{
     background: #ddd;
     padding: 10px 0 30px 0;
     color: #3c4858;
     margin-top: auto;
+    h2 {font-family: roboto slab;}
     .input-wrapper{
       position: relative;
       width: 400px;
@@ -631,21 +624,85 @@
       }
     }
   }
-  .md-menu.user-links {
-    padding-left: 10px;
-    margin-left: 15px;
-    position: relative;
-    &:before {
-      content: "";
-      height: 20px;
-      left: 0;
-      width: 1px;
-      background: #ccc;
-      position: absolute;
-      top: 8px;
+
+  .md-menu{
+    button {
+      margin: 0;
+      vertical-align: middle;
+    }
+    &.user-links {
+      padding-left: 10px;
+      margin-left: 15px;
+      position: relative;
+      &:before {
+        content: "";
+        height: 20px;
+        left: 0;
+        width: 1px;
+        background: #ccc;
+        position: absolute;
+        top: 10px;
+      }
+      &.loggedin{
+        padding-left: 15px;
+        button{
+          height: 40px;
+          border-radius: 2px 30px 30px 2px;
+          @media #{$x600}{
+            width: 40px;
+            min-width: 40px;
+            margin: 0 6px;
+            border-radius: 50%;
+          }
+          span{
+            margin: 0 10px;
+            font-weight: 300 !important;
+          }
+          @media #{$m600}{.md-ripple{padding-right: 0;}}
+        }
+      }
     }
   }
-
+  .user-menu ul.md-list {
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    border-radius: 3px!important;
+    li {
+      position: relative;
+      .md-list-item-content {
+        padding: 0;
+        height: 39px;
+      }
+      a {
+        font-size: 14px;
+        padding: 10px 1.5rem;
+        margin: 0 5px;
+        text-transform: none;
+        color: #333!important;
+        border-radius: 2px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        font-weight: 400;
+        line-height: 1.428571;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        white-space: nowrap;
+        -webkit-transition: all .15s linear;
+        transition: all .15s linear;
+        width: 100%;
+        &:hover {
+          background: #eee;
+        }
+      }
+    }
+  }
 
   footer {
     padding: .9375rem 0;
@@ -818,6 +875,7 @@
       line-height: 1.55em;
       margin-bottom: 15px;
       font-weight: bold;
+      font-family: roboto slab;
     }
     p {
       color: #999;
@@ -859,9 +917,4 @@
     }
 
   }
-
-  ul.md-list.md-theme-default{
-    padding: 0;
-  }
-
 </style>

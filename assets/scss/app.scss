@@ -196,3 +196,8 @@ header#header{
   @media #{$m960} {max-width: 930px;}
   @media #{$m1280} {max-width: 1140px;}
 }
+
+//overriding some global bad css of core theme
+a:not(.md-button):hover {
+  text-decoration: none;
+}

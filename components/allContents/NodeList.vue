@@ -1,7 +1,7 @@
 <template>
   <div class="contents md-elevation-1" style="padding: 0px 15px 1px 15px; margin:0px auto 50px;">
     <div class="control-box">
-      <div class="md-layout" style="flex: 1 1 100%;	align-items: center;">
+      <div class="md-layout" style="flex: 1 1 100%;align-items: center;">
         <span
           class="md-layout-item"
           style="flex: 0 260px; margin-left: auto;order: 1;	font-size: 15px; text-align: right;"
