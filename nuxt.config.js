@@ -94,6 +94,6 @@ module.exports = {
     extractCSS: true
   },
   server: {
-    port:2000
+    port:3000
   }
 }
