@@ -36,34 +36,39 @@
       >
         <md-field :class="getValidationClass('fullName')" class="input-with-icon">
           <label for="fullName">Full Name</label>
-          <span class="icon-prefix mdi mdi-account-circle"></span>
+          <span class="icon-prefix mdi mdi-account-card-details"></span>
           <md-input name="fullName" id="fullName" autocomplete="given-name" v-model="form.fullName" :disabled="sending" required/>
           <span class="md-error" v-if="!$v.form.fullName.required">The full name is required</span>
           <span class="md-error" v-else-if="!$v.form.fullName.minlength">Should be at least 3 character</span>
         </md-field>
 
-        <md-field :class="getValidationClass('email')">
+        <md-field :class="getValidationClass('email')"  class="input-with-icon">
           <label for="email">Email</label>
+          <span class="icon-prefix mdi mdi-email"></span>
+
           <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email" :disabled="sending" required/>
           <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
           <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
         </md-field>
 
-        <md-field :class="getValidationClass('username')">
+        <md-field :class="getValidationClass('username')" class="input-with-icon">
           <label for="username">Username</label>
+          <span class="icon-prefix mdi mdi-account-circle"></span>
           <md-input id="username" name="username" v-model="form.username" autocomplete="given-name" :disabled="sending" required/>
           <span class="md-error" v-if="!$v.form.username.required">The Username is required</span>
           <!--<span class="md-error" v-else-if="!$v.form.mobile.taken">The User is already taken</span>-->
         </md-field>
 
-        <md-field :class="getValidationClass('password')">
+        <md-field :class="getValidationClass('password')" class="input-with-icon">
+          <span class="icon-prefix mdi mdi-lock"></span>
           <label for="password">Password</label>
           <md-input type="password" id="password" name="password" v-model="form.password" autocomplete="new-password" :disabled="sending" required/>
           <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
           <span class="md-error" v-else-if="!$v.form.password.minlength">Should be at least 6 character</span>
         </md-field>
 
-        <md-field :class="getValidationClass('rePassword')">
+        <md-field :class="getValidationClass('rePassword')" class="input-with-icon">
+          <span class="icon-prefix mdi mdi-lock"></span>
           <label for="rePassword">Password Confirmation</label>
           <md-input type="password" id="rePassword" name="rePassword" v-model="form.rePassword" autocomplete="new-password" :disabled="sending" required/>
           <span class="md-error" v-if="!$v.form.rePassword.required">The Password Confirmation is required</span>
