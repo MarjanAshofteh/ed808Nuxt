@@ -42,7 +42,7 @@
           </md-card-header>
           <md-card-header v-else>
             <div>You need to
-              <nuxt-link to="/login">Login</nuxt-link>
+              <a @click="$store.commit('TOGGLE_LOGIN')">Login</a>
               or
               <nuxt-link to="/register">Register</nuxt-link>
               for submiting your comment.</div>
@@ -211,19 +211,19 @@
                       <!--like Btn-->
                       <md-badge :md-content="c.likes" md-dense >
                         <md-button v-if="!c.user_like"
-                          :disabled="!$store.getters.getUid || c.uid == $store.getters.getUid "
+                          :disabled="c.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : c.user_like }"
                           @click="likeComment(c.cid, false, index, false)"
                         >
                           <md-icon>favorite</md-icon>
-                          <md-tooltip md-direction="bottom">
+                          <md-tooltip md-direction="bottom" v-if="$store.getters.getUid">
                            Like this comment
                           </md-tooltip>
                         </md-button>
                         <md-button
                           v-else
-                          :disabled="!$store.getters.getUid || c.uid == $store.getters.getUid "
+                          :disabled="c.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : c.user_like }"
                           @click="likeComment(c.cid, true, index, false)"
@@ -374,7 +374,7 @@
                         md-dense
                       >
                         <md-button v-if="!r.user_like"
-                          :disabled="!$store.getters.getUid || r.uid == $store.getters.getUid "
+                          :disabled=" r.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : r.user_like }"
                           @click="likeComment(r.cid, false, index, rIndex)"
@@ -385,7 +385,7 @@
                           </md-tooltip>
                         </md-button>
                         <md-button v-else
-                          :disabled="!$store.getters.getUid || r.uid == $store.getters.getUid "
+                          :disabled=" r.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
                           :class="{ 'active' : r.user_like }"
                           @click="likeComment(r.cid, true, index, rIndex)"
@@ -395,7 +395,7 @@
                         <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
                           Please login to like this comment
                         </md-tooltip>
-                        <md-tooltip md-direction="bottom" v-if="r.uid == $store.getters.getUid">
+                        <md-tooltip md-direction="bottom" v-if="$store.getters.getUid && r.uid == $store.getters.getUid">
                           This is your comment
                         </md-tooltip>
                       </md-badge>
@@ -477,40 +477,44 @@ export default {
     // index = index of comment
     // rindex = index of reply
     likeComment(cid, dislike, index, rindex){
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials = true;
-      axios
-        .post("https://ed808.com:92/latin/comments/" + cid + "/like" ,{
+      if(!this.$store.getters.getUid){
+        this.$store.commit('TOGGLE_LOGIN')
+      }else {
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        axios
+          .post("https://ed808.com:92/latin/comments/" + cid + "/like", {
 
-          'action' : dislike ? 'dislike' : ''
+            'action': dislike ? 'dislike' : ''
 
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token' : this.getCookie('token')
-          }
-        })
-        .then(response => {
-          this.commentErr = false;
-          /* this is for likes counter and btn color */
-          if (rindex !== false) {
-            this.commentList[index].replies[rindex].user_like = dislike ? false : true;
-            dislike ? this.commentList[index].replies[rindex].likes --
-              : this.commentList[index].replies[rindex].likes ++;
-          }else{
-            this.commentList[index].user_like = dislike ? false : true;
-            dislike ? this.commentList[index].likes --
-              : this.commentList[index].likes ++;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          if(err.response.statusText){
-            this.commentErr = err.response.statusText;
-          }else {
-            this.commentErr = 'Error While Sending Request';
-          }
-        });
+          }, {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': this.getCookie('token')
+            }
+          })
+          .then(response => {
+            this.commentErr = false;
+            /* this is for likes counter and btn color */
+            if (rindex !== false) {
+              this.commentList[index].replies[rindex].user_like = dislike ? false : true;
+              dislike ? this.commentList[index].replies[rindex].likes--
+                : this.commentList[index].replies[rindex].likes++;
+            } else {
+              this.commentList[index].user_like = dislike ? false : true;
+              dislike ? this.commentList[index].likes--
+                : this.commentList[index].likes++;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            if (err.response.statusText) {
+              this.commentErr = err.response.statusText;
+            } else {
+              this.commentErr = 'Error While Sending Request';
+            }
+          });
+      }
     },
     submitComment(pid){
       this.onSubmit = true;
@@ -606,7 +610,7 @@ export default {
     },
     showReplyBox(commentID) {
       if(!this.$store.getters.getUid){
-        this.$router.replace('/login')
+        this.$store.commit('TOGGLE_LOGIN')
       }else{
         this.commentText = '';
         this.replyText = '';
@@ -652,7 +656,9 @@ export default {
 .comment-list {
   @include main-center-content();
   position: relative;
-
+  a:hover {
+    cursor: pointer;
+  }
   .comment-card {
     padding: 10px 0;
     padding-bottom: 5px;

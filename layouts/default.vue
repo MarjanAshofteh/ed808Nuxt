@@ -7,13 +7,13 @@
     <!--login with overlay-->
     <div
       class="login-card-with-overlay"
-      :class="{ 'active' : loginActive }"
+      :class="{ 'active' : $store.state.loginActive }"
     >
       <div
         class="login-card"
-        :class="{ 'active' : loginActive }"
+        :class="{ 'active' : $store.state.loginActive }"
       >
-        <Login :pageComponent="false" :loginActive="loginActive" @hideLoginCard="hideLoginCard"/>
+        <Login :pageComponent="false" />
       </div>
     </div>
 
@@ -59,7 +59,7 @@
               class="md-menu user-links"
             >
               <md-menu md-direction="bottom-start">
-                <a @click="loginActive=true">
+                <a @click="$store.commit('TOGGLE_LOGIN')">
                   <md-button>Login</md-button>
                 </a>
               </md-menu>
@@ -500,19 +500,28 @@
 <style lang="scss">
   @import "@/assets/scss/vars.scss";
   .login-card-with-overlay{
-    z-index: -10;
-    opacity: 0;
-    transition-duration: 0.5s;
+    z-index: 10;
     padding-top: calc(90px + 10vh);
+    opacity: 0;
+    transition: ease opacity .5s;
     width: 100vw;
     height: 100vh;
     position: fixed;
+    pointer-events: none;
     top: 0;
-    left: 0;
     background-color: rgba(0,0,0,0.3);
     &.active {
       z-index: 10;
+      display: block;
       opacity: 1;
+      width: 100vw;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      transition: ease opacity .5s;
+      pointer-events: all;
+
     }
     .login-card {
       width: 30%;
@@ -523,6 +532,7 @@
       &.active {
         opacity: 1;
         margin-top: 0;
+        transition-duration: 0.5s;
       }
       @media screen and (max-width: 992px) {
         width: 60%;

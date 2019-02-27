@@ -2,14 +2,11 @@
 
       <div class="card card-signup">
         <div class="header header-primary text-center">
-          <md-progress-bar
-            v-if="loading.sending"
-            md-mode="indeterminate"
-          />
+
           <h4 class="card-title">Log in with</h4>
           <div class="social-line">
             <a href="#pablo" class="btn btn-just-icon btn-simple">
-              <md-button class="md-icon-button">
+              <md-button class="md-icon-button" disabled>
                 <i class="mdi mdi-facebook-box"></i>
               </md-button>
             </a>
@@ -19,10 +16,14 @@
               </md-button>
             </a>
             <a href="#pablo" class="btn btn-just-icon btn-simple">
-              <md-button class="md-icon-button">
+              <md-button class="md-icon-button" disabled>
                 <i class="mdi mdi-google-plus"></i>
               </md-button>
             </a>
+            <md-progress-bar
+              v-if="loading.sending"
+              md-mode="indeterminate"
+            />
           </div>
 
         </div>
@@ -81,7 +82,7 @@
             </vue-recaptcha>
 
             <md-snackbar :md-active.sync="userSaved">
-              {{ lastUser }} you are log in successfully!
+              {{ lastUser }}, you have logged in successfully!
             </md-snackbar>
             <md-snackbar
               class="error"
@@ -165,7 +166,7 @@
     },
     methods:{
       hideLogin(){
-        this.$emit('hideLoginCard')
+        this.$store.commit('TOGGLE_LOGIN')
       },
       getValidationClass (fieldName) {
         const field = this.$v.form[fieldName]
@@ -213,9 +214,17 @@
           else
             window.location.reload()
         }).catch(e => {
-          if(e.hasOwnProperty('response')){
-            if(e.response.statusText)
+          console.log(e.response)
+          if(e.response != 'undefined'){
+
+            if(e.response.data){
+              this.errors = e.response.data[0]
+              this.showError = true
+            }else if(e.response.statusText){
+              console.log('not undefined')
               this.errors = e.response.statusText
+              this.showError = true
+            }
             else{
               this.errors = "Error While Logging In!"
             }
@@ -225,7 +234,8 @@
           }
           this.showError = true
         })
-        this.clearForm()
+        this.loading.sending = false
+        // this.clearForm()
 
       },
       formSubmit(){
@@ -286,6 +296,21 @@
       margin-top: -40px;
       padding: 20px 0;
       border-radius: 3px;
+      position: relative;
+      .md-progress-bar{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-bottom-right-radius:3px ;
+        border-bottom-left-radius:3px ;
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, 0.50);
+
+      }
+      .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after, .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after, .md-progress-bar.md-theme-default.md-query .md-progress-bar-track:after, .md-progress-bar.md-theme-default.md-query .md-progress-bar-fill:after {
+        background-color: #92278f66 !important;
+      }
     }
     .header-primary, .content-primary {
       background: linear-gradient(60deg, #AB47BC, #7b1fa2);
