@@ -73,30 +73,141 @@
         >
         <!-- Doesnt Work Correctly ! -->
         <!-- Anchor Side Elements -->
+        <div style="position:relative;">
+          <affix
+            class="sidebar-menu affix-bottom"
+            relative-element-selector="#article"
+            :offset="{ top: 20, bottom: 20 }"
+            style=""
+          >
+            <div class="side-social">
+              <span class="clap">
+              <md-button
+                class="md-icon-button clap"
+                @click="clapContent()"
+              >
+                <img
+                  v-if="node_content.user_clap < 10"
+                  :src="node_content.user_clap != 0 ? '/images/clap-active.png' : '/images/clap.png'"
+                  height="23px"
+                >
+                <img
+                  v-else
+                  :src="!$store.getters.getUid ? '/images/clap.png' : '/images/clap-active.png'"
+                  height="23px"
+                  style="opacity: 0.6;"
+                >
+                <md-tooltip md-direction="bottom" v-if="$store.getters.getUid && node_content.user_clap < 10">
+                  Clap
+                </md-tooltip>
+              </md-button>
+              <md-tooltip md-direction="bottom" v-if="node_content.user_clap >= 10">
+                You clapped so much!
+              </md-tooltip>
+              <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
+                Please login to clap.
+              </md-tooltip>
+            </span>
+              <span class="clap">
+              <md-button
+                class="md-icon-button"
+                @click="bookmarkContent()"
+              >
+                <i
+                  class="mdi"
+                  :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                />
+                <md-tooltip
+                  v-if="!node_content.user_bookmark && $store.getters.getUid"
+                  md-direction="bottom"
+                >
+                  Bookmark this article
+                </md-tooltip>
+                <md-tooltip
+                  v-if="node_content.user_bookmark && $store.getters.getUid"
+                  md-direction="bottom"
+                >
+                  Remove from bookmarks
+                </md-tooltip>
+              </md-button>
+              <md-tooltip
+                v-if="!$store.getters.getUid"
+                md-direction="bottom"
+              >
+                  Please login to bookmark this content.
+                </md-tooltip>
+            </span>
 
-        <!--<affix-->
-        <!--class="sidebar-menu affix-bottom"-->
-        <!--relative-element-selector="#article"-->
-        <!--:offset="{ top: 20, bottom: 20 }"-->
-        <!--style=""-->
-        <!--&gt;-->
-        <!--<scrollactive-->
-        <!--class="my-nav"-->
-        <!--@:itemchanged="onItemChanged"-->
-        <!--active-class="active"-->
-        <!--:offset="20">-->
+
+              <a href="#comments">
+                <md-button class="md-icon-button">
+                  <i class="mdi mdi-comment-multiple-outline" />
+                  <md-tooltip md-direction="bottom">
+                    Jump to comments
+                  </md-tooltip>
+                </md-button>
+              </a>
+              <social-sharing
+                :url="'https://ed808.com/node/' + nid"
+                :description="node_content.meta_description"
+                :title="node_content.title"
+                inline-template>
+                <div>
+
+                  <network network="linkedin">
+                    <md-button class="md-icon-button md-linkedin-icon">
+                      <i class="mdi mdi-linkedin" />
+                      <md-tooltip md-direction="bottom">
+                        Share on LinkedIn
+                      </md-tooltip>
+                    </md-button>
+                  </network>
+                  <network network="facebook">
+                    <md-button class="md-icon-button md-facebook-icon">
+                      <i class="mdi mdi-facebook" />
+                      <md-tooltip md-direction="bottom">
+                        Share on Facebook
+                      </md-tooltip>
+                    </md-button>
+                  </network>
+                  <network network="twitter">
+                    <md-button class="md-icon-button md-twitter-icon">
+                      <i class="mdi mdi-twitter" />
+                      <md-tooltip md-direction="bottom">
+                        Share on Twitter
+                      </md-tooltip>
+                    </md-button>
+                  </network>
+                  <network network="whatsapp">
+                    <md-button class="md-icon-button md-whatsapp-icon">
+                      <i class="mdi mdi-whatsapp" />
+                      <md-tooltip md-direction="bottom">
+                        Share on WhatsApp
+                      </md-tooltip>
+                    </md-button>
+                  </network>
+                </div>
+              </social-sharing>
+            </div>
+            <!--<scrollactive-->
+            <!--class="my-nav"-->
+            <!--@:itemchanged="onItemChanged"-->
+            <!--active-class="active"-->
+            <!--:offset="20">-->
 
 
-        <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
+            <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
 
-        <!--</scrollactive>-->
-        <!--</affix>-->
+            <!--</scrollactive>-->
+          </affix>
 
-        <article
-          v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
-          id="article"
-          v-html="convertDomain(node_content.body_value)"
-        />
+          <article
+            v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
+            id="article"
+            v-html="convertDomain(node_content.body_value)"
+          />
+        </div>
+
 
         
         <div
@@ -598,6 +709,10 @@ export default {
   direction: ltr;
   margin: auto;
   padding: 0 15px;
+  @media screen and (max-width: 992px){
+    width: 80%;
+    margin: auto;
+  }
 }
 body {
   background-color: white !important;
@@ -799,10 +914,15 @@ body {
   }
 }
 .vue-affix {
-  padding-top: 20px;
+  /*padding-top: 20px;*/
   position: absolute;
   width: calc(((100% - 800px) / 2) - 15px);
-  margin-left: 15px;
+  @media screen and (max-width: 992px) {
+    width: 10%;
+  }
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
   a.scrollactive-item {
     display: block;
   }
@@ -816,7 +936,35 @@ body {
 .vue-affix.affix {
   position: fixed;
 }
-
+.affix-bottom {
+  position:absolute;
+}
+.side-social {
+  width: 50px;
+  padding-left: 10px;
+  margin: auto;
+  .md-ripple {
+    .md-button-content {
+      .mdi {
+        color: rgba(0, 0, 0, 0.54);
+        color: rgba(0, 0, 0, 0.54);
+        color: var(--md-theme-default-icon-on-background, rgba(0, 0, 0, 0.54));
+      }
+      .mdi-facebook {
+        color: #3b5998;
+      }
+      .mdi-linkedin {
+        color: #0976b4;
+      }
+      .mdi-twitter {
+        color: #55acee;
+      }
+      .mdi-whatsapp {
+        color: #25D366;
+      }
+    }
+  }
+}
 .share {
   @include main-center-content();
   text-align: right;
@@ -883,38 +1031,41 @@ body {
   }
 }
 
-  blockquote {
-    font-style: italic;
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 17.5px;
-    border-left: 5px solid #eee;
+blockquote {
+  font-style: italic;
+  padding: 10px 20px;
+  margin: 0 0 20px;
+  font-size: 17.5px;
+  border-left: 5px solid #eee;
 
-    p {
-      font-size: 1.35em;
-      line-height: 1.5em;
-      color: #555555;
-      margin-bottom: 30px;
-      &:before {
-        content: '\f27e';
-        font-family: mat;
-        font-size: 18px;
-        display: inline-block;
-        transform: rotate(180deg);
-        position: relative;
-        bottom: 5px;
+  p {
+    font-size: 1.35em;
+    line-height: 1.5em;
+    color: #555555;
+    margin-bottom: 30px;
+    &:before {
+      content: '\f27e';
+      font-family: mat;
+      font-size: 18px;
+      display: inline-block;
+      transform: rotate(180deg);
+      position: relative;
+      bottom: 5px;
 
-      }
-      &:after {
-        content: '\f27e';
-        font-family: mat;
-        font-size: 18px;
-        position: relative;
-        bottom: 5px;
-      }
+    }
+    &:after {
+      content: '\f27e';
+      font-family: mat;
+      font-size: 18px;
+      position: relative;
+      bottom: 5px;
     }
   }
+}
 
+.md-content  {
+  position: relative;
+}
 
 .mdi {
   width: 24px;

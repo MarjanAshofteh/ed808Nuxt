@@ -22,6 +22,7 @@ module.exports = {
       { charset: 'utf-8' },
       { 'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8' },
       { name: 'viewport', content: 'width=device-width, initi al-scale=1' },
+      { name: 'mobile-web-app-capable', content: 'yes' },
       { name: 'description', content: 'A civil engineering social media, providing online training courses in all different fields of civil engineering and architecture focusing on Performance-based design of Structures (PBD) and Building Information Modeling (BIM) and other new trendes in the form of articles, videos, podcasts, ebooks and so on.', hid: 'description' },
 
       // OpenGraph data (Most widely used) - Dynamic
@@ -94,6 +95,6 @@ module.exports = {
     extractCSS: true
   },
   server: {
-    port:3000
+    port:2000
   }
 }
