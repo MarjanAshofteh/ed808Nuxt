@@ -73,6 +73,7 @@ module.exports = {
     { src: '~plugins/affix', ssr: false },
     { src: '~plugins/ga.js', ssr: false },
     { src: '~plugins/vue-sharing.js', ssr: false },
+    { src: '~plugins/vue-youtube.js', ssr: false },
   ],
 
   /*
@@ -91,5 +92,8 @@ module.exports = {
     ** You can extend webpack config here
     */
     extractCSS: true
+  },
+  server: {
+    port:3000
   }
 }

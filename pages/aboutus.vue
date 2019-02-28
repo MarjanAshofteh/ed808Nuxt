@@ -48,7 +48,7 @@ export default {
         { rel: "alternate", href: "https://ed808.com/aboutus", hreflang: "en" },
         { rel: "shortlink", href: "https://ed808.com/aboutus" }
       ],
-      title: "about us",
+      title: "About Us",
       meta: [
         // OpenGraph data (Most widely used)
         { property: "og:title", content: this.title, hid: "og:title" },

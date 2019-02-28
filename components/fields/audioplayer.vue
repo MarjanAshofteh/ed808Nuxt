@@ -73,15 +73,13 @@
 
 
     <audio id="podcast-audio" style="height: 100px">
-      <source src="/rj.mp3" type="audio/mpeg">
+      <source :src="source" type="audio/mpeg">
     </audio>
 
   </div>
 </template>
 
 <script>
-  import VueHowler from 'vue-howler'
-
   export default {
     name: "HowlerPlayer",
     // mixins: [VueHowler],

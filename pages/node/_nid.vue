@@ -98,17 +98,6 @@
           v-html="convertDomain(node_content.body_value)"
         />
 
-          <!--<div class="block-quote">-->
-            <!--<blockquote>-->
-              <!--<p>-->
-                <!--<i class="zmdi zmdi-quote start-quote"></i>-->
-                  <!--<span class="quote">-->
-                    <!--Lorem Ipsum Dolor...-->
-                  <!--</span>-->
-                <!--<i class="zmdi zmdi-quote"></i>-->
-              <!--</p>-->
-            <!--</blockquote>-->
-          <!--</div>-->
         
         <div
           v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
@@ -144,24 +133,21 @@
           <div class="actions">
             <span class="clap">
               <md-button
-                :disabled="!$store.getters.getUid"
                 class="md-icon-button"
-                :class="{ 'bookmark-active' : node_content.user_bookmark }"
                 @click="bookmarkContent()"
               >
                 <i
-                  class="zmdi"
-                  :class="node_content.user_bookmark ? 'zmdi-bookmark' : 'zmdi-bookmark-outline'"
-                  :style="!$store.getters.getUid ? 'opacity: 0.5' : ''"
+                  class="mdi"
+                  :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
                 />
                 <md-tooltip
-                  v-if="!node_content.user_bookmark"
+                  v-if="!node_content.user_bookmark && $store.getters.getUid"
                   md-direction="bottom"
                 >
                   Bookmark this article
                 </md-tooltip>
                 <md-tooltip
-                  v-else
+                  v-if="node_content.user_bookmark && $store.getters.getUid"
                   md-direction="bottom"
                 >
                   Remove from bookmarks
@@ -178,21 +164,20 @@
             <span class="clap">
               <md-button
                 class="md-icon-button clap"
-                :disabled="node_content.user_clap >= 10 || !$store.getters.getUid"
                 @click="clapContent()"
               >
                 <img
-                  v-if="node_content.user_clap < 10 && $store.getters.getUid"
+                  v-if="node_content.user_clap < 10"
                   :src="node_content.user_clap != 0 ? '/images/clap-active.png' : '/images/clap.png'"
                   height="23px"
                 >
                 <img
                   v-else
-                  :src="!$store.getters.getUid ? '/images/clap-disabled.png' : '/images/clap-active.png'"
+                  :src="!$store.getters.getUid ? '/images/clap.png' : '/images/clap-active.png'"
                   height="23px"
                   style="opacity: 0.6;"
                 >
-                <md-tooltip md-direction="bottom">
+                <md-tooltip md-direction="bottom" v-if="$store.getters.getUid && node_content.user_clap < 10">
                   Clap
                 </md-tooltip>
               </md-button>
@@ -221,7 +206,7 @@
 
                 <network network="linkedin">
                   <md-button class="md-icon-button md-linkedin-icon">
-                    <i class="zmdi zmdi-linkedin" />
+                    <i class="mdi mdi-linkedin" />
                     <md-tooltip md-direction="bottom">
                       Share on LinkedIn
                     </md-tooltip>
@@ -432,51 +417,59 @@ export default {
       this.articleHeadings = headObject;
     },
     clapContent() {
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials = true;
-      axios
-        .post(
-          "https://ed808.com:92/latin/contents/" + this.nid + "/clap",
-          {},
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-Token": this.getCookie("token")
+      if(!this.$store.getters.getUid){
+        this.$store.commit('TOGGLE_LOGIN')
+      }else{
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        axios
+          .post(
+            "https://ed808.com:92/latin/contents/" + this.nid + "/clap",
+            {},
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": this.getCookie("token")
+              }
             }
-          }
-        )
-        .then(() => {
-          this.node_content.user_clap++;
-          this.node_content.clap_point++;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+          )
+          .then(() => {
+            this.node_content.user_clap++;
+            this.node_content.clap_point++;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
     bookmarkContent() {
-      console.log(this.node_content);
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials = true;
-      axios
-        .post(
-          "https://ed808.com:92/latin/contents/" + this.nid + "/bookmark",
-          {
-            action: this.node_content.user_bookmark ? "unbookmark" : "bookmark"
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-Token": this.getCookie("token")
+      if(!this.$store.getters.getUid){
+        this.$store.commit('TOGGLE_LOGIN')
+      }else {
+        console.log(this.node_content);
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        axios
+          .post(
+            "https://ed808.com:92/latin/contents/" + this.nid + "/bookmark",
+            {
+              action: this.node_content.user_bookmark ? "unbookmark" : "bookmark"
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": this.getCookie("token")
+              }
             }
-          }
-        )
-        .then(() => {
-          console.log("sent");
-          this.node_content.user_bookmark = !this.node_content.user_bookmark;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+          )
+          .then(() => {
+            console.log("sent");
+            this.node_content.user_bookmark = !this.node_content.user_bookmark;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
     convertDomain(value) {
       //this work but its performance is slow
@@ -898,16 +891,26 @@ body {
     border-left: 5px solid #eee;
 
     p {
-        font-size: 1.35em;
-        line-height: 1.5em;
-        color: #555555;
-        margin-bottom: 30px;
-      .mdi.mdi-quote{
+      font-size: 1.35em;
+      line-height: 1.5em;
+      color: #555555;
+      margin-bottom: 30px;
+      &:before {
+        content: '\f27e';
+        font-family: mat;
+        font-size: 18px;
+        display: inline-block;
+        transform: rotate(180deg);
         position: relative;
         bottom: 5px;
-        &.start-quote {
-          transform: rotate(180deg);
-        }
+
+      }
+      &:after {
+        content: '\f27e';
+        font-family: mat;
+        font-size: 18px;
+        position: relative;
+        bottom: 5px;
       }
     }
   }

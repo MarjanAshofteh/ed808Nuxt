@@ -9,6 +9,7 @@ Vue.use(Vuex)
 
 export const state = () => ({
   user: {},
+  loginActive: false,
   roles: ['administrator'],
   //allContents page
   filtersLoading: true,
@@ -83,6 +84,9 @@ export const mutations = {
     if(full_name){
       state.user.full_name = full_name
     }
+  },
+  TOGGLE_LOGIN(state){
+    state.loginActive = !state.loginActive
   }
 }
 

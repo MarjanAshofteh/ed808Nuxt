@@ -49,7 +49,7 @@ export default {
         { rel: "alternate", href: "https://ed808.com/privacy", hreflang: "en" },
         { rel: "shortlink", href: "https://ed808.com/privacy" }
       ],
-      title: "about us",
+      title: "Privacy Policy",
       meta: [
         // OpenGraph data (Most widely used)
         { property: "og:title", content: this.title, hid: "og:title" },

@@ -122,10 +122,11 @@ export default {
     }
 }
 .md-card .md-title.content-title {
-    text-align: left;
-	font-size: 18px;
-	max-height: 64px;
-	overflow: hidden;
+  text-align: left;
+	font-size: 16px;
+  max-height: 3.3em;
+  overflow: hidden;
+  line-height: 1.64;
 }
 .md-card-media img {
 	max-width: 100%;
