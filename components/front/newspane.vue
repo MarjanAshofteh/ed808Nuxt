@@ -157,12 +157,13 @@ section#events{
   }
   h5{
     margin: 0;
-    font-weight: normal;
     display: inline-block;
     background: #fafafa;
     z-index: 1;
     position: relative;
     padding-right: 15px;
+    font-family: roboto slab;
+    color: #3c4858;
   }
 }
 .more-link {
