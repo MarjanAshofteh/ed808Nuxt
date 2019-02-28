@@ -36,10 +36,10 @@
 
       <div class="user-tabs">
 
-        <md-tabs md-active-tab="tab-personal">
+        <md-tabs md-active-tab="tab-posts">
 
           <md-tab id="tab-posts" md-label="posts" to="">
-            <Posts></Posts>
+            <Posts :uid="$route.params.uid"></Posts>
           </md-tab>
 
           <md-tab id="tab-personal" md-label="Personal info" to="">
@@ -56,9 +56,9 @@
 
         </md-tabs>
       </div>
-      <div class="loading" v-if="loading">
+      <!--<div class="loading" v-if="loading">
         <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
-      </div>
+      </div>-->
     </md-content>
     <!--<div class="bottom">
       <div class="min-col">
@@ -783,5 +783,8 @@ export default {
     display: flex;
     justify-content: center;
     padding-right: 21%;
+  }
+  .md-tabs.md-theme-default .md-tabs-content{
+    height:initial !important;
   }
 </style>
