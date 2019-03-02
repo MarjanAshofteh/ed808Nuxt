@@ -5,21 +5,21 @@
 
           <h4 class="card-title">Log in with</h4>
           <div class="social-line">
-            <a href="#pablo" class="btn btn-just-icon btn-simple">
-              <md-button class="md-icon-button" disabled>
-                <i class="mdi mdi-facebook-box"></i>
-              </md-button>
-            </a>
+            <!--<a href="#pablo" class="btn btn-just-icon btn-simple">-->
+              <!--<md-button class="md-icon-button" disabled>-->
+                <!--<i class="mdi mdi-facebook-box"></i>-->
+              <!--</md-button>-->
+            <!--</a>-->
             <a href="#pablo" class="btn btn-just-icon btn-simple">
               <md-button class="md-icon-button">
-                <i class="mdi mdi-twitter"></i>
+                <i class="mdi mdi-linkedin"></i>
               </md-button>
             </a>
-            <a href="#pablo" class="btn btn-just-icon btn-simple">
-              <md-button class="md-icon-button" disabled>
-                <i class="mdi mdi-google-plus"></i>
-              </md-button>
-            </a>
+            <!--<a href="#pablo" class="btn btn-just-icon btn-simple">-->
+              <!--<md-button class="md-icon-button" disabled>-->
+                <!--<i class="mdi mdi-google-plus"></i>-->
+              <!--</md-button>-->
+            <!--</a>-->
             <md-progress-bar
               v-if="loading.sending"
               md-mode="indeterminate"
