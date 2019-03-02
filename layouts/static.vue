@@ -356,7 +356,7 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    position: absolute;
+    position: static;
     bottom: 0;
     left: 0;
     width: 100%;
