@@ -216,7 +216,6 @@
                   </md-button>
                 </a>
               </div>
-
             </div>
 
             <div class="box-edit" v-else>

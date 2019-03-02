@@ -10,6 +10,7 @@
           <a :href="'/node/'+ post.nid">
             <img :src="post.picture" class="img">
           </a>
+          <div data-v-c79ac4a2="" class="colored-shadow" :style="'background-image: url('+ post.picture +');opacity: 1;'"></div>
         </div>
         <div class="md-card-content">
           <h6 class="card-category text-info">{{post.topic_name}}</h6>
@@ -74,7 +75,28 @@
   }
 </script>
 
-<style scoped>
+<style>
+  .md-card {
+    max-width: 800px;
+    text-align: left;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    font-size: .875rem;
+    position: relative;
+    width: 100%;
+    margin: 30px 0;
+    overflow: unset;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+    border-radius: 6px;
+    color: rgba(0,0,0,.87);
+    background: #fff
+  }
   .text-info {
     color: #00bcd4!important;
   }
@@ -109,28 +131,6 @@
     font-size: 14px;
     margin: 0 0 10px;
   }
-  .md-card {
-    max-width: 800px;
-    text-align: left;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    font-size: .875rem;
-    position: relative;
-    width: 100%;
-    margin: 30px 0;
-    overflow: unset;
-    -webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-    border-radius: 6px;
-    color: rgba(0,0,0,.87);
-    background: #fff
-  }
-
   .md-card.row-space .header {
     padding: 15px 20px 0
   }

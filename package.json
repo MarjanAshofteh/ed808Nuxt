@@ -35,6 +35,7 @@
     "vue-scrollactive": "^0.8.0",
     "vue-social-sharing": "^2.4.1",
     "vue-youtube-embed": "^2.2.1",
+    "vue2-editor": "^2.6.6",
     "vuejs-countdown": "^0.2.1",
     "vuelidate": "^0.7.4"
   },
