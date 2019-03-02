@@ -562,7 +562,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .loading {
     position: absolute;
     width: 100%;
@@ -571,6 +571,9 @@
     bottom: 0;
     background: #fff;
   }
+</style>
+
+<style lang="scss">
   .edit_cv{
     position: relative;
     width: 155px;
@@ -590,114 +593,137 @@
       top: 14px;
     }
   }
-  .bottom{
+  .bottom {
     max-width: 1130px;
     margin: 27px auto;
     padding: 5px;
     text-align: left;
     display: flex;
     flex-wrap: wrap;
+
     .min-col {
       width: 28%;
       margin-right: 2%;
-      @media screen and (max-width: 992px){
+      @media screen and (max-width: 992px) {
         width: 38%;
         margin-right: 2%;
       }
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         width: 100%;
         margin-right: 0;
       }
     }
-    .max-col{
+
+    .max-col {
       max-width: 70%;
-      @media screen and (max-width: 992px){
+      @media screen and (max-width: 992px) {
         width: 60%;
       }
-      @media screen and (max-width: 600px){
+      @media screen and (max-width: 600px) {
         width: 100%;
       }
-      .box{
+
+      .box {
         min-width: 100%;
       }
     }
-    .box{
-      position: relative;
-      display: inline-block;
-      width: 100%;
-      margin: 0 27px 27px 0;
-      transition: .3s cubic-bezier(.25,.8,.5,1);
-      &:hover .box-head .edit{
-        opacity: 1;
+  }
+  .box {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0 27px 27px 0;
+    transition: .3s cubic-bezier(.25, .8, .5, 1);
+
+    &:hover .box-head .edit {
+      opacity: 1;
+    }
+
+    .box-head {
+      border-bottom: 1px solid #eee;
+      min-height: 48px;
+      padding: 4px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: padding .4s cubic-bezier(.25, .8, .25, 1);
+
+      .md-icon:first-child {
+        margin-right: 14px;
+        margin-top: 7px;
       }
-      .box-head{
-        border-bottom: 1px solid #eee;
-        min-height: 48px;
-        padding: 4px 16px;
+
+      .item-text {
+        flex: 1;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        transition: padding .4s cubic-bezier(.25,.8,.25,1);
-        .md-icon:first-child {
-          margin-right: 14px;
-          margin-top: 7px;
-        }
-        .item-text{
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          overflow: hidden;
-          line-height: 1.25em;
-          white-space: nowrap;
-        }
-        .edit{
-          opacity: 0;
-          transition: .3s cubic-bezier(.25,.8,.5,1);
-          margin: 0 -12px 0 0;
-          .md-icon{
-            margin: 0px !important;
-          }
+        flex-direction: column;
+        align-items: flex-start;
+        overflow: hidden;
+        line-height: 1.25em;
+        white-space: nowrap;
+      }
+
+      .edit {
+        opacity: 0;
+        transition: .3s cubic-bezier(.25, .8, .5, 1);
+        margin: 0 -12px 0 0;
+
+        .md-icon {
+          margin: 0px !important;
         }
       }
-      .box-text {
-        margin: 10px 0;
-        .box-row {
-          padding: 5px 25px;
+    }
+
+    .box-text {
+      margin: 10px 0;
+      font-size: 15px;
+
+      .box-row {
+        padding: 5px 25px;
+      }
+
+      .default-text {
+        color: #BDBDBD;
+      }
+
+      .label {
+        color: #888;
+        font-size: 13px;
+      }
+
+      .box-edit {
+        padding: 5px 25px;
+
+        .md-field {
+          margin-bottom: 9px;
         }
-        .default-text{
-          color: #BDBDBD;
-        }
-        .label{
-          color:#888;
-          font-size:13px;
-        }
-        .box-edit{
-          padding: 5px 25px;
-          .md-field{
-            margin-bottom: 9px;
+
+        .md-field.md-has-textarea {
+          textarea {
+            font-size: 16px !important;
           }
-          .md-field.md-has-textarea{
-            textarea{
-              font-size:16px !important;
-            }
-            &:not(.with-label){
-              padding: 7px 1px;
-            }
-            margin: 0;
+
+          &:not(.with-label) {
+            padding: 7px 1px;
           }
-          .md-layout.md-alignment-center-space-between .md-layout-item{
-            flex:0;
-            button{
-              margin: 6px 0 0 0;
-              &.green{
-                background-color:#4caf50;
-                color: white !important;
-              }
+
+          margin: 0;
+        }
+
+        .md-layout.md-alignment-center-space-between .md-layout-item {
+          flex: 0;
+
+          button {
+            margin: 6px 0 0 0;
+
+            &.green {
+              background-color: #4caf50;
+              color: white !important;
             }
           }
         }
       }
     }
   }
+
 </style>
