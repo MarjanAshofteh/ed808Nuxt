@@ -25,11 +25,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .with-background {
-    background: url(/images/login-bg.jpg) fixed center;
-    background-size: cover;
 
-  }
   .login-card-page {
     width: 30%;
     margin: auto;

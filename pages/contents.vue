@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top: 15px;">
+  <div class="content-container" style="padding-top: 15px;">
     <div class="md-layout" style="align-items: flex-start; padding: 0 0 30px 15px;">
         <filters class="md-layout-item md-size-20" style="padding: 0px 15px 0 0;"/>
         <NodeList 
@@ -59,6 +59,8 @@ export default {
 </script>
 
 <style lang="scss">
-
+  .content-container {
+    min-height: 500px;
+  }
 </style>
 
