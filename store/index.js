@@ -11,6 +11,7 @@ export const state = () => ({
   user: {},
   loginActive: false,
   roles: ['administrator'],
+  backGround: '',
   //allContents page
   filtersLoading: true,
   selected: {

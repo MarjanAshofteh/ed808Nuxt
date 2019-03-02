@@ -56,7 +56,10 @@ module.exports = {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#673AB7' },
+  loading: {
+    color: '#673AB7',
+    height: '3px'
+  },
 
   /*
   ** Global CSS
@@ -96,6 +99,6 @@ module.exports = {
     extractCSS: true
   },
   server: {
-    port:2000
+    port:3000
   }
 }

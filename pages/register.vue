@@ -14,9 +14,13 @@ import Register from '@/components/fields/register'
 export default {
   name: 'register',
   scrollToTop: true,
+  layout: 'static',
   components: {
     Register
   },
+  mounted(){
+    this.$store.state.backGround = '/images/login-bg.jpg'
+  }
 }
 </script>
 

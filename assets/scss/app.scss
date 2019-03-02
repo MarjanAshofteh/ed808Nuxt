@@ -78,6 +78,37 @@ header#header{
   + div {
     margin-top: 90px;
   }
+  &.transparent {
+    + div {
+      margin-top: 0;
+      padding-top: 90px;
+    }
+  }
+
+  &.transparent {
+    background: transparent;
+    box-shadow: none !important;
+    .header-menu-text {
+      .md-menu {
+        .md-button.md-theme-default {
+          color: #fff !important;
+          .md-button-content{
+            color: #fff !important;
+
+          }
+        }
+      }
+    }
+    .small-screen {
+      .md-button {
+        color: #fff;
+        .md-icon.md-theme-default.md-icon-font.md-primary {
+          color: #fff;
+        }
+      }
+    }
+  }
+
   .header-menu-right{
     text-align: right;
     margin-top: 4px;

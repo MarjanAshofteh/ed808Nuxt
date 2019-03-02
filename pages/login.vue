@@ -11,20 +11,33 @@ import login from '@/components/fields/login'
 
 export default {
   name: 'Login',
+  layout: 'static',
   scrollToTop: true,
   components: {
     login
   },
-  middleware: ['isauth']
+  middleware: ['isauth'],
+  mounted() {
+    this.$store.state.backGround = '/images/login-bg.jpg'
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  .with-background {
-    background: url(/images/login-bg.jpg) fixed center;
-    background-size: cover;
-
-  }
+  /*.with-background {*/
+    /*!*position: relative;*!*/
+    /*background: url(/images/login-bg.jpg) fixed center;*/
+    /*background-size: cover;*/
+    /*&:before {*/
+      /*content: '';*/
+      /*position: absolute;*/
+      /*left: 0;*/
+      /*top: 0;*/
+      /*bottom: 0;*/
+      /*right: 0;*/
+      /*background: rgba(0,0,0,0.3);*/
+    /*}*/
+  /*}*/
   .login-card-page {
     width: 30%;
     margin: auto;

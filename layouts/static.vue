@@ -1,9 +1,9 @@
 <template>
   <div
     id="app"
-    :class="[queryClasses]"
+    :class="[ queryClasses ] + bgImage != '' ? 'static-bg' : '' "
+    :style="{ backgroundImage : `url(${bgImage})` }"
   >
-
     <!--login with overlay-->
     <div
       class="login-card-with-overlay"
@@ -13,11 +13,13 @@
         class="login-card"
         :class="{ 'active' : $store.state.loginActive }"
       >
-        <Login :pageComponent="false" />
+        <Login :page-component="false" />
       </div>
     </div>
 
-    <MainNav :transparent="false"></MainNav>
+
+    <MainNav :transparent="true" />
+
 
     <nuxt />
 
@@ -25,35 +27,12 @@
       You log out successfully!
     </md-snackbar>
 
-    <section id="subscribe">
-      <div class="inner">
-        <h2>Subscribe Your Email</h2>
-        <div class="input-wrapper">
-          <input
-            v-model="inputBox"
-            placeholder="Submit Your Email..."
-            autocomplete="off"
-            @keyup.enter="addEmail"
-          >
-          <button @click="addEmail" />
-          <div
-            v-if="aftersubmit"
-            style="margin-top: 20px;"
-          >
-            Thank You :)
-          </div>
-        </div>
-        <p> Join our mailing list to receive the latest updates and personalized content right in your inbox </p>
-      </div>
-    </section>
-
-    <footer class="footer footer-white footer-big">
+    <footer class="footer footer-transparent footer-big">
       <div class="container">
         <div class="content">
           <div class="md-layout">
-            <div class="md-layout-item md-medium-size-25 md-large-size-25 md-small-size-100">
-              <h5>About</h5>
-              <ul class="links-vertical">
+            <div class="md-layout-item md-medium-size-50 md-large-size-50 md-small-size-100">
+              <ul class="links-horizontal">
                 <li>
                   <nuxt-link to="/aboutus">
                     About Us
@@ -69,11 +48,6 @@
                     F&Q
                   </nuxt-link>
                 </li>
-              </ul>
-            </div>
-            <div class="md-layout-item md-medium-size-25 md-large-size-25 md-small-size-100">
-              <h5>Legal</h5>
-              <ul class="links-vertical">
                 <li>
                   <nuxt-link to="/privacy">
                     Privacy Policy
@@ -81,107 +55,10 @@
                 </li>
               </ul>
             </div>
-            <div class="md-layout-item md-medium-size-45 md-large-size-45 md-small-size-100">
-              <nuxt-link to="/">
-                <h5>ED 808 .ltd</h5>
-              </nuxt-link>
-              <p>
-                808 is trying to connect engineering knowledge and industry through combining technology and the newest global experiences in all fields of civil and architectural engineering.
-              </p>
-            </div>
-            <div
-              style="display: none;"
-              class="md-layout-item md-medium-size-40 md-large-size-40 md-small-size-100"
-            >
-              <h5>Subscribe to Newsletter</h5>
-              <p>
-                Join our mailing list to receive the latest updates and personalized content right in your inbox.
-              </p>
-              <form
-                action=""
-                method=""
-                class="form-newsletter"
-              >
-                <div class="md-layout">
-                  <div class="md-layout-item md-large-size-66 medium-size-50">
-                    <div class="md-field md-theme-default md-has-placeholder">
-                      <input
-                        id="md-input-zyl6y53yh"
-                        type="text"
-                        placeholder="Your Email.."
-                        class="md-input"
-                      >
-                    </div>
-                  </div>
-                  <div class="md-layout-item md-large-size-33 medium-size-50">
-                    <button
-                      type="button"
-                      class="md-button md-primary md-just-icon md-block md-theme-default"
-                    >
-                      <div class="md-ripple">
-                        <div class="md-button-content">
-                          <i class="md-icon md-icon-font md-theme-default">
-                            mail
-                          </i>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                </div>
-              </form>
+            <div class="copyright md-layout-item md-medium-size-50 md-large-size-50 md-small-size-100">
+              Copyright © 2019 ED 808 .ltd All Rights Reserved.
             </div>
           </div>
-        </div>
-        <hr>
-        <ul class="social-buttons">
-          <li>
-            <a
-              href="http://telegram.me/ed808"
-              class="md-telegram"
-              target="_blank"
-            >
-              <md-button class="md-icon-button" />
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.facebook.com/ED808.ltd"
-              class="md-facebook"
-              target="_blank"
-            >
-              <md-button class="md-icon-button" />
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.instagram.com/ed808.ltd/"
-              class="md-instagram"
-              target="_blank"
-            >
-              <md-button class="md-icon-button" />
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.linkedin.com/company/ed808"
-              class="md-linkedin"
-              target="_blank"
-            >
-              <md-button class="md-icon-button" />
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.youtube.com/channel/UCa-R4IdZ-bCbsVTpKzt4r4A"
-              class="md-youtube"
-              target="_blank"
-            >
-              <md-button class="md-icon-button" />
-            </a>
-          </li>
-        </ul>
-        <div class="copyright">
-          Copyright © 2019 ED 808 .ltd All Rights Reserved.
         </div>
       </div>
     </footer>
@@ -196,7 +73,7 @@
   import MainNav from "../components/elements/main-nav";
 
   export default {
-    name: 'Default',
+    name: 'Static',
     components: {MainNav, Login},
     mixins:[cookie],
     data(){
@@ -211,6 +88,11 @@
         loginActive: false
       }
     },
+    computed: {
+      bgImage() {
+        return this.$store.state.backGround
+      }
+    },
     created(){
       var query = this.$router.currentRoute.path.split('/')
       query.forEach(element => {
@@ -220,17 +102,7 @@
     },
     mounted(){
       if(this.$store.getters.getUid)
-          this.IsLogin = true
-
-      // let store = this.$store
-      // document.addEventListener('click', function(e) {
-      //   e = e || window.event
-      //   let target = e.target || e.srcElement
-      //   if(target.getAttribute('class') == 'login-card-with-overlay active') {
-      //     if(store.state.loginActive)
-      //       store.commit('TOGGLE_LOGIN')
-      //   }
-      // }, false)
+        this.IsLogin = true
     },
     methods:{
       hideLoginCard(){
@@ -285,21 +157,31 @@
           });
       },
       get_gravatar(email, size){
-        // MD5 (Message-Digest Algorithm) by WebToolkit 
+        // MD5 (Message-Digest Algorithm) by WebToolkit
         var MD5=function(s){function L(k,d){return(k<<d)|(k>>>(32-d))}function K(G,k){var I,d,F,H,x;F=(G&2147483648);H=(k&2147483648);I=(G&1073741824);d=(k&1073741824);x=(G&1073741823)+(k&1073741823);if(I&d){return(x^2147483648^F^H)}if(I|d){if(x&1073741824){return(x^3221225472^F^H)}else{return(x^1073741824^F^H)}}else{return(x^F^H)}}function r(d,F,k){return(d&F)|((~d)&k)}function q(d,F,k){return(d&k)|(F&(~k))}function p(d,F,k){return(d^F^k)}function n(d,F,k){return(F^(d|(~k)))}function u(G,F,aa,Z,k,H,I){G=K(G,K(K(r(F,aa,Z),k),I));return K(L(G,H),F)}function f(G,F,aa,Z,k,H,I){G=K(G,K(K(q(F,aa,Z),k),I));return K(L(G,H),F)}function D(G,F,aa,Z,k,H,I){G=K(G,K(K(p(F,aa,Z),k),I));return K(L(G,H),F)}function t(G,F,aa,Z,k,H,I){G=K(G,K(K(n(F,aa,Z),k),I));return K(L(G,H),F)}function e(G){var Z;var F=G.length;var x=F+8;var k=(x-(x%64))/64;var I=(k+1)*16;var aa=Array(I-1);var d=0;var H=0;while(H<F){Z=(H-(H%4))/4;d=(H%4)*8;aa[Z]=(aa[Z]|(G.charCodeAt(H)<<d));H++}Z=(H-(H%4))/4;d=(H%4)*8;aa[Z]=aa[Z]|(128<<d);aa[I-2]=F<<3;aa[I-1]=F>>>29;return aa}function B(x){var k="",F="",G,d;for(d=0;d<=3;d++){G=(x>>>(d*8))&255;F="0"+G.toString(16);k=k+F.substr(F.length-2,2)}return k}function J(k){k=k.replace(/rn/g,"n");var d="";for(var F=0;F<k.length;F++){var x=k.charCodeAt(F);if(x<128){d+=String.fromCharCode(x)}else{if((x>127)&&(x<2048)){d+=String.fromCharCode((x>>6)|192);d+=String.fromCharCode((x&63)|128)}else{d+=String.fromCharCode((x>>12)|224);d+=String.fromCharCode(((x>>6)&63)|128);d+=String.fromCharCode((x&63)|128)}}}return d}var C=Array();var P,h,E,v,g,Y,X,W,V;var S=7,Q=12,N=17,M=22;var A=5,z=9,y=14,w=20;var o=4,m=11,l=16,j=23;var U=6,T=10,R=15,O=21;s=J(s);C=e(s);Y=1732584193;X=4023233417;W=2562383102;V=271733878;for(P=0;P<C.length;P+=16){h=Y;E=X;v=W;g=V;Y=u(Y,X,W,V,C[P+0],S,3614090360);V=u(V,Y,X,W,C[P+1],Q,3905402710);W=u(W,V,Y,X,C[P+2],N,606105819);X=u(X,W,V,Y,C[P+3],M,3250441966);Y=u(Y,X,W,V,C[P+4],S,4118548399);V=u(V,Y,X,W,C[P+5],Q,1200080426);W=u(W,V,Y,X,C[P+6],N,2821735955);X=u(X,W,V,Y,C[P+7],M,4249261313);Y=u(Y,X,W,V,C[P+8],S,1770035416);V=u(V,Y,X,W,C[P+9],Q,2336552879);W=u(W,V,Y,X,C[P+10],N,4294925233);X=u(X,W,V,Y,C[P+11],M,2304563134);Y=u(Y,X,W,V,C[P+12],S,1804603682);V=u(V,Y,X,W,C[P+13],Q,4254626195);W=u(W,V,Y,X,C[P+14],N,2792965006);X=u(X,W,V,Y,C[P+15],M,1236535329);Y=f(Y,X,W,V,C[P+1],A,4129170786);V=f(V,Y,X,W,C[P+6],z,3225465664);W=f(W,V,Y,X,C[P+11],y,643717713);X=f(X,W,V,Y,C[P+0],w,3921069994);Y=f(Y,X,W,V,C[P+5],A,3593408605);V=f(V,Y,X,W,C[P+10],z,38016083);W=f(W,V,Y,X,C[P+15],y,3634488961);X=f(X,W,V,Y,C[P+4],w,3889429448);Y=f(Y,X,W,V,C[P+9],A,568446438);V=f(V,Y,X,W,C[P+14],z,3275163606);W=f(W,V,Y,X,C[P+3],y,4107603335);X=f(X,W,V,Y,C[P+8],w,1163531501);Y=f(Y,X,W,V,C[P+13],A,2850285829);V=f(V,Y,X,W,C[P+2],z,4243563512);W=f(W,V,Y,X,C[P+7],y,1735328473);X=f(X,W,V,Y,C[P+12],w,2368359562);Y=D(Y,X,W,V,C[P+5],o,4294588738);V=D(V,Y,X,W,C[P+8],m,2272392833);W=D(W,V,Y,X,C[P+11],l,1839030562);X=D(X,W,V,Y,C[P+14],j,4259657740);Y=D(Y,X,W,V,C[P+1],o,2763975236);V=D(V,Y,X,W,C[P+4],m,1272893353);W=D(W,V,Y,X,C[P+7],l,4139469664);X=D(X,W,V,Y,C[P+10],j,3200236656);Y=D(Y,X,W,V,C[P+13],o,681279174);V=D(V,Y,X,W,C[P+0],m,3936430074);W=D(W,V,Y,X,C[P+3],l,3572445317);X=D(X,W,V,Y,C[P+6],j,76029189);Y=D(Y,X,W,V,C[P+9],o,3654602809);V=D(V,Y,X,W,C[P+12],m,3873151461);W=D(W,V,Y,X,C[P+15],l,530742520);X=D(X,W,V,Y,C[P+2],j,3299628645);Y=t(Y,X,W,V,C[P+0],U,4096336452);V=t(V,Y,X,W,C[P+7],T,1126891415);W=t(W,V,Y,X,C[P+14],R,2878612391);X=t(X,W,V,Y,C[P+5],O,4237533241);Y=t(Y,X,W,V,C[P+12],U,1700485571);V=t(V,Y,X,W,C[P+3],T,2399980690);W=t(W,V,Y,X,C[P+10],R,4293915773);X=t(X,W,V,Y,C[P+1],O,2240044497);Y=t(Y,X,W,V,C[P+8],U,1873313359);V=t(V,Y,X,W,C[P+15],T,4264355552);W=t(W,V,Y,X,C[P+6],R,2734768916);X=t(X,W,V,Y,C[P+13],O,1309151649);Y=t(Y,X,W,V,C[P+4],U,4149444226);V=t(V,Y,X,W,C[P+11],T,3174756917);W=t(W,V,Y,X,C[P+2],R,718787259);X=t(X,W,V,Y,C[P+9],O,3951481745);Y=K(Y,h);X=K(X,E);W=K(W,v);V=K(V,g)}var i=B(Y)+B(X)+B(W)+B(V);return i.toLowerCase()};
         var size = size || 80;
         return 'http://www.gravatar.com/avatar/' + MD5(email) + '.jpg?s=' + size;
-      },
-      menu_classes() {
-        return {'large-screen': !this.$store.getters.getUid };
-      },
+      }
     }
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "@/assets/scss/vars.scss";
-
+  #app.static-bg {
+    background: fixed center;
+    background-size: cover;
+    &:before {
+      content: '';
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: calc(100% + 62px);
+      /*bottom: 0;*/
+      right: 0;
+      background: rgba(0,0,0,0.3);
+    }
+  }
   .login-card-with-overlay{
     z-index: 10;
     padding-top: calc(90px + 10vh);
@@ -346,13 +228,14 @@
 
   }
 
-  .mobile-menu {
+
+  .md-menu-content-bottom-start.md-menu-content-big.md-menu-content.md-theme-default {
     width: 100%;
     max-width: 100%;
     top:90px !important;
     right:0px !important;
     left:0px !important;
-    .md-menu:not(.login-in-menu){
+    .md-menu{
       width: 100%;
       display: block;
       a{
@@ -363,14 +246,12 @@
       width:100%;
     }
   }
-
   @mixin icon-size($size) {
     width: $size;
     height: $size;
     min-width: $size;
     font-size: $size !important;
   }
-
   @media all and (max-width:960px) {
     .large-screen{
       display:none !important;
@@ -385,59 +266,8 @@
       justify-content: space-between;
     }
   }
-
   .small-screen{
     display: none;
-  }
-
-  section#subscribe{
-    background: #ddd;
-    padding: 10px 0 30px 0;
-    color: #3c4858;
-    margin-top: auto;
-    h2 {font-family: roboto slab;}
-    .input-wrapper{
-      position: relative;
-      width: 400px;
-      margin: auto;
-      @media all and (max-width: 700px){
-        width: 300px;
-      }
-    }
-    input{
-      width: 400px;
-      box-sizing: border-box;
-      -webkit-transition: width 0.4s ease-in-out;
-      transition: width 0.4s ease-in-out;
-      border-radius: 30px;
-      height: 50px;
-      -webkit-appearance: button-bevel;
-      padding: 0 7%;
-      font-size: 15px;
-      background: rgba(255, 255, 255, 0.7);
-      outline: none;
-      color: #555;
-      @media all and (max-width: 700px){
-        width: 300px;
-      }
-    }
-    button{
-      position: absolute;
-      height: 44px;
-      right: -1px;
-      top: -2px;
-      width: 45px;
-      border-radius: 50%;
-      -webkit-appearance: button-bevel;
-      margin: 5px;
-      cursor: pointer;
-      background-color: #BA68C8;
-      &:before {
-        content: '+';
-        font-size: 28px;
-        color: #ffffff;
-      }
-    }
   }
 
   .md-menu{
@@ -477,14 +307,7 @@
         }
       }
     }
-    &.login-in-menu{
-      display: flex;
-      justify-content: space-around;
-      width: 320px;
-      margin: auto;
-    }
   }
-
   .user-menu ul.md-list {
     min-width: 160px;
     padding: 5px 0;
@@ -532,6 +355,21 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    &.footer-transparent {
+      .links-horizontal {
+        li {
+          margin-right: .9375rem;
+          color: #fff;
+        }
+        &:first-child a {padding-left: 0}
+        &:last-child a {padding-right: 0}
+      }
+      .copyright {
+        color: #fff;
+        font-size: 12px;
+        text-align: right;
+      }
+    }
     ul {
       margin: 0;
       padding: 0;
@@ -562,6 +400,9 @@
       }
 
       &.links-horizontal {
+        li a {
+          padding: .9375rem;
+        }
         &:first-child a {padding-left: 0}
         &:last-child a {padding-right: 0}
       }
@@ -644,8 +485,8 @@
     }
   }
 
-  .footer-white {
-    background-color: #fff
+  .footer-transparent {
+    background-color: transparent;
   }
 
   .footer-black {

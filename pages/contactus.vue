@@ -35,7 +35,7 @@
           <div class="md-layout md-gutter">
             <div class="md-layout-item md-small-size-100">
               <md-field :class="getValidationClass('fullName')">
-                <label for="full-name">Full Name</label>
+                <label for="first-name">Full Name</label>
                 <md-input name="full-name" id="first-name" autocomplete="given-name" v-model="form.fullName" :disabled="sending" />
                 <span class="md-error" v-if="!$v.form.fullName.required">The full name is required</span>
                 <span class="md-error" v-else-if="!$v.form.fullName.minlength">Invalid full name</span>
@@ -112,6 +112,7 @@
 
   export default {
     name: 'contactus',
+    layout: 'static',
     scrollToTop: true,
     mixins: [validationMixin],
     data: () => ({
@@ -148,6 +149,9 @@
           minLength: minLength(3)
         }
       }
+    },
+    mounted() {
+      this.$store.state.backGround = '/images/295.jpg'
     },
     methods: {
       getValidationClass (fieldName) {
@@ -214,9 +218,9 @@
   }
   .main-container{
     min-height: 100vh;
-    background-image: url(/images/295.jpg);
-    background-position: center;
-    background-size: cover;
+    /*background-image: url(/images/295.jpg);*/
+    /*background-position: center;*/
+    /*background-size: cover;*/
     display: flex;
     justify-content: center;
     align-items: center;
