@@ -171,6 +171,7 @@
   #app.static-bg {
     background: fixed center;
     background-size: cover;
+    /*padding-bottom: 117px;*/
     &:before {
       content: '';
       position: fixed;
@@ -355,8 +356,15 @@
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
     &.footer-transparent {
       .links-horizontal {
+        @media screen and (max-width: 992px ){
+          text-align: center;
+        }
         li {
           margin-right: .9375rem;
           color: #fff;
@@ -368,6 +376,9 @@
         color: #fff;
         font-size: 12px;
         text-align: right;
+        @media screen and (max-width: 992px ){
+          text-align: center;
+        }
       }
     }
     ul {
