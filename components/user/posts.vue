@@ -1,13 +1,13 @@
 <template>
   <div>
-    <addPost :uid="uid" @updateposts="getPosts"></addPost>
+    <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
     <div class="posts">
       <div class="spinner-loading" v-if="spinner_loading">
         <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
       </div>
       <div v-for="post in posts"  class="md-card md-card-blog md-theme-default">
-        <md-badge class="md-square" md-content="Unpublished" v-if="post.status === 0" />
-        <div class="md-card-header md-card-header-image">
+        <md-badge class="md-square" md-content="Unpublished" v-if="post.status == 0" style="top: 5px;right: 5px;" />
+        <div class="md-card-header md-card-header-image" v-if="post.picture">
           <a :href="'/node/'+ post.nid">
             <img :src="post.picture" class="img">
           </a>
@@ -37,6 +37,7 @@
     data() {
       return {
         posts:[],
+        sameUser:false,
         number_of_post:'',
         page:0,
         posts_copy:{},
@@ -47,11 +48,12 @@
       addPost
     },
     mounted(){
+      this.isSameUser()
       this.getPosts()
     },
     methods:{
       body_minimizer(str){
-        if(str) return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,300).concat('<a :href="\'/node/\'+ post.nid">... Read More</a>')
+        if(str) return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,300).concat('<a :href="\'/node/\'+ post.nid" style="cursor: pointer;">... Read More</a>')
         else return ''
       },
       getPosts(){
@@ -71,6 +73,12 @@
           .catch(e => {
             this.errors = e.response.data
           })
+      },
+      isSameUser(){
+        if(this.$store.getters.getUid){
+          if(this.$store.getters.getUid == this.uid)
+            this.sameUser = true
+        }
       }
     }
   }

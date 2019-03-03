@@ -5,25 +5,27 @@
 </template>
 
 <script>
+  import Vue from 'vue'
+  import VueYouTubeEmbed from 'vue-youtube-embed'
+  Vue.use(VueYouTubeEmbed)
 
-
-export default {
-  name:'embedVideo',
-  props:['url'],
-  data(){
-    return{
-      videoId:''
-    }
-  },
-  mounted(){
-    this.method(this.url)
-  },
-  methods: {
-    method(url) {
-      this.videoId = this.$youtube.getIdFromURL(url)
+  export default {
+    name:'embedVideo',
+    props:['url'],
+    data(){
+      return{
+        videoId:''
+      }
+    },
+    mounted(){
+      this.method(this.url)
+    },
+    methods: {
+      method(url) {
+        this.videoId = this.$youtube.getIdFromURL(url)
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">
@@ -38,8 +40,7 @@ export default {
       max-width: 840px;
       display: block;
       margin: 0 auto;
-      border: 1px solid #eee; 
+      border: 1px solid #eee;
     }
   }
 </style>
-

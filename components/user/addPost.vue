@@ -1,15 +1,15 @@
 <template>
   <div>
-    <md-content class="md-elevation-3 box" v-if="sameUser">
-      <div class="box-head">
+    <md-content :class="'md-elevation-3 box ' + viewMode ">
+      <div class="box-head" v-if="viewMode == 'minimal'" >
         <i class="mdi mdi-blogger md-icon"></i>
         <span class="item-text">Add Your Post</span>
       </div>
       <div class="box-text">
-        <div id="editorClick" class="default-text box-row" v-if="!openEditor" @click="openEditorfun()">
+        <div id="editorClick" class="default-text box-row" v-if="!openEditor && (viewMode == 'minimal')" @click="openEditorfun()">
           Write Your Post to share it with the World. Just Click here ...
         </div>
-        <div id="editor" style="height: 0px;overflow: hidden;">
+        <div id="editor">
           <md-field class="title with-label">
             <label>Title</label>
             <md-input v-model="title"></md-input>
@@ -41,12 +41,12 @@
 
   export default {
     name: "addPost",
-    props:['uid'],
     mixins: [cookie],
+    //Options are either 'wild' or 'minimal'
+    props:['viewMode'],
     data() {
       return {
         postSaved:false,
-        sameUser:true,
         title:'',
         body:'',
         image:'',
@@ -65,7 +65,10 @@
       }
     },
     mounted(){
-      this.isSameUser()
+      if(this.viewMode == 'minimal'){
+        var el = document.getElementById('editor')
+        el.style.height = "0px"
+      }
     },
     methods:{
       savePost(){
@@ -111,16 +114,9 @@
       },
       openEditorfun(){
         var el = document.getElementById('editor')
-        //convert .children object to an array
-        var child_array = Array.from(el.children)
-        child_array.forEach(element => {
-          element.style.opacity = "1"
-          element.style.height = "initial"
-        })
         el.style.height = "395px"
         this.openEditor = true
         el.style.padding = "0px 20px 20px 20px"
-        //document.getElementsByClassName('box-text').style.margin = "10px 0px 0px 0px"
         this.time = setTimeout(function(){
           el.style.height = "initial"
         }, 3000);
@@ -128,28 +124,12 @@
       cancleEditingThis(){
         //stop loading for fields
         this.updateField = false
-
         clearTimeout(this.time)
         var el = document.getElementById('editor');
         document.getElementById('editor').style.height = "0px";
-
-        //convert .children object to an array
-        var child_array = Array.from(el.children)
-        child_array.forEach(element => {
-          //element.style.opacity = "0"
-          //element.style.height = "0px"
-        })
-        //document.getElementsByClassName('box-text').style.margin = "10px 0px"
         el.style.padding = "0px 20px";
         this.openEditor = false
-      },
-      isSameUser(){
-        if(this.$store.getters.getUid){
-          if(this.$store.getters.getUid == this.uid)
-            this.sameUser = true
-          //console.log(this.sameUser)
-        }
-      },
+      }
     }
   }
 </script>
@@ -157,9 +137,10 @@
 <style lang="scss" scoped>
   #editor{
     transition: all 0.9s ease-in-out;
+    overflow: hidden;
     > * {
-      opacity: 0;
-      height:0px;
+      //opacity: 0;
+      //:0px;
       transition: all 0.9s ease-in-out;
     }
     .title{
