@@ -1,11 +1,11 @@
 <template>
-    <div class="editor-picked">
+    <div class="editor-picked container">
       <div class="md-headline">
         <h5>Top Picked Contents</h5>
         <div class="more-link">
           <!--<router-link tag="md-button" to="/contents?type=4058">See All</router-link>-->
           <!-- this link is temporary. it will change after events page create -->
-          <router-link tag="md-button" to="/contents">See All</router-link>
+          <router-link tag="md-button" to="/contents" style="display: none;">See All</router-link>
         </div>
       </div>
 
@@ -17,7 +17,7 @@
         </md-progress-spinner>
       </div>
 
-      <div class="md-layout">
+      <div class="md-layout contents-list">
         <NodeTeaser
           v-for="node in contents"
           :key="node.nid"
@@ -26,7 +26,10 @@
           :title="node.title"
           :pic="node.picture"
           :nid="node.nid"
+          :uid="node.uid"
+          :userName="node.author_name"
           :date="node.created"
+          :createdTimestamp="node.created_timestamp"
           :type="node.categories"
         />
       </div>
@@ -83,7 +86,6 @@ export default {
   }
   h5{
     margin: 0;
-    font-weight: normal;
     display: inline-block;
     background: #fafafa;
     z-index: 1;
@@ -92,6 +94,19 @@ export default {
   }
 }
 
+.editor-picked {
+  padding: 15px;
+  margin-bottom: 50px;
+
+  .md-headline {
+    padding-bottom: 5px;
+  }
+  .contents-list > div {
+    width: 48%;
+    flex: 0 1 48%;
+  }
+
+}
 .more-link {
 	background: #fafafa;
 	z-index: 1;

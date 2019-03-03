@@ -11,13 +11,15 @@
 
     <newspane/>
 
+    <EditorPicked/>
+
     <NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>
 
   </div>
 </template>
 
 <script>
-
+import EditorPicked from '@/components/front/EditorPicked'
 import newspane from '@/components/front/newspane'
 import NodeList from '@/components/allContents/NodeList'
 
@@ -32,7 +34,8 @@ export default {
   },
   components: {
     newspane,
-    NodeList
+    NodeList,
+    EditorPicked
   },
   head(){
     return{

@@ -58,8 +58,8 @@
   margin: auto;
 }
 :root{
-  --md-theme-default-primary : #92278f;
-  --md-theme-default-accent : #ba68c8;
+  --md-theme-default-accent : #92278f;//#ba68c8
+  --md-theme-default-primary : #673ab7;
   --md-theme-default-scrollbar-on-background-variant: #aaa;
 }
 html{
@@ -246,6 +246,73 @@ header#header{
   background-color: #f44336;
 }
 
+@keyframes md-progress-spinner-stroke-rotate-100 {
+  0% {
+    stroke-dashoffset: 280;
+    transform: rotate(0);
+  }
+  12.5% {
+    stroke-dashoffset: 59;
+    transform: rotate(0);
+  }
+  12.51% {
+    stroke-dashoffset: 59;
+    transform: rotateX(180deg) rotate(72.5deg);
+  }
+  25% {
+    stroke-dashoffset: 280;
+    transform: rotateX(180deg) rotate(72.5deg);
+  }
+  25.1% {
+    stroke-dashoffset: 280;
+    transform: rotate(270deg);
+  }
+  37.5% {
+    stroke-dashoffset: 59;
+    transform: rotate(270deg);
+  }
+  37.51% {
+    stroke-dashoffset: 59;
+    transform: rotateX(180deg) rotate(161.5deg);
+  }
+  50% {
+    stroke-dashoffset: 280;
+    transform: rotateX(180deg) rotate(161.5deg);
+  }
+  50.01% {
+    stroke-dashoffset: 280;
+    transform: rotate(180deg);
+  }
+  62.5% {
+    stroke-dashoffset: 59;
+    transform: rotate(180deg);
+  }
+  62.51% {
+    stroke-dashoffset: 59;
+    transform: rotateX(180deg) rotate(251.5deg);
+  }
+  75% {
+    stroke-dashoffset: 280;
+    transform: rotateX(180deg) rotate(251.5deg);
+  }
+  75.01% {
+    stroke-dashoffset: 280;
+    transform: rotate(90deg);
+  }
+  87.5% {
+    stroke-dashoffset: 59;
+    transform: rotate(90deg);
+  }
+  87.51% {
+    stroke-dashoffset: 59;
+    transform: rotateX(180deg) rotate(341.5deg);
+  }
+  100% {
+    stroke-dashoffset: 280;
+    transform: rotateX(180deg) rotate(341.5deg);
+  }
+}
+
 .container,
 .page-header .container,
 .section .container {
@@ -255,6 +322,7 @@ header#header{
   @media #{$m720} {max-width: 700px;}
   @media #{$m960} {max-width: 930px;}
   @media #{$m1280} {max-width: 1140px;}
+  @media #{$m1440} {max-width: 1230px;}
 }
 
 //overriding some global bad css of core theme

@@ -1,41 +1,70 @@
 <template>
+  <md-card md-with-hover
+           class="content-teaser"
+           :class="[('content-'+ nid), DisplayMode]">
     <router-link
-      class="content-teaser"
-      :class="[('content-'+ nid), DisplayMode]"
+      v-if="DisplayMode != 'medium'"
       :to="'/node/' + nid">
-    <md-card md-with-hover>
       <md-ripple>
         <md-card-media md-ratio="16:9">
           <img v-bind:src="pic | converturl" />
         </md-card-media>
 
         <md-card-header>
-            <div class="md-subhead content-subheader">
-                <div v-for="item in type" :key="item.tid" style="display: inline-block;">
-                    <md-icon style="font-size: 19px !important;">{{item.name | TypesToIcon}}</md-icon> 
-                    {{item.name}}
-                </div>
-                <span style="float: right;">{{date}}</span>
+          <div class="md-subhead content-subheader">
+            <div v-for="item in type" :key="item.tid" style="display: inline-block;">
+              <md-icon style="font-size: 19px !important;">{{item.name | TypesToIcon}}</md-icon>
+              {{item.name}}
             </div>
-            <div class="md-title content-title">{{title}}</div>
+            <span style="float: right;">{{date}}</span>
+          </div>
+
+          <h3 class="md-title content-title">{{title}}</h3>
+
+          <div class="body-val" v-if="DisplayMode == 'medium'">
+            {{body_minimizer(body)}}
+          </div>
         </md-card-header>
 
-        <div class="body-val" v-if="DisplayMode == 'medium'">
-          {{body_minimizer(body)}}
-        </div>
-      </md-ripple>  
-    </md-card>
+      </md-ripple>
     </router-link>
+
+    <!--medium DisplayMode-->
+    <div v-if="DisplayMode == 'medium'" style="display: flex;align-items: center;">
+      <md-card-media md-ratio="4:3">
+        <router-link :to="'/node/' + nid">
+          <md-ripple>
+            <img v-bind:src="pic | converturl" />
+          </md-ripple>
+        </router-link>
+      </md-card-media>
+
+      <md-card-header>
+        <router-link :to="'/node/' + nid"><h3 class="md-title content-title">{{title}}</h3></router-link>
+
+        <p class="body-val">{{body_minimizer(body)}}</p>
+
+        <p class="author">
+          by <router-link :to="'/user/' + uid">{{userName}}</router-link>,
+          <time-ago :refresh="60" :datetime="createdTimestamp * 1000" long>{{createdTimestamp}}</time-ago>
+        </p>
+      </md-card-header>
+    </div>
+
+  </md-card>
+
 </template>
 
 <script>
 import news from '@/components/front/news'
+import TimeAgo from 'vue2-timeago'
 
 export default {
     name: 'NodeTeaser',
-    props: ['title','pic','date','nid','type','body','DisplayMode'],
+    props: ['title','pic','date','createdTimestamp','nid','type','body','uid','userName','DisplayMode'],
     components: {
-        news
+      news,
+      TimeAgo
     },
     filters: {
       year_detecter: function (value) {
@@ -86,8 +115,14 @@ export default {
               return 'book'
           break;
           case 'article':
-              return 'keyboard'
+              return 'description'
           break;
+          case 'news':
+            return 'web'
+            break;
+          case 'case study':
+            return 'all_inclusive'
+            break;
           default:
           return str
         }
@@ -96,7 +131,7 @@ export default {
     methods:{
       body_minimizer(str){
         if(str)
-          return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,300)//.concat('<a :href="\'/node/\'+ this.nid">... Read More</a>')
+          return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,100)//.concat('<a :href="\'/node/\'+ this.nid">... Read More</a>')
         else
           return ''
       },
@@ -107,7 +142,7 @@ export default {
 
 <style lang="scss">
 .content-teaser{
-    width: 23%;
+  width: 23%;
 	margin: 15px 1%;
 	-webkit-box-flex: 0;
 	-ms-flex: 0 1 23%;
@@ -135,6 +170,9 @@ export default {
         font-size: 13px;
         overflow: hidden;
     }
+  a {
+    color: #3c4858 !important;
+  }
 }
 .md-card .md-title.content-title {
   text-align: left;
@@ -153,17 +191,49 @@ export default {
 .medium{
   width: 98%;
   flex: 0 1 98%;
-  .md-card,
-  .md-card > .md-ripple {
-    display: flex;
-  }
+  text-align: left;
+  box-shadow: none !important;
+  background: transparent !important;
+  cursor: default !important;
+
   .md-card-header {
-    width: 75%;
+    width: 70%;
+    padding: 0px 15px 0px 30px;
+
+    .md-title.content-title {
+      font-size: 1.125rem;
+      line-height: 1.5em;
+      max-height: 3em;
+      font-weight: 700;
+      margin: 10px 0;
+      font-family: roboto slab;
+      color: #3c4858;
+    }
   }
   .md-card-media {
-    width: 25%;
+    width: 30%;
+
+    a {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+    }
     img {
       width: 100%;
+      box-shadow: 0 5px 15px -8px rgba(0,0,0,.24), 0 8px 10px -5px rgba(0,0,0,.2);
+      border-radius: 5px;
+    }
+  }
+  p {
+    font-size: 14px;
+    margin: 0 0 10px;
+    color: #555;
+  }
+  .author{
+    margin: 0;
+    a:not(.v_time_ago_a){
+      font-weight: bold;
     }
   }
 }
