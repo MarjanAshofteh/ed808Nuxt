@@ -6,8 +6,10 @@
 
     <!--login with overlay-->
     <div
+      v-if="$store.state.loginActive"
       class="login-card-with-overlay"
       :class="{ 'active' : $store.state.loginActive }"
+      @click="hideLoginCard($event)"
     >
       <div
         class="login-card"
@@ -233,8 +235,11 @@
       // }, false)
     },
     methods:{
-      hideLoginCard(){
-        this.loginActive = false
+      hideLoginCard(event){
+        if(event.target.getAttribute('class') == 'login-card-with-overlay active') {
+          if(this.$store.state.loginActive)
+            this.$store.commit('TOGGLE_LOGIN')
+        }
       },
       opening_menu(){
         this.menu_flag = !this.menu_flag
