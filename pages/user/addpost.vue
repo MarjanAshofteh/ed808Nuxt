@@ -6,6 +6,7 @@
   import addPost from "@/components/user/addPost"
   export default {
     name: "addpost",
+    layout:'static',
     components:{
       addPost
     }
