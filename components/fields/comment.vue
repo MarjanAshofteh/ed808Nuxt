@@ -651,6 +651,14 @@ export default {
   direction: ltr;
   margin: auto;
   padding: 0 15px;
+  @media screen and (max-width: 992px){
+    width: 80%;
+    margin: auto;
+  }
+  @media screen and (max-width: 60px){
+    width: 90%;
+    margin: auto;
+  }
 }
 
 .comment-list {

@@ -4,18 +4,6 @@
     :class="[ queryClasses ] + bgImage != '' ? 'static-bg' : '' "
     :style="{ backgroundImage : `url(${bgImage})` }"
   >
-    <!--login with overlay-->
-    <div
-      class="login-card-with-overlay"
-      :class="{ 'active' : $store.state.loginActive }"
-    >
-      <div
-        class="login-card"
-        :class="{ 'active' : $store.state.loginActive }"
-      >
-        <Login :page-component="false" />
-      </div>
-    </div>
 
 
     <MainNav :transparent="true" />

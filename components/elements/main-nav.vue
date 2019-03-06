@@ -98,7 +98,6 @@
                 <md-menu-item>
                   <nuxt-link
                     :to="'/user/'+ $store.state.user.uid"
-                    target="_blank"
                   >
                     My Profile
                   </nuxt-link>
@@ -209,6 +208,8 @@
 </template>
 
 <script>
+import axios from '@/node_modules/axios'
+
 export default {
   name: "MainNav",
   props:['transparent'],
