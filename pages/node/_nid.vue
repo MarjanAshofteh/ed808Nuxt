@@ -40,6 +40,8 @@
         class="node-body"
       >
 
+        <!--<my-scroll-pugin :spy="'#node_body'" />-->
+
         <!--<audioplayer-->
           <!--:source="node_content.files[0]"-->
         <!--&gt;-->
@@ -147,47 +149,59 @@
                   </md-tooltip>
                 </md-button>
               </a>
-              <social-sharing
-                :url="'https://ed808.com/node/' + nid"
-                :description="node_content.meta_description"
-                :title="node_content.title"
-                inline-template>
-                <div>
+              <md-button class="md-icon-button" @click="socialExpanded = !socialExpanded">
+                <i class="mdi" :class="socialExpanded ? 'mdi-close' : 'mdi-share-variant'" />
+                <md-tooltip md-direction="bottom">
+                  Share on social media.
+                </md-tooltip>
 
-                  <network network="linkedin">
-                    <md-button class="md-icon-button md-linkedin-icon">
-                      <i class="mdi mdi-linkedin" />
-                      <md-tooltip md-direction="bottom">
-                        Share on LinkedIn
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                  <network network="facebook">
-                    <md-button class="md-icon-button md-facebook-icon">
-                      <i class="mdi mdi-facebook" />
-                      <md-tooltip md-direction="bottom">
-                        Share on Facebook
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                  <network network="twitter">
-                    <md-button class="md-icon-button md-twitter-icon">
-                      <i class="mdi mdi-twitter" />
-                      <md-tooltip md-direction="bottom">
-                        Share on Twitter
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                  <network network="whatsapp">
-                    <md-button class="md-icon-button md-whatsapp-icon">
-                      <i class="mdi mdi-whatsapp" />
-                      <md-tooltip md-direction="bottom">
-                        Share on WhatsApp
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                </div>
-              </social-sharing>
+              </md-button>
+
+              <transition name="fade">
+                <social-sharing
+                  v-if="socialExpanded"
+                  :url="'https://ed808.com/node/' + nid"
+                  :description="node_content.meta_description"
+                  :title="node_content.title"
+                  inline-template>
+                  <div>
+
+                    <network network="linkedin">
+                      <md-button class="md-icon-button md-linkedin-icon">
+                        <i class="mdi mdi-linkedin" />
+                        <md-tooltip md-direction="bottom">
+                          Share on LinkedIn
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                    <network network="facebook">
+                      <md-button class="md-icon-button md-facebook-icon">
+                        <i class="mdi mdi-facebook" />
+                        <md-tooltip md-direction="bottom">
+                          Share on Facebook
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                    <network network="twitter">
+                      <md-button class="md-icon-button md-twitter-icon">
+                        <i class="mdi mdi-twitter" />
+                        <md-tooltip md-direction="bottom">
+                          Share on Twitter
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                    <network network="whatsapp">
+                      <md-button class="md-icon-button md-whatsapp-icon">
+                        <i class="mdi mdi-whatsapp" />
+                        <md-tooltip md-direction="bottom">
+                          Share on WhatsApp
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                  </div>
+                </social-sharing>
+              </transition>
+
             </div>
             <!--<scrollactive-->
             <!--class="my-nav"-->
@@ -208,7 +222,26 @@
           />
         </div>
 
+        <h2 class="section-title">
+          Attached Files:
+        </h2>
+        <div class="attachment" v-if="types.includes('ebook') && node_content.files.length > 0">
 
+          <a v-for="file in node_content.files" :key="file" :href="file">
+            <div class="file-attached">
+              <div class="header">
+                <i class="mdi mdi-file-pdf" v-if="file.split('/').pop().split('.').pop() == 'pdf'"></i>
+                <i class="mdi mdi-folder-multiple" v-if="file.split('/').pop().split('.').pop() == 'rar' || file.split('/').pop().split('.').pop() == 'zip'"></i>
+              </div>
+              <div class="footer">
+                {{ file.split('/').pop() }}
+              </div>
+              <md-tooltip md-direction="bottom">
+                Click to download this file.
+              </md-tooltip>
+            </div>
+          </a>
+        </div>
         
         <div
           v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
@@ -240,7 +273,7 @@
             :tid="tag.tid"
           />
         </div>
-        <div class="share">
+        <div class="share mobile-share">
           <div class="actions">
             <span class="clap">
               <md-button
@@ -372,12 +405,15 @@
         :about_me="author.about_me"
       />
 
-      <h2 class="section-title">
+      <h2
+        v-if="relatedNodes.length > 0"
+        class="section-title">
         Related Contents:
       </h2>
 
 
       <div
+        v-if="relatedNodes.length > 0"
         class="md-layout node-page"
         style="position: relative;"
       >
@@ -456,6 +492,8 @@ export default {
       errors: "",
       showError: false,
       relatedNodes: [],
+      relatedLoading: false,
+      socialExpanded: false,
       articleHeadings: [],
       source: ''
     };
@@ -489,6 +527,7 @@ export default {
             if (element.tid == 4058) contentTypes.push("event");
             if (element.tid == 3938) contentTypes.push("podcast");
             if (element.tid == 3941) contentTypes.push("video");
+            if (element.tid == 3940) contentTypes.push("ebook");
           });
         }
         return {
@@ -600,6 +639,7 @@ export default {
         : "";
     },
     getRelatedNodes() {
+      this.relatedLoading = true
       axios
         .get(
           "https://ed808.com:92/latin/contents/" +
@@ -610,6 +650,7 @@ export default {
         .then(response => {
           // console.log( response )
           this.relatedNodes = response;
+          this.relatedLoading = false
         });
     }
   },
@@ -965,7 +1006,75 @@ body {
     }
   }
 }
+.attachment {
+  @include main-center-content();
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px !important;
+  height: auto;
+  .file-attached {
+    width: 150px;
+    float: left;
+    margin-right: 15px;
+    text-align: center;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),
+    0 2px 2px 0 rgba(0,0,0,.14),
+    0 1px 5px 0 rgba(0,0,0,.12);
+    border-radius: 5px;
+    padding: 10px;
+    transition-duration: 0.5s;
+    .header{
+      width: 100%;
+      padding: 20px 0;
+    }
+    .footer {
+      width: 100%;
+      overflow: hidden;
+      color: #424242;
+      font-weight: 500;
+      font-size: 12px;
+      transition-duration: 0.5s;
+    }
+    .mdi {
+      transition-duration: 0.5s;
+      font-size: 40px !important;
+      &.mdi-folder-multiple{
+        color: #5E35B171 !important;
+      }
+      &.mdi-file-pdf {
+        color: #e5393571 !important;
+
+      }
+    }
+    &:hover {
+      .footer {
+        width: 100%;
+        overflow: hidden;
+        color: #92278f;
+      }
+      .mdi {
+        font-size: 40px !important;
+        &.mdi-folder-multiple{
+          color: #5E35B1 !important;
+        }
+        &.mdi-file-pdf {
+          color: #e53935 !important;
+        }
+      }
+      background: #eeeeee;
+      box-shadow: 0 3px 1px -2px rgba(0,0,0,.3),
+      0 2px 2px 0 rgba(0,0,0,.24),
+      0 1px 5px 0 rgba(0,0,0,.22);
+    }
+  }
+}
 .share {
+  &.mobile-share{
+    display: none;
+    @media #{$x600} {
+      display: block;
+    }
+  }
   @include main-center-content();
   text-align: right;
   margin: 20px auto;
@@ -1116,5 +1225,12 @@ blockquote {
     -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

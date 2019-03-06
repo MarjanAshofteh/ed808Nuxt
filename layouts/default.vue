@@ -24,7 +24,7 @@
     <nuxt />
 
     <md-snackbar :md-active.sync="IsLogOut">
-      You log out successfully!
+      You've logged out successfully!
     </md-snackbar>
 
     <section id="subscribe">
@@ -194,8 +194,10 @@
 
   import Login from '@/components/fields/login'
   import axios from '@/node_modules/axios'
+
+
   import { cookie } from '@/components/mixins/cookie.js'
-  import MainNav from "../components/elements/main-nav";
+  import MainNav from "../components/elements/main-nav"
 
   export default {
     name: 'Default',
@@ -248,8 +250,8 @@
         this.toggleCard = !this.toggleCard
       },
       logUserOut(){
-        axios.defaults.crossDomain = true
-        axios.defaults.withCredentials  = true
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials  = true;
         axios.post('https://ed808.com:92/latin/user/logout',
           true,{
             headers:{

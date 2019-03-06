@@ -1,9 +1,9 @@
 <template>
   <div class="with-background">
     <transition name="fade">
-      <div class="login-card-page topic-selection"  v-if="!registered">
-        <div v-if="!registered" class="card card-signup card-topics">
-          <p>Tell us what topics you're interested in:</p>
+      <div class="login-card-page topic-selection"  v-if="registered">
+        <div v-if="registered" class="card card-signup card-topics">
+          <p>Tell us what you're interested in:</p>
           <div class="card-content">
             <div class="interested-topics" v-if="topics.length > 0">
               <div
@@ -11,13 +11,13 @@
                 :key="index"
                 class="topic"
                 :class="t.selected ? 'topic-active' : ''"
-                style="background-image: url(/images/architecture.jpg)"
-                @click="addToInterests(t.tid,index,$event)"
+                style="background-image: url(/images/geotechnic.jpg)"
+                @click="addToInterests(t.tid, index, $event)"
               >
-                <span class="inside-text" v-if="!t.selected">
+                <span class="inside-text">
                   {{ t.name }}
                 </span>
-                <span class="inside-text" v-else>
+                <span class="check-text" v-if="t.selected" style="bottom: calc(50% - 13px);">
                   <i class="mdi mdi-check"></i>
                 </span>
               </div>
@@ -26,8 +26,8 @@
           <div class="footer text-center" style="float: left; width: 100%">
             <md-button
               form="registerForm"
-              type="submit"
               class="md-primary"
+              @click="submitInterests()"
               :disabled="sending"
             >
               Done
@@ -41,7 +41,7 @@
       </div>
     </transition>
     <transition name="fade">
-      <div class="login-card-page"  v-if="registered">
+      <div class="login-card-page"  v-if="!registered">
           <div class="card card-signup">
               <div class="header header-primary text-center">
 
@@ -71,7 +71,7 @@
                     <span class="icon-prefix mdi mdi-account-card-details"></span>
                     <md-input name="fullName" id="fullName" autocomplete="given-name" v-model="form.fullName" :disabled="sending" required/>
                     <span class="md-error" v-if="!$v.form.fullName.required">The full name is required</span>
-                    <span class="md-error" v-else-if="!$v.form.fullName.minlength">Should be at least 3 character</span>
+                    <span class="md-error" v-else-if="!$v.form.fullName.minLength">Should be at least 3 character</span>
                   </md-field>
 
                   <md-field :class="getValidationClass('email')"  class="input-with-icon">
@@ -96,7 +96,7 @@
                     <label for="password">Password</label>
                     <md-input type="password" id="password" name="password" v-model="form.password" autocomplete="new-password" :disabled="sending" required/>
                     <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
-                    <span class="md-error" v-else-if="!$v.form.password.minlength">Should be at least 6 character</span>
+                    <span class="md-error" v-else-if="!$v.form.password.minLength">Should be at least 6 character</span>
                   </md-field>
 
                   <md-field :class="getValidationClass('rePassword')" class="input-with-icon">
@@ -213,6 +213,33 @@ export default {
 
   },
   methods: {
+    submitInterests(){
+      this.sending = true
+      let topics = []
+
+      this.topics.forEach((el)=>{
+        if(el.selected)
+          topics.push(el.tid)
+      })
+      console.log(topics)
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials = true;
+      axios.post('https://ed808.com:92/latin/user/interests',
+        {
+          topics : topics
+        },
+        {
+          headers: {
+            'Content-type': 'application/json',
+            'X-CSRF-Token': this.getCookie("token")
+          }
+        }
+      )
+        .then(()=>{
+          this.sending = false
+          window.location.reload()
+        })
+    },
     getTopics(){
 
       axios.defaults.crossDomain = true;
@@ -227,14 +254,14 @@ export default {
             let obj = {
               tid: el.tid,
               name: el.name,
-              selected: false
+              selected: false,
+              height: false
             }
             this.topics.push(obj)
           })
         })
     },
     addToInterests(topic, index, event){
-      console.log(topic+'-'+index)
       this.topics[index].selected = !this.topics[index].selected
     },
     getValidationClass (fieldName) {
@@ -410,12 +437,26 @@ export default {
           }
           span.inside-text {
             position: absolute;
-            text-align: center;
-            top: calc( 50% - 13px );
+            text-align: left;
+            font-weight: 500;
+            bottom: 10px;
             left: 10px;
             right: 10px;
             vertical-align: middle;
             color: #dbdbdb;
+            transition-duration: 0.5s;
+            .mdi {
+              font-size: 30px;
+            }
+          }
+          span.check-text {
+            position: absolute;
+            /*top: calc( 50% - 13px );*/
+            color: #fff;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            text-align: right;
             transition-duration: 0.5s;
             .mdi {
               font-size: 30px;
