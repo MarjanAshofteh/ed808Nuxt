@@ -6,7 +6,8 @@
 
 <script>
   export default {
-    name: "bookmark"
+    name: "bookmark",
+    layout: 'userpanel'
   }
 </script>
 

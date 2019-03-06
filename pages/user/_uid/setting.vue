@@ -279,16 +279,16 @@
 
   export default {
     name:'setting',
+    layout: 'userpanel',
     scrollToTop: true,
     mixins: [cookie],
-    props:['uid'],
     data(){
       return{
         //for keeping last field data temporary, after editing it
         user_copy:{},
         errors:'',
         roles:[],
-        //uid:this.$route.params.uid,
+        uid:this.$route.params.uid,
         loading: true,
         updateField: false,
         user:{},

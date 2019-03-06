@@ -32,10 +32,11 @@
 
   export default {
     name: "posts",
+    layout:'userpanel',
     scrollToTop: true,
-    props:['uid'],
     data() {
       return {
+        uid: this.$route.params.uid,
         posts:[],
         sameUser:false,
         number_of_post:'',
