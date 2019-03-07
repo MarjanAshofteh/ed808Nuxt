@@ -118,9 +118,9 @@ button.VueCarousel-navigation-button{
   color:#92278f !important;
 }
 .eventspane{
-  background-color: #fafafa;
 	padding: 0 36px 36px;
   position: relative;
+  z-index: 1;
   .events-pane.loading {
     position: absolute;
     z-index: 3;

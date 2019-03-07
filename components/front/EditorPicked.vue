@@ -97,6 +97,8 @@ export default {
 .editor-picked {
   padding: 15px;
   margin-bottom: 50px;
+  z-index: 1;
+  position: relative;
 
   .md-headline {
     padding-bottom: 5px;
