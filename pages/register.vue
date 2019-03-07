@@ -2,7 +2,7 @@
   <div class="with-background">
     <transition name="fade">
       <div class="login-card-page topic-selection"  v-if="registered">
-        <div v-if="registered" class="card card-signup card-topics">
+        <div class="card card-signup card-topics">
           <p>Tell us what you're interested in:</p>
           <div class="card-content">
             <div class="interested-topics" v-if="topics.length > 0">
@@ -11,7 +11,7 @@
                 :key="index"
                 class="topic"
                 :class="t.selected ? 'topic-active' : ''"
-                style="background-image: url(/images/geotechnic.jpg)"
+                :style="`background-image: url(${t.picture})`"
                 @click="addToInterests(t.tid, index, $event)"
               >
                 <span class="inside-text">
@@ -42,101 +42,101 @@
     </transition>
     <transition name="fade">
       <div class="login-card-page"  v-if="!registered">
-          <div class="card card-signup">
-              <div class="header header-primary text-center">
+        <div class="card card-signup">
+            <div class="header header-primary text-center">
 
-                <h4 class="card-title">Register in with</h4>
-                <div class="social-line">
-                  <a href="#pablo" class="btn btn-just-icon btn-simple">
-                    <md-button class="md-icon-button">
-                      <i class="mdi mdi-linkedin"></i>
-                    </md-button>
-                  </a>
-                  <md-progress-bar
-                    v-if="sending"
-                    md-mode="indeterminate"
-                  />
-                </div>
-
+              <h4 class="card-title">Register in with</h4>
+              <div class="social-line">
+                <a href="#pablo" class="btn btn-just-icon btn-simple">
+                  <md-button class="md-icon-button">
+                    <i class="mdi mdi-linkedin"></i>
+                  </md-button>
+                </a>
+                <md-progress-bar
+                  v-if="sending"
+                  md-mode="indeterminate"
+                />
               </div>
-              <p>Or register with your personal data</p>
-              <div class="card-content">
-                <form
-                  novalidate
-                  @submit.prevent="formSubmit"
-                  id="registerForm"
-                >
-                  <md-field :class="getValidationClass('fullName')" class="input-with-icon">
-                    <label for="fullName">Full Name</label>
-                    <span class="icon-prefix mdi mdi-account-card-details"></span>
-                    <md-input name="fullName" id="fullName" autocomplete="given-name" v-model="form.fullName" :disabled="sending" required/>
-                    <span class="md-error" v-if="!$v.form.fullName.required">The full name is required</span>
-                    <span class="md-error" v-else-if="!$v.form.fullName.minLength">Should be at least 3 character</span>
-                  </md-field>
 
-                  <md-field :class="getValidationClass('email')"  class="input-with-icon">
-                    <label for="email">Email</label>
-                    <span class="icon-prefix mdi mdi-email"></span>
-
-                    <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email" :disabled="sending" required/>
-                    <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
-                    <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
-                  </md-field>
-
-                  <md-field :class="getValidationClass('username')" class="input-with-icon">
-                    <label for="username">Username</label>
-                    <span class="icon-prefix mdi mdi-account-circle"></span>
-                    <md-input id="username" name="username" v-model="form.username" autocomplete="given-name" :disabled="sending" required/>
-                    <span class="md-error" v-if="!$v.form.username.required">The Username is required</span>
-                    <!--<span class="md-error" v-else-if="!$v.form.mobile.taken">The User is already taken</span>-->
-                  </md-field>
-
-                  <md-field :class="getValidationClass('password')" class="input-with-icon">
-                    <span class="icon-prefix mdi mdi-lock"></span>
-                    <label for="password">Password</label>
-                    <md-input type="password" id="password" name="password" v-model="form.password" autocomplete="new-password" :disabled="sending" required/>
-                    <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
-                    <span class="md-error" v-else-if="!$v.form.password.minLength">Should be at least 6 character</span>
-                  </md-field>
-
-                  <md-field :class="getValidationClass('rePassword')" class="input-with-icon">
-                    <span class="icon-prefix mdi mdi-lock"></span>
-                    <label for="rePassword">Password Confirmation</label>
-                    <md-input type="password" id="rePassword" name="rePassword" v-model="form.rePassword" autocomplete="new-password" :disabled="sending" required/>
-                    <span class="md-error" v-if="!$v.form.rePassword.required">The Password Confirmation is required</span>
-                    <span class="md-error" v-else-if="!$v.form.rePassword.sameAsPassword">Password is not the same</span>
-                  </md-field>
-
-                  <vue-recaptcha
-                    ref="recaptcha"
-                    @verify="saveUser"
-                    @expired="onCaptchaExpired"
-                    size="invisible"
-                    sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">
-                  </vue-recaptcha>
-
-                  <md-snackbar :md-active.sync="userSaved">
-                    {{ lastUser }} you are registered successfully!
-                  </md-snackbar>
-                  <md-snackbar
-                    class="error"
-                    :md-active.sync="showError"
-                  >
-                    {{ errors }}
-                  </md-snackbar>
-                </form>
-              </div>
-              <div class="footer text-center">
-                <md-button
-                  form="registerForm"
-                  type="submit"
-                  class="md-primary"
-                  :disabled="sending"
-                >
-                  Join
-                </md-button>
-              </div>
             </div>
+            <p>Or register with your personal data</p>
+            <div class="card-content">
+              <form
+                novalidate
+                @submit.prevent="formSubmit"
+                id="registerForm"
+              >
+                <md-field :class="getValidationClass('fullName')" class="input-with-icon">
+                  <label for="fullName">Full Name</label>
+                  <span class="icon-prefix mdi mdi-account-card-details"></span>
+                  <md-input name="fullName" id="fullName" autocomplete="given-name" v-model="form.fullName" :disabled="sending" required/>
+                  <span class="md-error" v-if="!$v.form.fullName.required">The full name is required</span>
+                  <span class="md-error" v-else-if="!$v.form.fullName.minLength">Should be at least 3 character</span>
+                </md-field>
+
+                <md-field :class="getValidationClass('email')"  class="input-with-icon">
+                  <label for="email">Email</label>
+                  <span class="icon-prefix mdi mdi-email"></span>
+
+                  <md-input type="email" name="email" id="email" autocomplete="email" v-model="form.email" :disabled="sending" required/>
+                  <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
+                  <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
+                </md-field>
+
+                <md-field :class="getValidationClass('username')" class="input-with-icon">
+                  <label for="username">Username</label>
+                  <span class="icon-prefix mdi mdi-account-circle"></span>
+                  <md-input id="username" name="username" v-model="form.username" autocomplete="given-name" :disabled="sending" required/>
+                  <span class="md-error" v-if="!$v.form.username.required">The Username is required</span>
+                  <!--<span class="md-error" v-else-if="!$v.form.mobile.taken">The User is already taken</span>-->
+                </md-field>
+
+                <md-field :class="getValidationClass('password')" class="input-with-icon">
+                  <span class="icon-prefix mdi mdi-lock"></span>
+                  <label for="password">Password</label>
+                  <md-input type="password" id="password" name="password" v-model="form.password" autocomplete="new-password" :disabled="sending" required/>
+                  <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
+                  <span class="md-error" v-else-if="!$v.form.password.minLength">Should be at least 6 character</span>
+                </md-field>
+
+                <md-field :class="getValidationClass('rePassword')" class="input-with-icon">
+                  <span class="icon-prefix mdi mdi-lock"></span>
+                  <label for="rePassword">Password Confirmation</label>
+                  <md-input type="password" id="rePassword" name="rePassword" v-model="form.rePassword" autocomplete="new-password" :disabled="sending" required/>
+                  <span class="md-error" v-if="!$v.form.rePassword.required">The Password Confirmation is required</span>
+                  <span class="md-error" v-else-if="!$v.form.rePassword.sameAsPassword">Password is not the same</span>
+                </md-field>
+
+                <vue-recaptcha
+                  ref="recaptcha"
+                  @verify="saveUser"
+                  @expired="onCaptchaExpired"
+                  size="invisible"
+                  sitekey="6Ldp3XMUAAAAACZav47_l9to_2uESNGLa1RvQOU6">
+                </vue-recaptcha>
+
+                <md-snackbar :md-active.sync="userSaved">
+                  {{ lastUser }} you are registered successfully!
+                </md-snackbar>
+                <md-snackbar
+                  class="error"
+                  :md-active.sync="showError"
+                >
+                  {{ errors }}
+                </md-snackbar>
+              </form>
+            </div>
+            <div class="footer text-center">
+              <md-button
+                form="registerForm"
+                type="submit"
+                class="md-primary"
+                :disabled="sending"
+              >
+                Join
+              </md-button>
+            </div>
+          </div>
       </div>
     </transition>
   </div>
@@ -254,6 +254,7 @@ export default {
             let obj = {
               tid: el.tid,
               name: el.name,
+              picture: el.picture,
               selected: false,
               height: false
             }
@@ -353,7 +354,7 @@ export default {
     margin: auto;
     margin-top: 80px;
     &.topic-selection {
-      width: 50%;
+      width: 60%;
       margin-top: 0px;
       @media screen and (max-width: 992px) {
         width: 75%;
@@ -411,7 +412,7 @@ export default {
         text-align: justify;
         height: auto;
         .topic {
-          width: calc( 33.33% - 10px);
+          width: calc( 25% - 10px);
           margin: 0 5px;
           margin-bottom: 10px;
           border-radius: 5px;

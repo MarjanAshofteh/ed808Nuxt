@@ -40,8 +40,6 @@
         class="node-body"
       >
 
-        <!--<my-scroll-pugin :spy="'#node_body'" />-->
-
         <!--<audioplayer-->
           <!--:source="node_content.files[0]"-->
         <!--&gt;-->
@@ -161,7 +159,7 @@
                 <social-sharing
                   v-if="socialExpanded"
                   :url="'https://ed808.com/node/' + nid"
-                  :description="node_content.meta_description"
+                  :description="meta_desc"
                   :title="node_content.title"
                   inline-template>
                   <div>
@@ -203,6 +201,9 @@
               </transition>
 
             </div>
+
+            <!--Content Headings Navigator-->
+
             <!--<scrollactive-->
             <!--class="my-nav"-->
             <!--@:itemchanged="onItemChanged"-->
@@ -225,13 +226,29 @@
         <h2 class="section-title">
           Attached Files:
         </h2>
-        <div class="attachment" v-if="types.includes('ebook') && node_content.files.length > 0">
+        <div
+          class="attachment"
+          v-if="types.includes('ebook') && node_content.files.length > 0"
+        >
 
-          <a v-for="file in node_content.files" :key="file" :href="file">
-            <div class="file-attached">
+          <a
+            v-for="file in node_content.files"
+            :key="file"
+            :href="file"
+          >
+            <div
+              class="file-attached"
+            >
               <div class="header">
-                <i class="mdi mdi-file-pdf" v-if="file.split('/').pop().split('.').pop() == 'pdf'"></i>
-                <i class="mdi mdi-folder-multiple" v-if="file.split('/').pop().split('.').pop() == 'rar' || file.split('/').pop().split('.').pop() == 'zip'"></i>
+                <i
+                  v-if="file.split('/').pop().split('.').pop() == 'pdf'"
+                  class="mdi mdi-file-pdf"
+                ></i>
+                <i
+                  v-if="file.split('/').pop().split('.').pop() == 'rar'
+                    || file.split('/').pop().split('.').pop() == 'zip'"
+                  class="mdi mdi-folder-multiple"
+                ></i>
               </div>
               <div class="footer">
                 {{ file.split('/').pop() }}
@@ -283,7 +300,7 @@
                 <i
                   class="mdi"
                   :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
-                />
+                ></i>
                 <md-tooltip
                   v-if="!node_content.user_bookmark && $store.getters.getUid"
                   md-direction="bottom"
@@ -301,8 +318,8 @@
                 v-if="!$store.getters.getUid"
                 md-direction="bottom"
               >
-                  Please login to bookmark this content.
-                </md-tooltip>
+                Please login to bookmark this content.
+              </md-tooltip>
             </span>
 
             <span class="clap">
@@ -321,14 +338,23 @@
                   height="23px"
                   style="opacity: 0.6;"
                 >
-                <md-tooltip md-direction="bottom" v-if="$store.getters.getUid && node_content.user_clap < 10">
+                <md-tooltip
+                  md-direction="bottom"
+                  v-if="$store.getters.getUid && node_content.user_clap < 10"
+                >
                   Clap
                 </md-tooltip>
               </md-button>
-              <md-tooltip md-direction="bottom" v-if="node_content.user_clap >= 10">
+              <md-tooltip
+                md-direction="bottom"
+                v-if="node_content.user_clap >= 10"
+              >
                 You clapped so much!
               </md-tooltip>
-              <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
+              <md-tooltip
+                md-direction="bottom"
+                v-if="!$store.getters.getUid"
+              >
                 Please login to clap.
               </md-tooltip>
             </span>
@@ -343,9 +369,10 @@
           <div class="social">
             <social-sharing
               :url="'https://ed808.com/node/' + nid"
-              :description="node_content.meta_description"
+              :description="meta_desc"
               :title="node_content.title"
-              inline-template>
+              inline-template
+            >
               <div>
 
                 <network network="linkedin">
@@ -407,7 +434,8 @@
 
       <h2
         v-if="relatedNodes.length > 0"
-        class="section-title">
+        class="section-title"
+      >
         Related Contents:
       </h2>
 
@@ -488,6 +516,7 @@ export default {
       node_content: {},
       author: {},
       loading: true,
+      meta_desc: '',
       types: [],
       errors: "",
       showError: false,
@@ -498,27 +527,30 @@ export default {
       source: ''
     };
   },
+  validate ({ params }) {
+    // Must be a number
+    return /^\d+$/.test(params.id)
+  },
   async asyncData({ params, query, req }) {
-    console.log( req )
-    // console.log( document.cookie )
     try {
       axios.withCredentials = true
       axios.crossDomain = true
-      const { data } = req && req.headers && req.headers.cookie ?  await axios.get(
-        "https://ed808.com:92/latin/contents/" + params.nid,
-        {
-          headers:  {
-            'Cookie' :  req.headers.cookie,
-            'Cache-Control': 'no-cache'
-          }
-        }
-      ) : await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
+      const { data } = req && req.headers && req.headers.cookie ?
+        await axios.get(
+        "https://ed808.com:92/latin/contents/" + params.nid,{},
+          {
+            headers:  {
+              'Cookie' :  req.headers.cookie,
+              'Cache-Control': 'no-cache'
+            }
+          }) :
+        await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
           withCredentials: true,
-        }
-      )
+        })
 
       if (data) {
         let contentTypes = [];
+        let meta_desc= '';
         if (
           data.content.hasOwnProperty("type") &&
           data.content.type.length != 0
@@ -530,8 +562,14 @@ export default {
             if (element.tid == 3940) contentTypes.push("ebook");
           });
         }
+        if(data.content.meta_description == '') {
+          meta_desc = this.bodySummarizer(data.content.body_value)
+        } else {
+          meta_desc = data.content.meta_description
+        }
         return {
           node_content: data.content,
+          meta_desc: meta_desc,
           types: contentTypes,
           author: data.author,
           loading: false
@@ -540,7 +578,6 @@ export default {
     }
     catch (e) {
       console.log(e);
-    //   throw { statusCode: 404, message: "Page not found" };
     }
   },
   mounted() {
@@ -591,6 +628,10 @@ export default {
             console.log(err);
           });
       }
+    },
+    bodySummarizer(str){
+      if(str) return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,300).concat('<a :href="\'/node/\'+ post.nid">... Read More</a>')
+      else return ''
     },
     bookmarkContent() {
       if(!this.$store.getters.getUid){

@@ -85,7 +85,7 @@
     //   this.name = to.params.tname,
     //     next()
     // },
-    async asyncData({req, query, params}) {
+    async asyncData({req, res, query, params}) {
       try {
         const {data} = await axios.get('https://ed808.com:92/latin/tag/' + params.tid ,{
           withCredentials:true,
@@ -104,11 +104,9 @@
             collapse: true,
             metaDescription: data.meta_description != null ? data.meta_description : ''
           }
-        } else {
-          throw({statusCode: 404, message: 'Page not found'})
         }
       } catch (e) {
-        console.log(e.message)
+
       }
     },
     mounted(){

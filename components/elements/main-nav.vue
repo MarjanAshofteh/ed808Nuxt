@@ -209,9 +209,11 @@
 
 <script>
 import axios from '@/node_modules/axios'
+import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name: "MainNav",
+  mixins:[cookie],
   props:['transparent'],
   data() {
     return {
