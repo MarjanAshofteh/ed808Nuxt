@@ -98,7 +98,6 @@
                 <md-menu-item>
                   <nuxt-link
                     :to="'/user/'+ $store.state.user.uid"
-                    target="_blank"
                   >
                     My Profile
                   </nuxt-link>
@@ -209,8 +208,12 @@
 </template>
 
 <script>
+import axios from '@/node_modules/axios'
+import { cookie } from '@/components/mixins/cookie.js'
+
 export default {
   name: "MainNav",
+  mixins:[cookie],
   props:['transparent'],
   data() {
     return {

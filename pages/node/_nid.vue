@@ -147,48 +147,63 @@
                   </md-tooltip>
                 </md-button>
               </a>
-              <social-sharing
-                :url="'https://ed808.com/node/' + nid"
-                :description="node_content.meta_description"
-                :title="node_content.title"
-                inline-template>
-                <div>
+              <md-button class="md-icon-button" @click="socialExpanded = !socialExpanded">
+                <i class="mdi" :class="socialExpanded ? 'mdi-close' : 'mdi-share-variant'" />
+                <md-tooltip md-direction="bottom">
+                  Share on social media.
+                </md-tooltip>
 
-                  <network network="linkedin">
-                    <md-button class="md-icon-button md-linkedin-icon">
-                      <i class="mdi mdi-linkedin" />
-                      <md-tooltip md-direction="bottom">
-                        Share on LinkedIn
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                  <network network="facebook">
-                    <md-button class="md-icon-button md-facebook-icon">
-                      <i class="mdi mdi-facebook" />
-                      <md-tooltip md-direction="bottom">
-                        Share on Facebook
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                  <network network="twitter">
-                    <md-button class="md-icon-button md-twitter-icon">
-                      <i class="mdi mdi-twitter" />
-                      <md-tooltip md-direction="bottom">
-                        Share on Twitter
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                  <network network="whatsapp">
-                    <md-button class="md-icon-button md-whatsapp-icon">
-                      <i class="mdi mdi-whatsapp" />
-                      <md-tooltip md-direction="bottom">
-                        Share on WhatsApp
-                      </md-tooltip>
-                    </md-button>
-                  </network>
-                </div>
-              </social-sharing>
+              </md-button>
+
+              <transition name="fade">
+                <social-sharing
+                  v-if="socialExpanded"
+                  :url="'https://ed808.com/node/' + nid"
+                  :description="meta_desc"
+                  :title="node_content.title"
+                  inline-template>
+                  <div>
+
+                    <network network="linkedin">
+                      <md-button class="md-icon-button md-linkedin-icon">
+                        <i class="mdi mdi-linkedin" />
+                        <md-tooltip md-direction="bottom">
+                          Share on LinkedIn
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                    <network network="facebook">
+                      <md-button class="md-icon-button md-facebook-icon">
+                        <i class="mdi mdi-facebook" />
+                        <md-tooltip md-direction="bottom">
+                          Share on Facebook
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                    <network network="twitter">
+                      <md-button class="md-icon-button md-twitter-icon">
+                        <i class="mdi mdi-twitter" />
+                        <md-tooltip md-direction="bottom">
+                          Share on Twitter
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                    <network network="whatsapp">
+                      <md-button class="md-icon-button md-whatsapp-icon">
+                        <i class="mdi mdi-whatsapp" />
+                        <md-tooltip md-direction="bottom">
+                          Share on WhatsApp
+                        </md-tooltip>
+                      </md-button>
+                    </network>
+                  </div>
+                </social-sharing>
+              </transition>
+
             </div>
+
+            <!--Content Headings Navigator-->
+
             <!--<scrollactive-->
             <!--class="my-nav"-->
             <!--@:itemchanged="onItemChanged"-->
@@ -208,7 +223,42 @@
           />
         </div>
 
+        <h2 class="section-title">
+          Attached Files:
+        </h2>
+        <div
+          class="attachment"
+          v-if="types.includes('ebook') && node_content.files.length > 0"
+        >
 
+          <a
+            v-for="file in node_content.files"
+            :key="file"
+            :href="file"
+          >
+            <div
+              class="file-attached"
+            >
+              <div class="header">
+                <i
+                  v-if="file.split('/').pop().split('.').pop() == 'pdf'"
+                  class="mdi mdi-file-pdf"
+                ></i>
+                <i
+                  v-if="file.split('/').pop().split('.').pop() == 'rar'
+                    || file.split('/').pop().split('.').pop() == 'zip'"
+                  class="mdi mdi-folder-multiple"
+                ></i>
+              </div>
+              <div class="footer">
+                {{ file.split('/').pop() }}
+              </div>
+              <md-tooltip md-direction="bottom">
+                Click to download this file.
+              </md-tooltip>
+            </div>
+          </a>
+        </div>
         
         <div
           v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)"
@@ -240,7 +290,7 @@
             :tid="tag.tid"
           />
         </div>
-        <div class="share">
+        <div class="share mobile-share">
           <div class="actions">
             <span class="clap">
               <md-button
@@ -250,7 +300,7 @@
                 <i
                   class="mdi"
                   :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
-                />
+                ></i>
                 <md-tooltip
                   v-if="!node_content.user_bookmark && $store.getters.getUid"
                   md-direction="bottom"
@@ -268,8 +318,8 @@
                 v-if="!$store.getters.getUid"
                 md-direction="bottom"
               >
-                  Please login to bookmark this content.
-                </md-tooltip>
+                Please login to bookmark this content.
+              </md-tooltip>
             </span>
 
             <span class="clap">
@@ -288,14 +338,23 @@
                   height="23px"
                   style="opacity: 0.6;"
                 >
-                <md-tooltip md-direction="bottom" v-if="$store.getters.getUid && node_content.user_clap < 10">
+                <md-tooltip
+                  md-direction="bottom"
+                  v-if="$store.getters.getUid && node_content.user_clap < 10"
+                >
                   Clap
                 </md-tooltip>
               </md-button>
-              <md-tooltip md-direction="bottom" v-if="node_content.user_clap >= 10">
+              <md-tooltip
+                md-direction="bottom"
+                v-if="node_content.user_clap >= 10"
+              >
                 You clapped so much!
               </md-tooltip>
-              <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
+              <md-tooltip
+                md-direction="bottom"
+                v-if="!$store.getters.getUid"
+              >
                 Please login to clap.
               </md-tooltip>
             </span>
@@ -310,9 +369,10 @@
           <div class="social">
             <social-sharing
               :url="'https://ed808.com/node/' + nid"
-              :description="node_content.meta_description"
+              :description="meta_desc"
               :title="node_content.title"
-              inline-template>
+              inline-template
+            >
               <div>
 
                 <network network="linkedin">
@@ -372,12 +432,16 @@
         :about_me="author.about_me"
       />
 
-      <h2 class="section-title">
+      <h2
+        v-if="relatedNodes.length > 0"
+        class="section-title"
+      >
         Related Contents:
       </h2>
 
 
       <div
+        v-if="relatedNodes.length > 0"
         class="md-layout node-page"
         style="position: relative;"
       >
@@ -452,35 +516,41 @@ export default {
       node_content: {},
       author: {},
       loading: true,
+      meta_desc: '',
       types: [],
       errors: "",
       showError: false,
       relatedNodes: [],
+      relatedLoading: false,
+      socialExpanded: false,
       articleHeadings: [],
       source: ''
     };
   },
+  validate ({ params }) {
+    // Must be a number
+    return /^\d+$/.test(params.id)
+  },
   async asyncData({ params, query, req }) {
-    console.log( req )
-    // console.log( document.cookie )
     try {
       axios.withCredentials = true
       axios.crossDomain = true
-      const { data } = req && req.headers && req.headers.cookie ?  await axios.get(
-        "https://ed808.com:92/latin/contents/" + params.nid,
-        {
-          headers:  {
-            'Cookie' :  req.headers.cookie,
-            'Cache-Control': 'no-cache'
-          }
-        }
-      ) : await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
+      const { data } = req && req.headers && req.headers.cookie ?
+        await axios.get(
+        "https://ed808.com:92/latin/contents/" + params.nid,{},
+          {
+            headers:  {
+              'Cookie' :  req.headers.cookie,
+              'Cache-Control': 'no-cache'
+            }
+          }) :
+        await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
           withCredentials: true,
-        }
-      )
+        })
 
       if (data) {
         let contentTypes = [];
+        let meta_desc= '';
         if (
           data.content.hasOwnProperty("type") &&
           data.content.type.length != 0
@@ -489,10 +559,17 @@ export default {
             if (element.tid == 4058) contentTypes.push("event");
             if (element.tid == 3938) contentTypes.push("podcast");
             if (element.tid == 3941) contentTypes.push("video");
+            if (element.tid == 3940) contentTypes.push("ebook");
           });
+        }
+        if(data.content.meta_description == '') {
+          meta_desc = this.bodySummarizer(data.content.body_value)
+        } else {
+          meta_desc = data.content.meta_description
         }
         return {
           node_content: data.content,
+          meta_desc: meta_desc,
           types: contentTypes,
           author: data.author,
           loading: false
@@ -501,7 +578,6 @@ export default {
     }
     catch (e) {
       console.log(e);
-    //   throw { statusCode: 404, message: "Page not found" };
     }
   },
   mounted() {
@@ -553,6 +629,10 @@ export default {
           });
       }
     },
+    bodySummarizer(str){
+      if(str) return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,300).concat('<a :href="\'/node/\'+ post.nid">... Read More</a>')
+      else return ''
+    },
     bookmarkContent() {
       if(!this.$store.getters.getUid){
         this.$store.commit('TOGGLE_LOGIN')
@@ -600,6 +680,7 @@ export default {
         : "";
     },
     getRelatedNodes() {
+      this.relatedLoading = true
       axios
         .get(
           "https://ed808.com:92/latin/contents/" +
@@ -610,6 +691,7 @@ export default {
         .then(response => {
           // console.log( response )
           this.relatedNodes = response;
+          this.relatedLoading = false
         });
     }
   },
@@ -965,7 +1047,75 @@ body {
     }
   }
 }
+.attachment {
+  @include main-center-content();
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 30px !important;
+  height: auto;
+  .file-attached {
+    width: 150px;
+    float: left;
+    margin-right: 15px;
+    text-align: center;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2),
+    0 2px 2px 0 rgba(0,0,0,.14),
+    0 1px 5px 0 rgba(0,0,0,.12);
+    border-radius: 5px;
+    padding: 10px;
+    transition-duration: 0.5s;
+    .header{
+      width: 100%;
+      padding: 20px 0;
+    }
+    .footer {
+      width: 100%;
+      overflow: hidden;
+      color: #424242;
+      font-weight: 500;
+      font-size: 12px;
+      transition-duration: 0.5s;
+    }
+    .mdi {
+      transition-duration: 0.5s;
+      font-size: 40px !important;
+      &.mdi-folder-multiple{
+        color: #5E35B171 !important;
+      }
+      &.mdi-file-pdf {
+        color: #e5393571 !important;
+
+      }
+    }
+    &:hover {
+      .footer {
+        width: 100%;
+        overflow: hidden;
+        color: #92278f;
+      }
+      .mdi {
+        font-size: 40px !important;
+        &.mdi-folder-multiple{
+          color: #5E35B1 !important;
+        }
+        &.mdi-file-pdf {
+          color: #e53935 !important;
+        }
+      }
+      background: #eeeeee;
+      box-shadow: 0 3px 1px -2px rgba(0,0,0,.3),
+      0 2px 2px 0 rgba(0,0,0,.24),
+      0 1px 5px 0 rgba(0,0,0,.22);
+    }
+  }
+}
 .share {
+  &.mobile-share{
+    display: none;
+    @media #{$x600} {
+      display: block;
+    }
+  }
   @include main-center-content();
   text-align: right;
   margin: 20px auto;
@@ -1116,5 +1266,12 @@ blockquote {
     -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

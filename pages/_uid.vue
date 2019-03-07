@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="user-tabs">
+      <!--<div class="user-tabs">
 
         <md-tabs md-active-tab="tab-posts">
 
@@ -55,7 +55,7 @@
           </md-tab>
 
         </md-tabs>
-      </div>
+      </div>-->
       <!--<div class="loading" v-if="loading">
         <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
       </div>-->
@@ -331,14 +331,19 @@
 
   import axios from "@/node_modules/axios"
   import { cookie } from '@/components/mixins/cookie.js'
-  import Setting from "@/components/user/setting"
-  import Posts from "@/components/user/posts"
-  import Bookmark from "@/components/user/bookmark"
-  import Following_tag from "../../components/user/following_tag"
+  //import Setting from "@/components/user/setting"
+  //import Posts from "@/components/user/posts"
+  //import Bookmark from "@/components/user/bookmark"
+  //import Following_tag from "./user/_uid/following_tag"
 
 export default {
   name:'profile',
-  components: {Following_tag, Bookmark, Posts, Setting},
+  components: {
+    //Following_tag,
+    //Bookmark,
+    //Posts,
+    //Setting
+    },
   scrollToTop: true,
   mixins: [cookie],
   data(){

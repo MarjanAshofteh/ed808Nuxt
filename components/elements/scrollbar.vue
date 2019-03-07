@@ -10,16 +10,22 @@
 export default {
   mounted() {
     window.onscroll = function() {
-      myFunction();
+      myFunction(this.scrollY);
     };
 
-    function myFunction() {
-      let winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
+    function myFunction(y) {
+      let winScroll = y - document.getElementsByClassName('node-body')[0].offsetTop + 50
+      console.log(winScroll)
       let height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+        document.getElementById('node_body').scrollHeight
+      console.log(height)
+        // document.documentElement.clientHeight;
       let scrolled = (winScroll / height) * 100;
+      if(winScroll < 0) {
+        scrolled = 0
+      }if (winScroll > height) {
+        scrolled = 100
+      }
       document.getElementById("myBar").style.width = scrolled + "%";
     }
   }

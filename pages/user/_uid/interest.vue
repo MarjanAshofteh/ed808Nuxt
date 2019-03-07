@@ -1,12 +1,13 @@
 <template>
   <h1>
-    Your following tag!
+    Your Interests!
   </h1>
 </template>
 
 <script>
   export default {
-    name: "following_tag"
+    name: "interest",
+    layout: 'userpanel'
   }
 </script>
 
