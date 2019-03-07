@@ -1,12 +1,10 @@
 <template>
-  <h1>
-    Your Interests!
-  </h1>
+  <!-- follower user -->
 </template>
 
 <script>
   export default {
-    name: "interest",
+    name: "follower",
     layout: 'userpanel'
   }
 </script>

@@ -1,12 +1,10 @@
 <template>
-  <h1>
-    Your Bookmarked Node!
-  </h1>
+  <!-- following tag + following user -->
 </template>
 
 <script>
   export default {
-    name: "bookmark",
+    name: "following",
     layout: 'userpanel'
   }
 </script>

@@ -1,9 +1,7 @@
 <template>
   <div>
     <MainNav :transparent="true" class="fixed"/>
-
     <md-content class="top">
-
       <div class="background-image">
 
         <div class="dim" v-if="updateFile.background_image"></div>
@@ -19,7 +17,6 @@
           <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
         </div>
       </div>
-
       <div class="user-image">
 
         <div class="dim" v-if="updateFile.picture"></div>
@@ -36,40 +33,40 @@
           <md-progress-spinner :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         </div>
       </div>
-
       <div class="user-tabs md-layout">
         <div class="user-tabs-right md-layout">
+          <!-- user posts + Personal user info without edit -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/posts'">
-              <md-button>Post</md-button>
+            <nuxt-link :to="'/user/'+ uid" exact>
+              <md-button>Profile</md-button>
             </nuxt-link>
           </md-menu>
+          <!-- follower user -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/setting'">
-              <md-button>Personal Info</md-button>
+            <nuxt-link :to="'/user/'+ uid +'/follower'">
+              <md-button>Follower</md-button>
             </nuxt-link>
           </md-menu>
         </div>
         <div class="user-tabs-left md-layout">
+          <!-- following tag + following user -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/bookmark'">
-              <md-button>Bookmark</md-button>
+            <nuxt-link :to="'/user/'+ uid +'/following'">
+              <md-button>Following</md-button>
             </nuxt-link>
           </md-menu>
+          <!-- liked comment + author comment + bookmarked node + clap node -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/interest'">
-              <md-button>interest</md-button>
+            <nuxt-link :to="'/user/'+ uid +'/activity'">
+              <md-button>Activity</md-button>
             </nuxt-link>
           </md-menu>
         </div>
       </div>
-
       <div class="container-raised">
         <nuxt/>
       </div>
-
     </md-content>
-
     <footer class="footer footer-transparent footer-big userpanel-footer">
       <div class="container">
         <div class="content">
@@ -416,7 +413,7 @@
     border-radius: 6px;
     -webkit-box-shadow: 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
     box-shadow: 0 16px 24px 2px rgba(0,0,0,.14), 0 6px 30px 5px rgba(0,0,0,.12), 0 8px 10px -5px rgba(0,0,0,.2);
-    padding: 100px;
+    padding: 130px 8%;
   }
   .loading {
     position: absolute;
@@ -588,12 +585,12 @@
       justify-content: center;
       .user-tabs-right{
         max-width: 241px;
-        justify-content: center;
+        justify-content: space-evenly;
       }
       .user-tabs-left{
         max-width: 284px;
         margin-left: 187px;
-        justify-content: center;
+        justify-content: end;
       }
       a.nuxt-link-active .md-button:not([disabled]):before{
         background-color: currentColor;
