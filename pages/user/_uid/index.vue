@@ -1,4 +1,5 @@
 <template>
+  <!-- user posts + Personal user info without edit -->
   <div>
     <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
     <div class="posts">
@@ -50,6 +51,9 @@
     },
     mounted(){
       this.isSameUser()
+      /*
+      * @todo: add getProfile here and showing it aside posts
+      */
       this.getPosts()
     },
     methods:{
