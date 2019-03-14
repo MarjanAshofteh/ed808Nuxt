@@ -15,13 +15,13 @@
 
     <NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>
 
-    <div class="w-35 content-centered-y right-0 z-index-n1 mt-n9" style="position: absolute;top: 24%;transform: translate(0, -50%);width: 35% !important;right: 0;">
-      <figure class="ie-bg-elements-4" style="margin: 0;">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" viewBox="0 0 130.5 208.9" style="enable-background:new 0 0 130.5 208.9;" xml:space="preserve" class="injected-svg js-svg-injector" data-parent="#content">
-          <path class="bg-elements-4-0 fill-gray-200" d="M130.5,27.4L107.7,7.7C94.4-3.7,74.4-2.3,63,11L7.7,75.1c-11.4,13.2-10,33.2,3.3,44.7l94.4,81.4c7.2,6.2,16.4,8.6,25.2,7.4V27.4z"></path>
-        </svg>
-      </figure>
-    </div>
+    <!--<div class="w-35 content-centered-y right-0 z-index-n1 mt-n9" style="position: absolute;top: 24%;transform: translate(0, -50%);width: 35% !important;right: 0;">-->
+      <!--<figure class="ie-bg-elements-4" style="margin: 0;">-->
+        <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="none" x="0px" y="0px" viewBox="0 0 130.5 208.9" style="enable-background:new 0 0 130.5 208.9;" xml:space="preserve" class="injected-svg js-svg-injector" data-parent="#content">-->
+          <!--<path class="bg-elements-4-0 fill-gray-200" d="M130.5,27.4L107.7,7.7C94.4-3.7,74.4-2.3,63,11L7.7,75.1c-11.4,13.2-10,33.2,3.3,44.7l94.4,81.4c7.2,6.2,16.4,8.6,25.2,7.4V27.4z"></path>-->
+        <!--</svg>-->
+      <!--</figure>-->
+    <!--</div>-->
     <div class="" style="display:none;top: 480px;z-index: 0;left: 0;right: 0;position: absolute !important;">
       <figure class="ie-bg-elements-3">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1506.3 578.7" style="enable-background:new 0 0 1506.3 578.7;" xml:space="preserve" class="injected-svg js-svg-injector" data-parent="#content">
