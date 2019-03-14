@@ -21,17 +21,32 @@
           </md-checkbox>
         </md-list>
       </div>
+      <div class="md-card" v-if="!filtersLoading" style="margin-bottom: 15px;">
+        <md-toolbar style="min-height: 50px;" :md-elevation="0">
+          <span class="md-subheading">Tags</span>
+        </md-toolbar>
+        <div class="md-scrollbar md-tags" style="max-height: 250px;overflow: overlay; overflow-x: hidden;">
+            <span v-for="(tag,index) in tags" :key="index" >
+              <nuxt-link :to="`/tag/${tag.tid}/${tag.name}`">{{ tag.name }}</nuxt-link>
+            </span>
+        </div>
+      </div>
     </div>
 </template>
 
 <script>
 
+
+import Tag from "@/components/fields/tag";
+
 export default {
   name: 'filters',
+  components: {Tag},
   data () {
     return {
       filters:[],
       filtersLoading: true,
+      tags:[]
     }
   },
   mounted() {
@@ -47,6 +62,13 @@ export default {
         })
         this.$store.commit('SET_FILTERS', filters)
 
+        // setTimeout(() => {this.filtersLoading = false}, 300)
+    })
+    fetch('https://ed808.com:92/latin/tag/home/list')
+      .then(response => response.json())
+      .then((data) => {
+        this.tags = data
+        console.log(data)
         setTimeout(() => {this.filtersLoading = false}, 300)
     })
 
@@ -82,6 +104,23 @@ label.md-checkbox-label {
     min-width: 25%;
 	  max-width: 25%;
 	  flex: 0 1 25%;
+  }
+}
+.md-tags span{
+  display: inline-block;
+  margin: 5px;
+  a{
+    display: inline-block;
+    line-height: 24px;
+    padding: 5px;
+    background-color: #EEEEEE;
+    transition-duration: .5s;
+    border-radius: 3px;
+    color: #212121 !important;
+    &:hover {
+      background-color: #E0E0E0;
+
+    }
   }
 }
 </style>

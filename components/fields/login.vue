@@ -1,19 +1,23 @@
 <template>
-
+      <!--gihmmsWer2563-->
       <div class="card card-signup">
         <div class="header header-primary text-center">
 
-          <h4 class="card-title">Log in with</h4>
+          <h4 class="card-title">
+            Log in with
+          </h4>
           <div class="social-line">
             <!--<a href="#pablo" class="btn btn-just-icon btn-simple">-->
               <!--<md-button class="md-icon-button" disabled>-->
                 <!--<i class="mdi mdi-facebook-box"></i>-->
               <!--</md-button>-->
             <!--</a>-->
-            <a href="#pablo" class="btn btn-just-icon btn-simple">
+            <!--<a class="btn btn-just-icon btn-simple" href="https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77gasbcb9ngw6d&redirect_uri=https://ed808.com:2/login/linkedin&state=gihmmsWer2563&scope=r_basicprofile%20r_emailaddress">-->
+            <a class="btn btn-just-icon btn-simple">
               <md-button class="md-icon-button">
-                <i class="mdi mdi-linkedin"></i>
+                <i class="mdi mdi-linkedin-box"></i>
               </md-button>
+              <md-tooltip>LinkedIn</md-tooltip>
             </a>
             <!--<a href="#pablo" class="btn btn-just-icon btn-simple">-->
               <!--<md-button class="md-icon-button" disabled>-->
@@ -165,6 +169,43 @@
       // }
     },
     methods:{
+      loginWithLinkedin(){
+        axios.crossDomain = true
+        axios.crossOrigin = true
+        axios.get('https://www.linkedin.com/oauth/v2/authorization/',
+          {
+            response_type: 'code',
+            client_id: "77gasbcb9ngw6d",
+            redirect_uri: "https://ed808.com:2/login/linkedin",
+            state: '123456',
+            scope: 'r_basicprofile%20r_emailaddress'
+          },
+          {
+            headers: {
+              'Content-type': 'application/json',
+              'Access-Control-Allow-Origin' : 'https://ed808.com:2'
+            }
+          })
+        .then((data)=>{
+          console.log(data)
+        })
+
+        // axios.post('https://www.linkedin.com/oauth/v2/accessToken/',
+        //   {
+        //     grant_type: 'client_credentials',
+        //     access_token: "77gasbcb9ngw6d",
+        //     expires_in: "eLNyPD8CUAuMBf0d"
+        //   },
+        //   {
+        //     headers: {
+        //       'Content-type': 'application/json',
+        //       'Access-Control-Allow-Origin' : 'https://ed808.com:2'
+        //   }
+        // })
+        // .then((data)=>{
+        //   console.log(data)
+        // })
+      },
       hideLogin(){
         this.$store.commit('TOGGLE_LOGIN')
       },

@@ -43,8 +43,8 @@
           </md-menu>
           <!-- follower user
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/follower'">
-              <md-button>Follower</md-button>
+            <nuxt-link :to="'/user/'+ uid +'/followers'">
+              <md-button>Followers</md-button>
             </nuxt-link>
           </md-menu>-->
         </div>

@@ -1,8 +1,8 @@
 
 <template>
   <div>
-    <div :class="'main-container node_type_' + types[0]">
-      <scroll />
+    <div  :class="'main-container node_type_' + types[0]">
+      <!--<scroll v-if="node_content.nid" />-->
       <div class="top_header">
         <h1 v-if="node_content.hasOwnProperty('title')">
           {{ node_content.title }}
@@ -40,19 +40,9 @@
         class="node-body"
       >
 
-        <!--<audioplayer-->
-          <!--:source="node_content.files[0]"-->
-        <!--&gt;-->
-
-        <!--</audioplayer>-->
 
         <div
           v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
-          <!--<wavesurfer-->
-            <!--layout="modal"-->
-            <!--:src="node_content.files[0]"-->
-            <!--&gt;-->
-          <!--</wavesurfer>-->
 
           <audioplayer
           :source="node_content.files[0]"
@@ -424,12 +414,13 @@
       </md-content>
 
 
-
-      <author
+      <UserTeaser
+        teaserType="author"
         :uid="author.uid"
         :name="author.full_name"
         :picture="author.picture"
         :about_me="author.about_me"
+        :following="author.user_follow"
       />
 
       <h2
@@ -496,10 +487,12 @@ import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
 import audioplayer from "@/components/fields/audioplayer"
 import { cookie } from "@/components/mixins/cookie.js";
+import UserTeaser from "@/components/fields/userTeaser";
 
 export default {
   name: "Node",
   components: {
+    UserTeaser,
     teaser,
     eventData,
     author,
@@ -529,7 +522,7 @@ export default {
   },
   validate ({ params }) {
     // Must be a number
-    return /^\d+$/.test(params.id)
+    return /^\d+$/.test(params.nid)
   },
   async asyncData({ params, query, req }) {
     try {
@@ -546,7 +539,7 @@ export default {
           }) :
         await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
           withCredentials: true,
-        })
+        }).then()
 
       if (data) {
         let contentTypes = [];
@@ -578,6 +571,8 @@ export default {
     }
     catch (e) {
       console.log(e);
+      // res.statusCode = e.response.status
+      // this.error({ statusCode: 404, message: 'Text' })
     }
   },
   mounted() {

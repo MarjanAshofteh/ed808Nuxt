@@ -1,8 +1,10 @@
 <template>
-  <div>
+  <div class="error-cont">
     <div class="container">
       <h1>{{ error.statusCode  }}</h1>
-      <h3 v-if="error.statusCode === 404">{{error.message}}</h3>
+      <h3 v-if="error.statusCode === 404">
+        {{error.message}}
+      </h3>
       <h3 v-else>{{error.message}}</h3>
       <p>The page you're looking for doesn't exist or an error occurred.</p>
       <a href="#" @click="$router.go(-1)">Go Back!</a>

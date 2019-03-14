@@ -1,5 +1,4 @@
 <template>
-  <!-- following tag + following user -->
   <div>
     <div class="users">
       <UserTeaser
@@ -10,7 +9,7 @@
         :name="user.full_name"
         :picture="user.picture"
         :about_me="user.about"
-        :following="true"
+        :following="user.user_follow"
       />
     </div>
   </div>
@@ -20,7 +19,7 @@
   import axios from '@/node_modules/axios'
   import UserTeaser from "@/components/fields/userTeaser";
   export default {
-    name: "Following",
+    name: "Followers",
     components: {UserTeaser},
     layout: 'userpanel',
     data() {
@@ -29,16 +28,16 @@
       }
     },
     mounted() {
-      axios.get(`https://ed808.com:92/latin/user/${this.$route.params.uid}/following?parameter[sort]=time&parameter[sort_dir]=ASC&parameter[page]=0&parameter[limits]=10`)
+      axios.get(`https://ed808.com:92/latin/user/${this.$route.params.uid}/follower?parameter[sort]=time&parameter[sort_dir]=ASC&parameter[page]=0&parameter[limits]=10`)
         .then((data)=> {
           console.log(data.data)
-          this.users = data.data.following
+          this.users = data.data.follower
         })
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .users {
     margin: auto;
     width: 60%;

@@ -220,7 +220,7 @@ import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name: "MainNav",
-  mixins:[cookie],
+  mixins: [cookie],
   props:['transparent'],
   data() {
     return {

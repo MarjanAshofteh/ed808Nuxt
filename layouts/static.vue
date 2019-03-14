@@ -12,7 +12,7 @@
     <nuxt />
 
     <md-snackbar :md-active.sync="IsLogOut">
-      You log out successfully!
+      You've logged out successfully!
     </md-snackbar>
 
     <footer class="footer footer-transparent footer-big">

@@ -1,11 +1,11 @@
 <template>
-  <!-- follower user -->
+  <div></div>
 </template>
 
 <script>
   export default {
-    name: "follower",
-    layout: 'userpanel'
+    name: "error",
+    layout: 'error'
   }
 </script>
 
