@@ -41,20 +41,20 @@
               <md-button>Profile</md-button>
             </nuxt-link>
           </md-menu>
-          <!-- follower user -->
+          <!-- follower user
           <md-menu>
             <nuxt-link :to="'/user/'+ uid +'/follower'">
               <md-button>Follower</md-button>
             </nuxt-link>
-          </md-menu>
+          </md-menu>-->
         </div>
         <div class="user-tabs-left md-layout">
-          <!-- following tag + following user -->
+          <!-- following tag + following user
           <md-menu>
             <nuxt-link :to="'/user/'+ uid +'/following'">
               <md-button>Following</md-button>
             </nuxt-link>
-          </md-menu>
+          </md-menu>-->
           <!-- liked comment + author comment + bookmarked node + clap node -->
           <md-menu>
             <nuxt-link :to="'/user/'+ uid +'/activity'">
@@ -489,8 +489,8 @@
         transition: 0.5s cubic-bezier(0.25, 0.8, 0.5, 1);
         width: 60px;
         right: 33px;
-        top: 30px;
-        background-color: #00000059;
+        top: 141px;
+        background-color: rgba(210, 210, 210, 0.35);
         opacity: 0;
         height: 60px;
         border-radius: 50%;
@@ -521,12 +521,11 @@
     .user-image{
       position: absolute;
       top: 221px;
-      left: calc(50% - 113px);
+      left: calc(50% - 86px);
       z-index: 4;
       overflow: hidden;
       min-width: 160px;
-      padding: 9px;
-
+      padding-bottom: 9px;
       @media screen and (max-width: 600px) {
         top: 90px;
         left: calc(50% - 66px);
@@ -584,12 +583,12 @@
       top: 272px;
       justify-content: center;
       .user-tabs-right{
-        max-width: 241px;
+        max-width: 138px;
         justify-content: space-evenly;
       }
       .user-tabs-left{
-        max-width: 284px;
-        margin-left: 187px;
+        max-width: 146px;
+        margin-left: 194px;
         justify-content: end;
       }
       a.nuxt-link-active .md-button:not([disabled]):before{

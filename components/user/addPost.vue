@@ -135,6 +135,90 @@
 </script>
 
 <style lang="scss" scoped>
+  .box {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin: 0 27px 27px 0;
+    transition: .3s cubic-bezier(.25, .8, .5, 1);
+
+    &:hover .box-head .edit {
+      opacity: 1;
+    }
+
+    .box-head {
+      border-bottom: 1px solid #eee;
+      min-height: 48px;
+      padding: 4px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: padding .4s cubic-bezier(.25, .8, .25, 1);
+
+      .md-icon:first-child {
+        margin-right: 14px;
+        margin-top: 7px;
+      }
+
+      .item-text {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow: hidden;
+        line-height: 1.25em;
+        white-space: nowrap;
+      }
+
+      .edit {
+        opacity: 0;
+        transition: .3s cubic-bezier(.25, .8, .5, 1);
+        margin: 0 -12px 0 0;
+
+        .md-icon {
+          margin: 0px !important;
+        }
+      }
+    }
+
+    .box-text {
+      margin: 10px 0;
+      font-size: 15px;
+
+      .box-row {
+        padding: 5px 25px;
+      }
+
+      .default-text {
+        color: #BDBDBD;
+      }
+
+      .label {
+        color: #888;
+        font-size: 13px;
+      }
+
+      .box-edit {
+        padding: 5px 25px;
+
+        .md-field {
+          margin-bottom: 9px;
+        }
+
+        .md-field.md-has-textarea {
+          textarea {
+            font-size: 16px !important;
+          }
+
+          &:not(.with-label) {
+            padding: 7px 1px;
+          }
+
+          margin: 0;
+        }
+      }
+    }
+  }
   #editor{
     transition: all 0.9s ease-in-out;
     overflow: hidden;
@@ -170,9 +254,10 @@
     }
   }
   .box.minimal{
-    min-width: 760px;
+    min-width: 799px;
     width: 60%;
     margin-top: 28px;
-    box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12);
+    box-shadow: 0 3px 3px -2px rgba(0, 0, 0, 0.2), 0 3px 4px 0 rgba(0, 0, 0, 0.14), 0 1px 8px 0 rgba(0, 0, 0, 0.12);
+    margin-right: 8px;
   }
 </style>

@@ -1,26 +1,41 @@
 <template>
   <!-- user posts + Personal user info without edit -->
   <div>
-    <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
-    <div class="posts">
-      <div class="spinner-loading" v-if="spinner_loading">
-        <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
-      </div>
-      <div v-for="post in posts"  class="md-card md-card-blog md-theme-default">
-        <md-badge class="md-square" md-content="Unpublished" v-if="post.status == 0" style="top: 5px;right: 5px;" />
-        <div class="md-card-header md-card-header-image" v-if="post.picture">
-          <a :href="'/node/'+ post.nid">
-            <img :src="post.picture" class="img">
-          </a>
-          <div data-v-c79ac4a2="" class="colored-shadow" :style="'background-image: url('+ post.picture +');opacity: 1;'"></div>
+
+    <div class="profile-brief">
+      <h3 class="title" v-if="brief.full_name">{{brief.full_name}}</h3>
+      <h6 v-if="brief.job">{{brief.job}}</h6>
+      <div v-if="brief.about" class="description text-center" v-html="brief.about"></div>
+    </div>
+    <div style="margin-top: 59px;">
+      <md-icon class="md-size-2x">layers</md-icon>
+      <h1 style="margin-top: 12px;">Posts</h1>
+      <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
+      <div class="posts">
+        <div class="spinner-loading" v-if="spinner_loading">
+          <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
         </div>
-        <div class="md-card-content">
-          <h6 class="card-category text-info">{{post.topic_name}}</h6>
-          <h4 class="card-title">
-            <a :href="'/node/'+ post.nid">{{post.title}}</a>
-          </h4>
-          <p v-html="body_minimizer(post.body)" class="card-description">
-          </p>
+        <div class="description text-center" v-if="count == 0">
+          No posts!
+          <br>
+          Share your experience with you colleagues by writing posts.
+        </div>
+        <div v-for="post in posts"  class="md-card md-card-blog md-theme-default" v-else>
+          <md-badge class="md-square" md-content="Unpublished" v-if="post.status == 0" style="top: 5px;right: 5px;" />
+          <div class="md-card-header md-card-header-image" v-if="post.picture">
+            <a :href="'/node/'+ post.nid">
+              <img :src="post.picture" class="img">
+            </a>
+            <div data-v-c79ac4a2="" class="colored-shadow" :style="'background-image: url('+ post.picture +');opacity: 1;'"></div>
+          </div>
+          <div class="md-card-content">
+            <h6 class="card-category text-info">{{post.topic_name}}</h6>
+            <h4 class="card-title">
+              <a :href="'/node/'+ post.nid">{{post.title}}</a>
+            </h4>
+            <p v-html="body_minimizer(post.body)" class="card-description">
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -39,9 +54,11 @@
       return {
         uid: this.$route.params.uid,
         posts:[],
+        brief:{},
         sameUser:false,
         number_of_post:'',
         page:0,
+        count:0,
         posts_copy:{},
         spinner_loading:true
       }
@@ -72,6 +89,8 @@
           })
           .then((data) => {
             this.posts = data.data.posts
+            this.count = data.data.count
+            this.brief = data.data.brief
             this.spinner_loading = false
             this.posts_copy = Object.assign({}, this.posts)
           })
@@ -90,6 +109,33 @@
 </script>
 
 <style scoped>
+  .profile-brief{
+    margin-top: -67px ;
+  }
+  h3.title{
+    margin-top: 30px;
+    margin-bottom: 25px;
+    min-height: 32px;
+    font-weight: 700;
+    font-family: Roboto Slab,Times New Roman,serif;
+  }
+  h6 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .description {
+    margin: 15px auto 0 !important;
+    max-width: 600px;
+  }
+  .h6, h6 {
+    font-size: .75rem;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .h3, h3 {
+    font-size: 1.5625rem;
+    line-height: 1.4em;
+  }
   .md-card {
     max-width: 800px;
     text-align: left;
@@ -115,7 +161,7 @@
     color: #00bcd4!important;
   }
   .posts{
-    min-height: 400px;
+    min-height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;

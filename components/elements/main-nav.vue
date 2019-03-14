@@ -102,6 +102,13 @@
                     My Profile
                   </nuxt-link>
                 </md-menu-item>
+                <md-menu-item>
+                  <nuxt-link
+                    :to="'/user/'+ $store.state.user.uid + '/setting'"
+                  >
+                    Setting
+                  </nuxt-link>
+                </md-menu-item>
                 <md-menu-item >
                   <a @click="logUserOut" style="cursor: pointer;">Logout</a>
                 </md-menu-item>

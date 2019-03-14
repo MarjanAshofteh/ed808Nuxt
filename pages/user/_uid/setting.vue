@@ -191,11 +191,11 @@
           <div class="box-text">
             <div v-if="editingEl != 'work'">
               <div class="default-text box-row" v-if="!user.job">
-                <span class="label">job Experince: </span>
+                <span class="label">job: </span>
                 I've worked at ...
               </div>
               <div class="box-row" v-else>
-                <span class="label">job Experince: </span>
+                <span class="label">job: </span>
                 {{user.job}}
               </div>
 
