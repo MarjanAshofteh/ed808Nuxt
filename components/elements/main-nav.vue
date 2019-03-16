@@ -257,7 +257,7 @@ export default {
           this.IsLogin = false
           //This line show the log out snackbar
           this.IsLogOut = true
-          window.location.replace('/')
+          window.location.reload()
         })
         .catch(e => {
           console.log('errors for logout : ' + e)

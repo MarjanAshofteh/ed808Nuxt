@@ -23,7 +23,8 @@
             {{ node_content.topic[0].name }}
           </nuxt-link>
         </div>
-        <eventData
+        <div>
+          <eventData
           v-if="types.includes('event')"
           :date="node_content.event_time"
           :time="node_content.time_and_duration"
@@ -31,7 +32,9 @@
           :place="node_content.event_place"
           :webinar_covered="node_content.ifwebinar"
           :registration_link="node_content.registration_link"
-        />
+          :nid="nid"
+          />
+        </div>
       </div>
 
 
@@ -106,6 +109,7 @@
                 <i
                   class="mdi"
                   :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                  :style="'color:' + node_content.user_bookmark ? 'yellow' : ''"
                 />
                 <md-tooltip
                   v-if="!node_content.user_bookmark && $store.getters.getUid"
@@ -477,7 +481,6 @@
 </template>
 
 <script>
-// import ScrollActive from '@/node_modules/vue-scrollactive'
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
@@ -495,7 +498,6 @@ export default {
     UserTeaser,
     teaser,
     eventData,
-    author,
     tag,
     comment,
     scroll,
@@ -875,7 +877,7 @@ body {
   }
   .node-body {
     > img {
-      margin: 25px 0px 0px 0px;
+      margin: 0px 0px 0px 0px;
       max-width: 100%;
       box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
         0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
@@ -1260,6 +1262,28 @@ blockquote {
   100% {
     -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #EEEEEE;
+  border-radius: 5px;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+table {
+  tr:nth-child(even) {
+    background-color: #F5F5F5;
+  }
+  tr:first-child {
+    font-weight: 500;
   }
 }
 

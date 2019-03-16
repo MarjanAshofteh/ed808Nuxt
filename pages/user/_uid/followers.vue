@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="users">
+      <div v-if="users.length == 0">
+        Nobody is following you!
+      </div>
       <UserTeaser
         v-for="user in users"
         :key="user.uid"

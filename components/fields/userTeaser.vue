@@ -82,28 +82,32 @@
     },
     methods: {
       follow(following, uid) {
-        axios.defaults.crossDomain = true;
-        axios.defaults.withCredentials = true;
-        axios
-          .post(
-            "https://ed808.com:92/latin/user/" + uid + "/follow",
-            {
-              action: following ? "unfollow" : "follow"
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": this.getCookie("token"),
-                'Cache-Control': 'no-cache',
+        if(this.$store.getters.getUid){
+          this.$store.commit('TOGGLE_LOGIN')
+        }else {
+          axios.defaults.crossDomain = true;
+          axios.defaults.withCredentials = true;
+          axios
+            .post(
+              "https://ed808.com:92/latin/user/" + uid + "/follow",
+              {
+                action: following ? "unfollow" : "follow"
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRF-Token": this.getCookie("token"),
+                  'Cache-Control': 'no-cache',
+                }
               }
-            }
-          )
-          .then(() => {
-            this.following = !this.following;
-          })
-          .catch(err => {
-            console.log(err);
-          });
+            )
+            .then(() => {
+              this.following = !this.following;
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       }
     }
   }

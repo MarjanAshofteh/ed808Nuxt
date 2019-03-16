@@ -531,6 +531,7 @@
       overflow: hidden;
       min-width: 160px;
       padding-bottom: 9px;
+      border-radius: 50%;
       @media screen and (max-width: 600px) {
         top: 90px;
         left: calc(50% - 66px);

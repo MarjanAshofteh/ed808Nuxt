@@ -28,7 +28,7 @@
     <div style="margin-top: 59px;">
       <md-icon class="md-size-2x">layers</md-icon>
       <h1 v-if="spinner_loading" style="margin-top: 12px;">Posts</h1>
-      <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
+      <!--<addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>-->
       <div class="posts">
         <div class="spinner-loading" v-if="spinner_loading">
           <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
@@ -101,29 +101,33 @@
         else return ''
       },
       follow(following, uid) {
-        axios.defaults.crossDomain = true;
-        axios.defaults.withCredentials = true;
-        axios
-          .post(
-            "https://ed808.com:92/latin/user/" + uid + "/follow",
-            {
-              action: following ? "unfollow" : "follow"
-            },
-            {
-              headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": this.getCookie("token"),
-                'Cache-Control': 'no-cache',
+        if(this.$store.getters.getUid){
+          this.$store.commit('TOGGLE_LOGIN')
+        }else {
+          axios.defaults.crossDomain = true;
+          axios.defaults.withCredentials = true;
+          axios
+            .post(
+              "https://ed808.com:92/latin/user/" + uid + "/follow",
+              {
+                action: following ? "unfollow" : "follow"
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRF-Token": this.getCookie("token"),
+                  'Cache-Control': 'no-cache',
+                }
               }
-            }
-          )
-          .then(() => {
-            console.log("sent");
-            this.following = !this.following;
-          })
-          .catch(err => {
-            console.log(err);
-          });
+            )
+            .then(() => {
+              console.log("sent");
+              this.following = !this.following;
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       },
       getPosts(){
         axios.defaults.crossDomain = true

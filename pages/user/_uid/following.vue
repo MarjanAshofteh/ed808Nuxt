@@ -2,6 +2,10 @@
   <!-- following tag + following user -->
   <div>
     <div class="users">
+
+      <div v-if="users.length == 0">
+        You are not following any user!
+      </div>
       <UserTeaser
         v-for="user in users"
         :key="user.uid"

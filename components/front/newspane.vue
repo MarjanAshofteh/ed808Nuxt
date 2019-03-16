@@ -24,10 +24,28 @@
         navigationNextLabel="navigate_next"
         navigationPrevLabel="navigate_before"
         :paginationEnabled="false">
-        <slide v-for="event in events" 
-            :key="event.nid">
-          <newsteaser 
-            :newstitle="event.title" 
+        <slide
+          v-for="event in events"
+          :key="event.nid"
+          v-if="event.nid == '20220'"
+
+        >
+          <newsteaser
+            id="special-event"
+            :newstitle="event.title"
+            :newscompany="event.company"
+            :newsdate="event.eventtime | erasetime"
+            :newsnid="event.nid"
+            @setNid="show_event(event.nid)"/>
+        </slide>
+        <slide
+          v-for="event in events"
+          :key="event.nid"
+          v-if="event.nid != '20220'"
+        >
+
+          <newsteaser
+            :newstitle="event.title"
             :newscompany="event.company" 
             :newsdate="event.eventtime | erasetime" 
             :newsnid="event.nid"
@@ -177,6 +195,7 @@ section#events{
     border-radius: 30px;
   }
 }
+
 </style>
 
 
