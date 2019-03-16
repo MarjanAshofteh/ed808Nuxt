@@ -28,7 +28,6 @@
           v-for="event in events"
           :key="event.nid"
           v-if="event.nid == '20220'"
-
         >
           <newsteaser
             id="special-event"

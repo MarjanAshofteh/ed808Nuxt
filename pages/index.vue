@@ -9,7 +9,7 @@
       </div>
     </section>
 
-    <newspane/>
+    <!--<newspane/>-->
 
     <EditorPicked/>
 
