@@ -5,21 +5,26 @@
       <md-content class="md-elevation-2">
         <div class="author-details">
           <div class="userimage">
-            <a :href="'/user/'+uid" target="_blank">
+            <nuxt-link :to="'/user/'+uid" target="_blank">
               <md-avatar class="md-large">
                 <img v-if="picture" :src="picture" alt="user_image" />
                 <img v-else src="/images/avatar.png" alt="user_image" />
               </md-avatar>
-            </a>
+            </nuxt-link>
           </div>
           <md-content class="userdetails">
             <p>Written By:</p>
-            <a :href="'/user/'+uid">
+            <nuxt-link :href="'/user/'+uid">
               {{ name }}
-            </a>
+            </nuxt-link>
             <span v-if="$store.getters.getUid != uid">
-              <button class="md-follow" v-if="following">Follow</button>
-              <button class="md-follow active" v-else>Following</button>
+              <button
+                class="md-follow"
+                :class="following ? 'active' : ''"
+                @click="follow(following, uid)"
+              >
+                {{ following ? 'Following' : 'Follow' }}
+              </button>
             </span>
 
           </md-content>
@@ -33,17 +38,22 @@
     <!--list item type-->
     <div class="user-teaser" v-if="teaserType == 'list-item'">
       <div class="user-card">
-        <a :href="`/user/${uid}`">
+        <nuxt-link :to="`/user/${uid}`">
           <img :src="picture != null ? picture : '/images/avatar.png'" alt="" width="64px">
           <p>
             <span class="name">{{name}}</span>
             <br>
             <span class="desc"> {{ about_me != null ? about_me.substring(0,30) : ' ' }} </span>
           </p>
-        </a>
+        </nuxt-link>
         <span v-if="$store.getters.getUid != uid">
-            <button class="md-follow" v-if="!following">Follow</button>
-            <button class="md-follow active" v-else>Following</button>
+            <button
+              class="md-follow"
+              :class="following ? 'active' : ''"
+              @click="follow(following, uid)"
+            >
+              {{ following ? 'Following' : 'Follow' }}
+            </button>
         </span>
       </div>
     </div>
@@ -51,8 +61,12 @@
 </template>
 
 <script>
+  import axios from "@/node_modules/axios";
+  import { cookie } from "@/components/mixins/cookie.js";
+
   export default {
     name: "UserTeaser",
+    mixins: [cookie],
     props: [
       'teaserType',
       'uid',
@@ -63,11 +77,33 @@
     ],
     data() {
       return {
-        // teaserType: 'author',
-        // uid: 68,
-        // picture: '',
-        // following: false,
-        // name: 'Mohsen Bagheri'
+
+      }
+    },
+    methods: {
+      follow(following, uid) {
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        axios
+          .post(
+            "https://ed808.com:92/latin/user/" + uid + "/follow",
+            {
+              action: following ? "unfollow" : "follow"
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": this.getCookie("token"),
+                'Cache-Control': 'no-cache',
+              }
+            }
+          )
+          .then(() => {
+            this.following = !this.following;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     }
   }

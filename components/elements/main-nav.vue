@@ -104,9 +104,9 @@
                 </md-menu-item>
                 <md-menu-item>
                   <nuxt-link
-                    :to="'/user/'+ $store.state.user.uid + '/setting'"
+                    :to="'/user/'+ $store.state.user.uid + '/settings'"
                   >
-                    Setting
+                    Settings
                   </nuxt-link>
                 </md-menu-item>
                 <md-menu-item >

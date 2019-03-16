@@ -4,7 +4,7 @@
     <md-content class="top">
       <div class="background-image">
 
-        <div class="dim" v-if="updateFile.background_image"></div>
+        <!--<div class="dim" v-if="updateFile.background_image"></div>-->
 
         <img v-if="user.hasOwnProperty('background_image') && !loading" v-bind:src="user.background_image" alt="background image">
         <img v-else src="/images/city-profile.jpg" alt="background image">
@@ -41,20 +41,20 @@
               <md-button>Profile</md-button>
             </nuxt-link>
           </md-menu>
-          <!-- follower user
+          <!-- follower user -->
           <md-menu>
             <nuxt-link :to="'/user/'+ uid +'/followers'">
               <md-button>Followers</md-button>
             </nuxt-link>
-          </md-menu>-->
+          </md-menu>
         </div>
         <div class="user-tabs-left md-layout">
-          <!-- following tag + following user
+          <!-- following tag + following user -->
           <md-menu>
             <nuxt-link :to="'/user/'+ uid +'/following'">
               <md-button>Following</md-button>
             </nuxt-link>
-          </md-menu>-->
+          </md-menu>
           <!-- liked comment + author comment + bookmarked node + clap node -->
           <md-menu>
             <nuxt-link :to="'/user/'+ uid +'/activity'">
@@ -64,7 +64,7 @@
         </div>
       </div>
       <div class="container-raised">
-        <nuxt/>
+        <nuxt :following="following" :isSame="sameUser"/>
       </div>
     </md-content>
     <footer class="footer footer-transparent footer-big userpanel-footer">
@@ -120,6 +120,7 @@
       return{
         //for keeping last field data temporary, after editing it
         user_copy:{},
+        following: false,
         errors:'',
         roles:[],
         uid:this.$route.params.uid,
@@ -145,6 +146,9 @@
         }
       }
     },
+    created(){
+      this.getProfile()
+    },
     mounted(){
       this.isSameUser()
     },
@@ -155,7 +159,6 @@
             this.sameUser = true
           //console.log(this.sameUser)
         }
-        this.getProfile()
       },
       handleFileUpload(fieldName){
 
@@ -379,6 +382,8 @@
           .then((data) => {
             this.user = data.data
             this.user_copy = Object.assign({}, this.user)
+            this.following = data.data.user_follow
+            console.log('foloing = ' + this.following)
             /*for(var field in this.user){
               this.user[field] = data.data[field]
             }
@@ -521,7 +526,7 @@
     .user-image{
       position: absolute;
       top: 221px;
-      left: calc(50% - 86px);
+      left: calc(50% - 80px);
       z-index: 4;
       overflow: hidden;
       min-width: 160px;
@@ -583,11 +588,11 @@
       top: 272px;
       justify-content: center;
       .user-tabs-right{
-        max-width: 138px;
+        max-width: 250px;
         justify-content: space-evenly;
       }
       .user-tabs-left{
-        max-width: 146px;
+        max-width: 250px;
         margin-left: 194px;
         justify-content: end;
       }

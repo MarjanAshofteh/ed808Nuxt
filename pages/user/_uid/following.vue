@@ -28,8 +28,20 @@
         users: []
       }
     },
+    asyncData({params, app}){
+
+    },
     mounted() {
-      axios.get(`https://ed808.com:92/latin/user/${this.$route.params.uid}/following?parameter[sort]=time&parameter[sort_dir]=ASC&parameter[page]=0&parameter[limits]=10`)
+      console.log(this.$route.params.uid)
+      axios.get(`https://ed808.com:92/latin/user/${this.$route.params.uid}/following?parameter[sort]=time&parameter[sort_dir]=ASC&parameter[page]=0&parameter[limits]=10`,
+        {},
+        {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'cache-control': 'no-cache',
+
+          }
+        })
         .then((data)=> {
           console.log(data.data)
           this.users = data.data.following

@@ -3,13 +3,31 @@
   <div>
 
     <div class="profile-brief">
-      <h3 class="title" v-if="brief.full_name">{{brief.full_name}}</h3>
+      <h3 class="title" v-if="brief.full_name">
+        {{ brief.full_name }}
+      </h3>
+      <div v-if="!isSame && brief.full_name">
+        <button
+          v-if="!isSame"
+          class="md-follow"
+          :class="following ? 'active' : ''"
+          @click="follow(following, uid)"
+        >
+          {{ following ? 'Following' : 'Follow' }}
+        </button>
+      </div>
       <h6 v-if="brief.job">{{brief.job}}</h6>
-      <div v-if="brief.about" class="description text-center" v-html="brief.about"></div>
+      <div
+        v-if="brief.about"
+        class="description text-center"
+        v-html="brief.about"
+      >
+
+      </div>
     </div>
     <div style="margin-top: 59px;">
       <md-icon class="md-size-2x">layers</md-icon>
-      <h1 style="margin-top: 12px;">Posts</h1>
+      <h1 v-if="spinner_loading" style="margin-top: 12px;">Posts</h1>
       <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
       <div class="posts">
         <div class="spinner-loading" v-if="spinner_loading">
@@ -45,11 +63,14 @@
 <script>
   import axios from "@/node_modules/axios"
   import addPost from "@/components/user/addPost"
+  import { cookie } from "@/components/mixins/cookie.js";
 
   export default {
     name: "posts",
     layout:'userpanel',
+    mixins: [cookie],
     scrollToTop: true,
+    props:['following','isSame'],
     data() {
       return {
         uid: this.$route.params.uid,
@@ -68,6 +89,7 @@
     },
     mounted(){
       this.isSameUser()
+      console.log(this.following)
       /*
       * @todo: add getProfile here and showing it aside posts
       */
@@ -77,6 +99,31 @@
       body_minimizer(str){
         if(str) return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,300).concat('<a :href="\'/node/\'+ post.nid" style="cursor: pointer;">... Read More</a>')
         else return ''
+      },
+      follow(following, uid) {
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials = true;
+        axios
+          .post(
+            "https://ed808.com:92/latin/user/" + uid + "/follow",
+            {
+              action: following ? "unfollow" : "follow"
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-Token": this.getCookie("token"),
+                'Cache-Control': 'no-cache',
+              }
+            }
+          )
+          .then(() => {
+            console.log("sent");
+            this.following = !this.following;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       },
       getPosts(){
         axios.defaults.crossDomain = true
@@ -108,7 +155,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .profile-brief{
     margin-top: -67px ;
   }
@@ -824,4 +871,28 @@
     -ms-flex-pack: center;
     justify-content: center
   }
+
+  button {
+    transition: 0.5s;
+    &.md-follow {
+      background-color: transparent;
+      color: #2196F3;
+      border: 1px solid #2196F3;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 0;
+      min-width: 120px;
+      position: relative;
+      top: -3px;
+      &.active {
+        background-color: #2196F3;
+        color: white;
+      }
+    }
+    &:hover {
+      opacity: 0.7;
+      cursor: pointer;
+    }
+  }
+
 </style>
