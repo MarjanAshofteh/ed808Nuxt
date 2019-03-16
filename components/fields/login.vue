@@ -95,6 +95,13 @@
               {{ errors }}
             </md-snackbar>
           </form>
+
+        </div>
+        <div>
+          Not registered yet?
+          <nuxt-link to="/register">
+            Join Now
+          </nuxt-link>
         </div>
         <div class="footer text-center">
           <md-button

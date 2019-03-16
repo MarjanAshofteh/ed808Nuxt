@@ -1,13 +1,26 @@
 <template>
   <div class="event_header">
     <Countdown :deadline="date" v-if="date != null"></Countdown>
-    <md-button v-if="registration_link != null" class="md-raised md-primary">
-      <a v-if="nid != '20220'" :href="registration_link" target="_blank" rel="nofollow">Register Now</a>
-      <span v-else>
-        <a v-if="$store.getters.getUid" :href="registration_link" >Register Now</a>
-        <a v-else @click="$store.commit('TOGGLE_LOGIN')" >Login</a>
-      </span>
-    </md-button>
+    <a v-if="nid != '20220'" :href="registration_link" target="_blank">
+      <md-button v-if="registration_link != null" class="md-raised md-primary">
+        <span>Register Now</span>
+        <span v-else>
+          <a v-if="$store.getters.getUid" :href="registration_link" >Register Now</a>
+          <a v-else @click="$store.commit('TOGGLE_LOGIN')" style="display: block" >Login</a>
+        </span>
+      </md-button>
+    </a>
+    <a v-else-if="nid == '20220' && $store.getters.getUid" :href="registration_link" target="_blank">
+      <md-button v-if="registration_link != null" class="md-raised md-primary">
+        <span>Register Now</span>
+      </md-button>
+    </a>
+    <a v-else-if="nid == '20220' && !$store.getters.getUid" @click="$store.commit('TOGGLE_LOGIN')">
+      <md-button v-if="registration_link != null" class="md-raised md-primary">
+        <span>Login</span>
+      </md-button>
+    </a>
+
     <div v-if="!$store.getters.getUid && nid == '20220'">You need to login first for registration.</div>
     <div v-if="(date != null) || (time != null) || (organizer != null) || (place != null)" class="event_bottom">
       <div v-if="date != null" class="feature">

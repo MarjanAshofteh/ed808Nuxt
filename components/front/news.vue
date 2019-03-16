@@ -106,5 +106,10 @@ export default {
     }
   }
 }
+.md-layout {
+  img {
+    display: none!important;
+  }
+}
 </style>
 
