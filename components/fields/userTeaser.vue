@@ -14,7 +14,7 @@
           </div>
           <md-content class="userdetails">
             <p>Written By:</p>
-            <nuxt-link :href="'/user/'+uid">
+            <nuxt-link :to="'/user/'+uid">
               {{ name }}
             </nuxt-link>
             <span v-if="$store.getters.getUid != uid">
