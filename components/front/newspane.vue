@@ -26,19 +26,19 @@
       navigationPrevLabel="navigate_before"
       :paginationEnabled="false">
 
-      <!--special BIM event-->
-      <slide
-        v-if="specialEvent.nid"
-      >
-        <newsteaser
-          id="special-event"
-          :newstitle="specialEvent.title"
-          :newscompany="specialEvent.company"
-          :newsdate="specialEvent.eventtime | erasetime"
-          :newsnid="specialEvent.nid"
-          @setNid="show_event(specialEvent.nid)"/>
-      </slide>
-      <!--end of special BIM event-->
+      <!--&lt;!&ndash;special BIM event&ndash;&gt;-->
+      <!--<slide-->
+        <!--v-if="specialEvent.nid"-->
+      <!--&gt;-->
+        <!--<newsteaser-->
+          <!--id="special-event"-->
+          <!--:newstitle="specialEvent.title"-->
+          <!--:newscompany="specialEvent.company"-->
+          <!--:newsdate="specialEvent.eventtime | erasetime"-->
+          <!--:newsnid="specialEvent.nid"-->
+          <!--@setNid="show_event(specialEvent.nid)"/>-->
+      <!--</slide>-->
+      <!--&lt;!&ndash;end of special BIM event&ndash;&gt;-->
 
 
 
@@ -67,9 +67,21 @@
 <script>
 import newsteaser from '@/components/front/newsteaser'
 import news from '@/components/front/news'
+import axios from '@/node_modules/axios'
 
 export default {
   name: 'newspane',
+  components: {
+    newsteaser,
+    news
+  },
+  filters: {
+    erasetime: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.split(' ')[0]
+    }
+  },
   data () {
     return {
       events:[],
@@ -79,18 +91,19 @@ export default {
     }
   },
   mounted() {
-    fetch('https://ed808.com:92/latin/contents/list/event')
-      .then(response => response.json())
+    axios.get('https://ed808.com:92/latin/contents/list/event')
       .then((data) => {
+        console.log(data)
         let events = []
         let spec = {}
-        data.forEach((el)=>{
+        data.data.forEach((el)=>{
           if(el.nid != '20220') {
             events.push(el)
           }else {
             spec = el
           }
         })
+          events = [spec, ...events]
           this.events = events
           this.specialEvent = spec
           this.loading = false
@@ -101,17 +114,7 @@ export default {
       this.eventNid = nid
     }
   },
-  components: {
-    newsteaser,
-    news
-  },
-  filters: {
-    erasetime: function (value) {
-        if (!value) return ''
-        value = value.toString()
-        return value.split(' ')[0]
-    }
-  }
+
 }
 </script>
 
