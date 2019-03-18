@@ -2,10 +2,10 @@
 <template>
   <div>
     <div  :class="'main-container node_type_' + types[0]">
-      <!--<scroll v-if="node_content.nid" />-->
+      <scroll v-if="node_content.nid" />
       <div class="top_header">
         <h1 v-if="node_content.hasOwnProperty('title')">
-          {{ node_content.title }}
+          {{ node_content.title }}s
         </h1>
         <div
           v-if="!types.includes('event')"
@@ -67,13 +67,14 @@
         <!-- Doesnt Work Correctly ! -->
         <!-- Anchor Side Elements -->
         <div style="position:relative;">
-          <affix
-            class="sidebar-menu affix-bottom"
-            relative-element-selector="#article"
-            :offset="{ top: 20, bottom: 20 }"
-            style=""
-          >
-            <div class="side-social">
+          <div>
+            <affix
+              class="sidebar-menu affix-bottom"
+              relative-element-selector="#article"
+              :offset="{ top: 20, bottom: 20 }"
+              style=""
+            >
+              <div class="side-social">
               <span class="clap">
               <md-button
                 class="md-icon-button clap"
@@ -101,7 +102,7 @@
                 Please login to clap.
               </md-tooltip>
             </span>
-              <span class="clap">
+                <span class="clap">
               <md-button
                 class="md-icon-button"
                 @click="bookmarkContent()"
@@ -133,82 +134,84 @@
             </span>
 
 
-              <a href="#comments">
-                <md-button class="md-icon-button">
-                  <i class="mdi mdi-comment-multiple-outline" />
+                <a href="#comments">
+                  <md-button class="md-icon-button">
+                    <i class="mdi mdi-comment-multiple-outline" />
+                    <md-tooltip md-direction="bottom">
+                      Jump to comments
+                    </md-tooltip>
+                  </md-button>
+                </a>
+                <md-button class="md-icon-button" @click="socialExpanded = !socialExpanded">
+                  <i class="mdi" :class="socialExpanded ? 'mdi-close' : 'mdi-share-variant'" />
                   <md-tooltip md-direction="bottom">
-                    Jump to comments
+                    Share on social media.
                   </md-tooltip>
+
                 </md-button>
-              </a>
-              <md-button class="md-icon-button" @click="socialExpanded = !socialExpanded">
-                <i class="mdi" :class="socialExpanded ? 'mdi-close' : 'mdi-share-variant'" />
-                <md-tooltip md-direction="bottom">
-                  Share on social media.
-                </md-tooltip>
 
-              </md-button>
+                <transition name="fade">
+                  <social-sharing
+                    v-if="socialExpanded"
+                    :url="'https://ed808.com/node/' + nid"
+                    :description="meta_desc"
+                    :title="node_content.title"
+                    inline-template>
+                    <div>
 
-              <transition name="fade">
-                <social-sharing
-                  v-if="socialExpanded"
-                  :url="'https://ed808.com/node/' + nid"
-                  :description="meta_desc"
-                  :title="node_content.title"
-                  inline-template>
-                  <div>
+                      <network network="linkedin">
+                        <md-button class="md-icon-button md-linkedin-icon">
+                          <i class="mdi mdi-linkedin" />
+                          <md-tooltip md-direction="bottom">
+                            Share on LinkedIn
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                      <network network="facebook">
+                        <md-button class="md-icon-button md-facebook-icon">
+                          <i class="mdi mdi-facebook" />
+                          <md-tooltip md-direction="bottom">
+                            Share on Facebook
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                      <network network="twitter">
+                        <md-button class="md-icon-button md-twitter-icon">
+                          <i class="mdi mdi-twitter" />
+                          <md-tooltip md-direction="bottom">
+                            Share on Twitter
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                      <network network="whatsapp">
+                        <md-button class="md-icon-button md-whatsapp-icon">
+                          <i class="mdi mdi-whatsapp" />
+                          <md-tooltip md-direction="bottom">
+                            Share on WhatsApp
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                    </div>
+                  </social-sharing>
+                </transition>
 
-                    <network network="linkedin">
-                      <md-button class="md-icon-button md-linkedin-icon">
-                        <i class="mdi mdi-linkedin" />
-                        <md-tooltip md-direction="bottom">
-                          Share on LinkedIn
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                    <network network="facebook">
-                      <md-button class="md-icon-button md-facebook-icon">
-                        <i class="mdi mdi-facebook" />
-                        <md-tooltip md-direction="bottom">
-                          Share on Facebook
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                    <network network="twitter">
-                      <md-button class="md-icon-button md-twitter-icon">
-                        <i class="mdi mdi-twitter" />
-                        <md-tooltip md-direction="bottom">
-                          Share on Twitter
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                    <network network="whatsapp">
-                      <md-button class="md-icon-button md-whatsapp-icon">
-                        <i class="mdi mdi-whatsapp" />
-                        <md-tooltip md-direction="bottom">
-                          Share on WhatsApp
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                  </div>
-                </social-sharing>
-              </transition>
+              </div>
 
-            </div>
+              <!--Content Headings Navigator-->
 
-            <!--Content Headings Navigator-->
-
-            <!--<scrollactive-->
-            <!--class="my-nav"-->
-            <!--@:itemchanged="onItemChanged"-->
-            <!--active-class="active"-->
-            <!--:offset="20">-->
+              <!--<scrollactive-->
+              <!--class="my-nav"-->
+              <!--@:itemchanged="onItemChanged"-->
+              <!--active-class="active"-->
+              <!--:offset="20">-->
 
 
-            <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
+              <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
 
-            <!--</scrollactive>-->
-          </affix>
+              <!--</scrollactive>-->
+            </affix>
+
+          </div>
 
           <article
             v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
@@ -217,7 +220,10 @@
           />
         </div>
 
-        <h2 class="section-title">
+        <h2
+          class="section-title"
+          v-if="types.includes('ebook') && node_content.files.length > 0"
+        >
           Attached Files:
         </h2>
         <div

@@ -26,7 +26,7 @@
     <!--
     ------ we just print body without main image of content
     -->
-    <div class="md-layout md-gutter">
+    <div class="md-layout md-gutter front-page-node-teaser">
       <div class="md-body-2 md-layout-item md-size-100 " v-html="news.body_value"></div>
     </div>
     
@@ -106,7 +106,7 @@ export default {
     }
   }
 }
-.md-layout {
+.md-layout.front-page-node-teaser {
   img {
     display: none!important;
   }
