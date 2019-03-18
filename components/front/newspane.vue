@@ -48,6 +48,7 @@
       >
 
         <newsteaser
+          :id="event.nid == '20220' ? 'special-event' : ''"
           :newstitle="event.title"
           :newscompany="event.company"
           :newsdate="event.eventtime | erasetime"

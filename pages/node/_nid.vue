@@ -2,7 +2,7 @@
 <template>
   <div>
     <div  :class="'main-container node_type_' + types[0]">
-      <scroll v-if="node_content.nid" />
+      <scroll v-if="node_content.nid"></scroll>
       <div class="top_header">
         <h1 v-if="node_content.hasOwnProperty('title')">
           {{ node_content.title }}s
@@ -217,7 +217,7 @@
             v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
             id="article"
             v-html="convertDomain(node_content.body_value)"
-          />
+          ></article>
         </div>
 
         <h2
@@ -490,7 +490,6 @@
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
-import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
@@ -536,18 +535,18 @@ export default {
     try {
       axios.withCredentials = true
       axios.crossDomain = true
-      const { data } = req && req.headers && req.headers.cookie ?
-        await axios.get(
+      let cookie =''
+      if (req && req.headers && req.headers.cookie) {
+        cookie = req.headers.cookie
+      }
+      const { data } = await axios.get(
         "https://ed808.com:92/latin/contents/" + params.nid,{},
           {
             headers:  {
-              'Cookie' :  req.headers.cookie,
+              'Cookie' :  cookie,
               'Cache-Control': 'no-cache'
             }
-          }) :
-        await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
-          withCredentials: true,
-        }).then()
+          })
 
       if (data) {
         let contentTypes = [];

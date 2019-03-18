@@ -3,19 +3,27 @@
   <div>
     <div class="users">
 
-      <div v-if="users.length == 0">
+      <div v-if="loading">
+        Please wait...
+      </div>
+      <div v-if="users.length == 0 && !loading">
         You are not following any user!
       </div>
-      <UserTeaser
-        v-for="user in users"
-        :key="user.uid"
-        teaserType="list-item"
-        :uid="user.uid"
-        :name="user.full_name"
-        :picture="user.picture"
-        :about_me="user.about"
-        :following="true"
-      />
+      <div
+        v-if="users.length != 0 && !loading"
+      >
+        <UserTeaser
+          v-for="user in users"
+          :key="user.uid"
+          teaserType="list-item"
+          :uid="user.uid"
+          :name="user.full_name"
+          :picture="user.picture"
+          :about_me="user.about"
+          :following="true"
+        />
+      </div>
+
     </div>
   </div>
 </template>
@@ -29,7 +37,8 @@
     layout: 'userpanel',
     data() {
       return {
-        users: []
+        users: [],
+        loading: true
       }
     },
     asyncData({params, app}){
@@ -49,6 +58,7 @@
         .then((data)=> {
           console.log(data.data)
           this.users = data.data.following
+          setTimeout(()=>{this.loading = false},500)
         })
     }
   }

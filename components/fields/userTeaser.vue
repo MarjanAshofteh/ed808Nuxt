@@ -82,7 +82,7 @@
     },
     methods: {
       follow(following, uid) {
-        if(this.$store.getters.getUid){
+        if(!this.$store.getters.getUid){
           this.$store.commit('TOGGLE_LOGIN')
         }else {
           axios.defaults.crossDomain = true;

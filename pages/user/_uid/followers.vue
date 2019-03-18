@@ -1,19 +1,26 @@
 <template>
   <div>
     <div class="users">
-      <div v-if="users.length == 0">
+      <div v-if="users.length == 0 && !loading">
         Nobody is following you!
       </div>
-      <UserTeaser
-        v-for="user in users"
-        :key="user.uid"
-        teaserType="list-item"
-        :uid="user.uid"
-        :name="user.full_name"
-        :picture="user.picture"
-        :about_me="user.about"
-        :following="user.user_follow"
-      />
+      <div v-if="loading">
+        Please wait...
+      </div>
+      <div
+        v-if="users.length != 0 && !loading"
+      >
+        <UserTeaser
+          v-for="user in users"
+          :key="user.uid"
+          teaserType="list-item"
+          :uid="user.uid"
+          :name="user.full_name"
+          :picture="user.picture"
+          :about_me="user.about"
+          :following="user.user_follow"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -27,7 +34,8 @@
     layout: 'userpanel',
     data() {
       return {
-        users: []
+        users: [],
+        loading: true
       }
     },
     mounted() {
@@ -35,6 +43,7 @@
         .then((data)=> {
           console.log(data.data)
           this.users = data.data.follower
+          setTimeout(()=>{this.loading = false},500)
         })
     }
   }

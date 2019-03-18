@@ -3,24 +3,24 @@
   <div>
 
     <div class="profile-brief">
-      <h3 class="title" v-if="brief.full_name">
-        {{ brief.full_name }}
+      <h3 class="title" v-if="user.full_name">
+        {{ user.full_name }}
       </h3>
-      <div v-if="!isSame && brief.full_name">
+      <div v-if="!sameUser && user.full_name">
         <button
-          v-if="!isSame"
+          v-if="!sameUser"
           class="md-follow"
-          :class="following ? 'active' : ''"
-          @click="follow(following, uid)"
+          :class="user.user_follow ? 'active' : ''"
+          @click="follow(user.user_follow, uid)"
         >
-          {{ following ? 'Following' : 'Follow' }}
+          {{ user.user_follow ? 'Following' : 'Follow' }}
         </button>
       </div>
-      <h6 v-if="brief.job">{{brief.job}}</h6>
+      <h6 v-if="user.job">{{user.job}}</h6>
       <div
-        v-if="brief.about"
+        v-if="user.about"
         class="description text-center"
-        v-html="brief.about"
+        v-html="user.about"
       >
 
       </div>
@@ -70,10 +70,10 @@
     layout:'userpanel',
     mixins: [cookie],
     scrollToTop: true,
-    props:['following','isSame'],
     data() {
       return {
         uid: this.$route.params.uid,
+        user: {},
         posts:[],
         brief:{},
         sameUser:false,
@@ -87,9 +87,37 @@
     components:{
       addPost
     },
+    async asyncData({params, req, query}){
+      let cookie = '';
+      if ( req && req.headers && req.headers.cookie) {
+        cookie = req.headers.cookie
+      }
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials  = true;
+      try {
+        let {data} = await axios.get('https://ed808.com:92/latin/user/'+ params.uid,
+          {
+            headers: {
+              'Content-type': 'application/json',
+              'Cookie' : cookie
+            }
+          })
+
+        return {
+          user: data
+        }
+      }
+      catch (e) {
+
+      }
+
+    },
     mounted(){
+      console.log(this.user)
+      this.$store.state.userBackground = this.user.hasOwnProperty('background_image') ? this.user.background_image : '/images/city-profile.jpg'
+      this.$store.state.userImage = this.user.hasOwnProperty('picture') ? this.user.picture : '/images/avatar.png'
       this.isSameUser()
-      console.log(this.following)
+      // console.log(this.following)
       /*
       * @todo: add getProfile here and showing it aside posts
       */
@@ -122,7 +150,7 @@
             )
             .then(() => {
               console.log("sent");
-              this.following = !this.following;
+              this.user.user_follow = !this.user_follow;
             })
             .catch(err => {
               console.log(err);
