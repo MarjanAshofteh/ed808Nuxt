@@ -104,9 +104,9 @@
                 </md-menu-item>
                 <md-menu-item>
                   <nuxt-link
-                    :to="'/user/'+ $store.state.user.uid + '/setting'"
+                    :to="'/user/'+ $store.state.user.uid + '/settings'"
                   >
-                    Setting
+                    Settings
                   </nuxt-link>
                 </md-menu-item>
                 <md-menu-item >
@@ -220,7 +220,7 @@ import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name: "MainNav",
-  mixins:[cookie],
+  mixins: [cookie],
   props:['transparent'],
   data() {
     return {
@@ -257,7 +257,7 @@ export default {
           this.IsLogin = false
           //This line show the log out snackbar
           this.IsLogOut = true
-          window.location.replace('/')
+          window.location.reload()
         })
         .catch(e => {
           console.log('errors for logout : ' + e)

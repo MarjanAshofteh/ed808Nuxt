@@ -1,9 +1,24 @@
 <template>
   <div class="event_header">
     <Countdown :deadline="date" v-if="date != null"></Countdown>
-    <md-button v-if="registration_link != null" class="md-raised md-primary">
-      <a :href="registration_link" target="_blank" rel="nofollow">Register Now</a>
-    </md-button> 
+    <div>
+      <a v-if="nid != '20220'" :href="registration_link" target="_blank">
+        <md-button v-if="registration_link != null" class="md-raised md-primary">
+          <span>Register Now</span>
+        </md-button>
+      </a>
+      <a v-else-if="nid == '20220' && $store.getters.getUid" :href="registration_link" target="_blank">
+        <md-button v-if="registration_link != null" class="md-raised md-primary">
+          <span>Register Now</span>
+        </md-button>
+      </a>
+      <a v-else-if="nid == '20220' && !$store.getters.getUid" @click="$store.commit('TOGGLE_LOGIN')">
+        <md-button v-if="registration_link != null" class="md-raised md-primary">
+          <span>Login</span>
+        </md-button>
+      </a>
+    </div>
+    <div v-if="!$store.getters.getUid && nid == '20220'">You need to login first for registration.</div>
     <div v-if="(date != null) || (time != null) || (organizer != null) || (place != null)" class="event_bottom">
       <div v-if="date != null" class="feature">
         <md-icon class="md-size-2x">date_range</md-icon>
@@ -37,7 +52,7 @@ import Countdown from 'vuejs-countdown'
 
 export default {
   name: 'eventData',
-  props: ['date','time','organizer','place','webinar_covered','registration_link'],
+  props: ['date','time','organizer','place','webinar_covered','registration_link','nid'],
   filters:{
     erasetime: function (value) {
       if (!value) return ''
@@ -75,14 +90,17 @@ export default {
   .event_bottom{
     position: absolute;
     bottom: -111px;
+    left: 0;
+    right: 0;
     background-color: #fff;
-    width: 100%;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), -2px 2px 4px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
     height: 110px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row-reverse;
+    border-bottom: 2px solid #EEEEEE;
+
     .feature {
       display: flex;
       flex-direction: column;

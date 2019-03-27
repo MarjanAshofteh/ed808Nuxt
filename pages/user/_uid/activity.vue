@@ -5,16 +5,22 @@
     <md-tabs>
       <md-tab id="tab-home" md-label="Bookmark" md-icon="turned_in">
         <div class="bookmarked_node md-layout" style="position: relative;margin: 0 -1%;">
+          <div v-if="bookmarked_node.hasOwnProperty('contents') && bookmarked_node.contents.length == 0">No post is bookmarked!</div>
           <NodeTeaser v-for="post in bookmarked_node.contents" :title="post.title" :pic="post.picture" :date="post.created" :nid="post.nid" />
         </div>
       </md-tab>
       <md-tab id="tab-pages" md-label="clap" md-icon="stars">
+        <div v-if="clap_node.hasOwnProperty('contents') && clap_node.contents.length == 0">You have clapped no post yet!</div>
         <div class="clap_node md-layout" style="position: relative;margin: 0 -1%;">
           <NodeTeaser v-for="post in clap_node.contents" :title="post.title" :pic="post.picture" :date="post.created" :nid="post.nid" />
         </div>
       </md-tab>
-      <md-tab id="tab-favorites" md-label="comment" md-icon="mode_comment"></md-tab>
-      <md-tab id="tab-posts" md-label="Favorite" md-icon="favorite"></md-tab>
+      <md-tab id="tab-favorites" md-label="comment" md-icon="mode_comment">
+        <div>You have not written any comment yet.</div>
+      </md-tab>
+      <md-tab id="tab-posts" md-label="Favorite" md-icon="favorite">
+        <div>No comment is in your favorite list.</div>
+      </md-tab>
     </md-tabs>
 
   </div>

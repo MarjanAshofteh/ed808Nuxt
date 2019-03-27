@@ -4,10 +4,9 @@
     <md-content class="top">
       <div class="background-image">
 
-        <div class="dim" v-if="updateFile.background_image"></div>
+        <!--<div class="dim" v-if="updateFile.background_image"></div>-->
 
-        <img v-if="user.hasOwnProperty('background_image') && !loading" v-bind:src="user.background_image" alt="background image">
-        <img v-else src="/images/city-profile.jpg" alt="background image">
+        <img v-if="!loading" :src="$store.state.userBackground" alt="background image">
 
         <div v-if="sameUser" class="edit-background-image">
           <input type="file" id="file" ref="file1" v-on:change="handleFileUpload('background_image')"/>
@@ -21,9 +20,8 @@
 
         <div class="dim" v-if="updateFile.picture"></div>
 
-        <img v-if="user.hasOwnProperty('picture') && !loading && (user.picture!=0)" v-bind:src="user.picture" v-bind:alt="'image of ' + user.name" v-bind:title="'image of ' + user.name" class="img-raised" >
-
-        <img v-else src="/images/avatar.png" v-bind:alt="'image of ' + user.name" style="min-width:132px;" class="img-raised">
+        <img v-if="!loading" :src="$store.state.userImage" :alt="'image of ' + user.name" v-bind:title="'image of ' + user.name" class="img-raised" >
+        <img v-if="loading" src="/images/avatar.png" :alt="'image of ' + user.name" v-bind:title="'image of ' + user.name" class="img-raised" >
 
         <div v-if="sameUser" class="edit-picture">
           <input type="file" id="file" ref="file2" v-on:change="handleFileUpload('picture')"/>
@@ -37,27 +35,27 @@
         <div class="user-tabs-right md-layout">
           <!-- user posts + Personal user info without edit -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid" exact>
+            <nuxt-link :to="'/user/'+ routUid" exact>
               <md-button>Profile</md-button>
             </nuxt-link>
           </md-menu>
-          <!-- follower user
+          <!-- follower user -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/follower'">
-              <md-button>Follower</md-button>
+            <nuxt-link :to="'/user/'+ routUid +'/followers'">
+              <md-button>Followers</md-button>
             </nuxt-link>
-          </md-menu>-->
+          </md-menu>
         </div>
         <div class="user-tabs-left md-layout">
-          <!-- following tag + following user
+          <!-- following tag + following user -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/following'">
+            <nuxt-link :to="'/user/'+ routUid +'/following'">
               <md-button>Following</md-button>
             </nuxt-link>
-          </md-menu>-->
+          </md-menu>
           <!-- liked comment + author comment + bookmarked node + clap node -->
           <md-menu>
-            <nuxt-link :to="'/user/'+ uid +'/activity'">
+            <nuxt-link :to="'/user/'+ routUid +'/activity'">
               <md-button>Activity</md-button>
             </nuxt-link>
           </md-menu>
@@ -120,9 +118,10 @@
       return{
         //for keeping last field data temporary, after editing it
         user_copy:{},
+        following: false,
         errors:'',
         roles:[],
-        uid:this.$route.params.uid,
+        uid: this.$route.params.uid,
         loading: true,
         updateField: false,
         user:{},
@@ -147,6 +146,10 @@
     },
     mounted(){
       this.isSameUser()
+      this.loading = false;
+      this.uid = this.$route.params.uid
+      console.log(this.$store.state.userImage)
+
     },
     methods:{
       isSameUser(){
@@ -155,7 +158,6 @@
             this.sameUser = true
           //console.log(this.sameUser)
         }
-        this.getProfile()
       },
       handleFileUpload(fieldName){
 
@@ -368,29 +370,12 @@
         return data
       },
       getProfile(){
-        axios.defaults.crossDomain = true;
-        axios.defaults.withCredentials  = true;
-        axios.get('https://ed808.com:92/latin/user/'+ this.uid,
-          {
-            headers: {
-              'Content-type': 'application/json'
-            }
-          })
-          .then((data) => {
-            this.user = data.data
-            this.user_copy = Object.assign({}, this.user)
-            /*for(var field in this.user){
-              this.user[field] = data.data[field]
-            }
-            /*for (var key in data.data.roles) {
-              this.roles.push(data.data.roles[key])
-            }*/
-            this.roles = Object.values(data.data.roles)
-            this.loading = false
-          })
-          .catch(e => {
-            this.errors = e.response.data
-          })
+
+      }
+    },
+    computed: {
+      routUid: function () {
+        return this.$route.params.uid
       }
     }
   }
@@ -521,11 +506,12 @@
     .user-image{
       position: absolute;
       top: 221px;
-      left: calc(50% - 86px);
+      left: calc(50% - 80px);
       z-index: 4;
       overflow: hidden;
       min-width: 160px;
       padding-bottom: 9px;
+      border-radius: 50%;
       @media screen and (max-width: 600px) {
         top: 90px;
         left: calc(50% - 66px);
@@ -583,11 +569,11 @@
       top: 272px;
       justify-content: center;
       .user-tabs-right{
-        max-width: 138px;
+        max-width: 250px;
         justify-content: space-evenly;
       }
       .user-tabs-left{
-        max-width: 146px;
+        max-width: 250px;
         margin-left: 194px;
         justify-content: end;
       }

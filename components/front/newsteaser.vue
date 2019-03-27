@@ -1,8 +1,10 @@
 <template>
     <md-card class="news-teaser" md-with-hover>   
         <md-card-header>
-          <div class="md-title"> {{newstitle}} </div>
-          <div class="md-subhead"> </div>
+          <nuxt-link :to="'/node/'+newsnid">
+            <div class="md-title"> {{newstitle}} </div>
+            <div class="md-subhead"> </div>
+          </nuxt-link>
         </md-card-header>
 
         <md-card-content>
@@ -12,12 +14,12 @@
         </md-card-content>
         <md-card-content class="company">
             <md-icon>supervised_user_circle</md-icon>
-            {{newscompany}}
+            <span>{{newscompany}}</span>
             <span class="tooltip">Organizer</span>
         </md-card-content>
 
         <md-card-actions>
-          <md-button class="md-raised" @click="set_news(newsnid)">more</md-button>
+            <md-button class="md-raised" :class="newsnid == '20220' ? 'md-primary' : ''" @click="set_news(newsnid)">more</md-button>
         </md-card-actions>
 
         <md-card-content class="date-fan">
@@ -75,11 +77,18 @@ export default {
 </script>
 
 <style lang="scss">
+
     .md-tooltip-left{
         margin-top:-74px;
         margin-right:-15px; 
     }
     .md-card.news-teaser{
+
+      .md-card-header {
+        a {
+          color: #333;
+        }
+      }
         //background-color:white;
         min-height: 240px;
         text-align: left;
@@ -137,6 +146,18 @@ export default {
                 color: #dadada;margin-left: 31px;
             }
         }
-    } 
+    }
+    #special-event {
+      .md-card-content {
+        &.company {
+          span:not(.tooltip) {
+            color: #673ab7;
+          }
+          .md-icon {
+            color: #673ab7;
+          }
+        }
+      }
+    }
 </style>
 

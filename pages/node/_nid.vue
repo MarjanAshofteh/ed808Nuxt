@@ -1,11 +1,11 @@
 
 <template>
   <div>
-    <div :class="'main-container node_type_' + types[0]">
-      <scroll />
+    <div  :class="'main-container node_type_' + types[0]">
+      <scroll v-if="node_content.nid"></scroll>
       <div class="top_header">
         <h1 v-if="node_content.hasOwnProperty('title')">
-          {{ node_content.title }}
+          {{ node_content.title }}s
         </h1>
         <div
           v-if="!types.includes('event')"
@@ -23,7 +23,8 @@
             {{ node_content.topic[0].name }}
           </nuxt-link>
         </div>
-        <eventData
+        <div>
+          <eventData
           v-if="types.includes('event')"
           :date="node_content.event_time"
           :time="node_content.time_and_duration"
@@ -31,7 +32,9 @@
           :place="node_content.event_place"
           :webinar_covered="node_content.ifwebinar"
           :registration_link="node_content.registration_link"
-        />
+          :nid="nid"
+          />
+        </div>
       </div>
 
 
@@ -40,19 +43,9 @@
         class="node-body"
       >
 
-        <!--<audioplayer-->
-          <!--:source="node_content.files[0]"-->
-        <!--&gt;-->
-
-        <!--</audioplayer>-->
 
         <div
           v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
-          <!--<wavesurfer-->
-            <!--layout="modal"-->
-            <!--:src="node_content.files[0]"-->
-            <!--&gt;-->
-          <!--</wavesurfer>-->
 
           <audioplayer
           :source="node_content.files[0]"
@@ -74,13 +67,14 @@
         <!-- Doesnt Work Correctly ! -->
         <!-- Anchor Side Elements -->
         <div style="position:relative;">
-          <affix
-            class="sidebar-menu affix-bottom"
-            relative-element-selector="#article"
-            :offset="{ top: 20, bottom: 20 }"
-            style=""
-          >
-            <div class="side-social">
+          <div>
+            <affix
+              class="sidebar-menu affix-bottom"
+              relative-element-selector="#article"
+              :offset="{ top: 20, bottom: 20 }"
+              style=""
+            >
+              <div class="side-social">
               <span class="clap">
               <md-button
                 class="md-icon-button clap"
@@ -108,7 +102,7 @@
                 Please login to clap.
               </md-tooltip>
             </span>
-              <span class="clap">
+                <span class="clap">
               <md-button
                 class="md-icon-button"
                 @click="bookmarkContent()"
@@ -116,6 +110,7 @@
                 <i
                   class="mdi"
                   :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                  :style="'color:' + node_content.user_bookmark ? 'yellow' : ''"
                 />
                 <md-tooltip
                   v-if="!node_content.user_bookmark && $store.getters.getUid"
@@ -139,91 +134,96 @@
             </span>
 
 
-              <a href="#comments">
-                <md-button class="md-icon-button">
-                  <i class="mdi mdi-comment-multiple-outline" />
+                <a href="#comments">
+                  <md-button class="md-icon-button">
+                    <i class="mdi mdi-comment-multiple-outline" />
+                    <md-tooltip md-direction="bottom">
+                      Jump to comments
+                    </md-tooltip>
+                  </md-button>
+                </a>
+                <md-button class="md-icon-button" @click="socialExpanded = !socialExpanded">
+                  <i class="mdi" :class="socialExpanded ? 'mdi-close' : 'mdi-share-variant'" />
                   <md-tooltip md-direction="bottom">
-                    Jump to comments
+                    Share on social media.
                   </md-tooltip>
+
                 </md-button>
-              </a>
-              <md-button class="md-icon-button" @click="socialExpanded = !socialExpanded">
-                <i class="mdi" :class="socialExpanded ? 'mdi-close' : 'mdi-share-variant'" />
-                <md-tooltip md-direction="bottom">
-                  Share on social media.
-                </md-tooltip>
 
-              </md-button>
+                <transition name="fade">
+                  <social-sharing
+                    v-if="socialExpanded"
+                    :url="'https://ed808.com/node/' + nid"
+                    :description="meta_desc"
+                    :title="node_content.title"
+                    inline-template>
+                    <div>
 
-              <transition name="fade">
-                <social-sharing
-                  v-if="socialExpanded"
-                  :url="'https://ed808.com/node/' + nid"
-                  :description="meta_desc"
-                  :title="node_content.title"
-                  inline-template>
-                  <div>
+                      <network network="linkedin">
+                        <md-button class="md-icon-button md-linkedin-icon">
+                          <i class="mdi mdi-linkedin" />
+                          <md-tooltip md-direction="bottom">
+                            Share on LinkedIn
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                      <network network="facebook">
+                        <md-button class="md-icon-button md-facebook-icon">
+                          <i class="mdi mdi-facebook" />
+                          <md-tooltip md-direction="bottom">
+                            Share on Facebook
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                      <network network="twitter">
+                        <md-button class="md-icon-button md-twitter-icon">
+                          <i class="mdi mdi-twitter" />
+                          <md-tooltip md-direction="bottom">
+                            Share on Twitter
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                      <network network="whatsapp">
+                        <md-button class="md-icon-button md-whatsapp-icon">
+                          <i class="mdi mdi-whatsapp" />
+                          <md-tooltip md-direction="bottom">
+                            Share on WhatsApp
+                          </md-tooltip>
+                        </md-button>
+                      </network>
+                    </div>
+                  </social-sharing>
+                </transition>
 
-                    <network network="linkedin">
-                      <md-button class="md-icon-button md-linkedin-icon">
-                        <i class="mdi mdi-linkedin" />
-                        <md-tooltip md-direction="bottom">
-                          Share on LinkedIn
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                    <network network="facebook">
-                      <md-button class="md-icon-button md-facebook-icon">
-                        <i class="mdi mdi-facebook" />
-                        <md-tooltip md-direction="bottom">
-                          Share on Facebook
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                    <network network="twitter">
-                      <md-button class="md-icon-button md-twitter-icon">
-                        <i class="mdi mdi-twitter" />
-                        <md-tooltip md-direction="bottom">
-                          Share on Twitter
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                    <network network="whatsapp">
-                      <md-button class="md-icon-button md-whatsapp-icon">
-                        <i class="mdi mdi-whatsapp" />
-                        <md-tooltip md-direction="bottom">
-                          Share on WhatsApp
-                        </md-tooltip>
-                      </md-button>
-                    </network>
-                  </div>
-                </social-sharing>
-              </transition>
+              </div>
 
-            </div>
+              <!--Content Headings Navigator-->
 
-            <!--Content Headings Navigator-->
-
-            <!--<scrollactive-->
-            <!--class="my-nav"-->
-            <!--@:itemchanged="onItemChanged"-->
-            <!--active-class="active"-->
-            <!--:offset="20">-->
+              <!--<scrollactive-->
+              <!--class="my-nav"-->
+              <!--@:itemchanged="onItemChanged"-->
+              <!--active-class="active"-->
+              <!--:offset="20">-->
 
 
-            <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
+              <!--<a :key="head.id" v-for="head in articleHeadings" :href="'#'+ head.id" class="scrollactive-item" v-html="head.text"></a>-->
 
-            <!--</scrollactive>-->
-          </affix>
+              <!--</scrollactive>-->
+            </affix>
+
+          </div>
 
           <article
             v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)"
             id="article"
             v-html="convertDomain(node_content.body_value)"
-          />
+          ></article>
         </div>
 
-        <h2 class="section-title">
+        <h2
+          class="section-title"
+          v-if="types.includes('ebook') && node_content.files.length > 0"
+        >
           Attached Files:
         </h2>
         <div
@@ -424,12 +424,13 @@
       </md-content>
 
 
-
-      <author
+      <UserTeaser
+        teaserType="author"
         :uid="author.uid"
         :name="author.full_name"
         :picture="author.picture"
         :about_me="author.about_me"
+        :following="author.user_follow"
       />
 
       <h2
@@ -486,23 +487,22 @@
 </template>
 
 <script>
-// import ScrollActive from '@/node_modules/vue-scrollactive'
 import axios from "@/node_modules/axios";
 import eventData from "@/components/fields/eventData";
 import scroll from "@/components/elements/scrollbar";
-import author from "@/components/fields/author";
 import tag from "@/components/fields/tag";
 import comment from "@/components/fields/comment";
 import teaser from "@/components/allContents/NodeTeaser";
 import audioplayer from "@/components/fields/audioplayer"
 import { cookie } from "@/components/mixins/cookie.js";
+import UserTeaser from "@/components/fields/userTeaser";
 
 export default {
   name: "Node",
   components: {
+    UserTeaser,
     teaser,
     eventData,
-    author,
     tag,
     comment,
     scroll,
@@ -529,24 +529,24 @@ export default {
   },
   validate ({ params }) {
     // Must be a number
-    return /^\d+$/.test(params.id)
+    return /^\d+$/.test(params.nid)
   },
   async asyncData({ params, query, req }) {
     try {
       axios.withCredentials = true
       axios.crossDomain = true
-      const { data } = req && req.headers && req.headers.cookie ?
-        await axios.get(
+      let cookie =''
+      if (req && req.headers && req.headers.cookie) {
+        cookie = req.headers.cookie
+      }
+      const { data } = await axios.get(
         "https://ed808.com:92/latin/contents/" + params.nid,{},
           {
             headers:  {
-              'Cookie' :  req.headers.cookie,
+              'Cookie' :  cookie,
               'Cache-Control': 'no-cache'
             }
-          }) :
-        await axios.get("https://ed808.com:92/latin/contents/" + params.nid ,{
-          withCredentials: true,
-        })
+          })
 
       if (data) {
         let contentTypes = [];
@@ -578,6 +578,8 @@ export default {
     }
     catch (e) {
       console.log(e);
+      // res.statusCode = e.response.status
+      // this.error({ statusCode: 404, message: 'Text' })
     }
   },
   mounted() {
@@ -880,7 +882,7 @@ body {
   }
   .node-body {
     > img {
-      margin: 25px 0px 0px 0px;
+      margin: 0px 0px 0px 0px;
       max-width: 100%;
       box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
         0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
@@ -1266,6 +1268,28 @@ blockquote {
   100% {
     -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #EEEEEE;
+  border-radius: 5px;
+}
+
+th, td {
+  text-align: center;
+  padding: 8px;
+}
+
+table {
+  tr:nth-child(even) {
+    background-color: #F5F5F5;
+  }
+  tr:first-child {
+    font-weight: 500;
   }
 }
 

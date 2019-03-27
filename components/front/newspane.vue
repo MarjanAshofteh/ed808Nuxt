@@ -1,66 +1,112 @@
 <template>
-    <div class="eventspane">
-      <section id="events">
-      <div class="md-headline">
-        <h5>Upcoming Civil Engineering Events</h5>
-        <div class="more-link">
-          <!--<router-link tag="md-button" to="/contents?type=4058">See All</router-link>-->
-          <!-- this link is temporary. it will change after events page create -->
-          <router-link tag="md-button" to="/contents">See All</router-link>
-        </div>
-      </div>
-
-      <div class="events-pane loading" v-if="loading">
-        <md-progress-spinner 
-          :md-diameter="100" 
-          :md-stroke="5" 
-          md-mode="indeterminate">
-        </md-progress-spinner>
-      </div>
-
-      <carousel
-        :per-page="4"
-        :navigationEnabled="true" 
-        navigationNextLabel="navigate_next"
-        navigationPrevLabel="navigate_before"
-        :paginationEnabled="false">
-        <slide v-for="event in events" 
-            :key="event.nid">
-          <newsteaser 
-            :newstitle="event.title" 
-            :newscompany="event.company" 
-            :newsdate="event.eventtime | erasetime" 
-            :newsnid="event.nid"
-            @setNid="show_event(event.nid)"/>
-        </slide>
-        </carousel>
-      </section>
-      <div v-if="eventNid != 0">
-        <news 
-          :nid="eventNid"
-          @clearNid="eventNid = 0"/>
+  <div class="eventspane">
+    <section id="events">
+    <div class="md-headline">
+      <h5>Upcoming Civil Engineering Events</h5>
+      <div class="more-link">
+        <!--<router-link tag="md-button" to="/contents?type=4058">See All</router-link>-->
+        <!-- this link is temporary. it will change after events page create -->
+        <router-link tag="md-button" to="/contents">See All</router-link>
       </div>
     </div>
+
+    <div class="events-pane loading" v-if="loading">
+      <md-progress-spinner
+        :md-diameter="100"
+        :md-stroke="5"
+        md-mode="indeterminate">
+      </md-progress-spinner>
+    </div>
+
+
+    <carousel
+      :per-page="4"
+      :navigationEnabled="true"
+      navigationNextLabel="navigate_next"
+      navigationPrevLabel="navigate_before"
+      :paginationEnabled="false">
+
+      <!--&lt;!&ndash;special BIM event&ndash;&gt;-->
+      <!--<slide-->
+        <!--v-if="specialEvent.nid"-->
+      <!--&gt;-->
+        <!--<newsteaser-->
+          <!--id="special-event"-->
+          <!--:newstitle="specialEvent.title"-->
+          <!--:newscompany="specialEvent.company"-->
+          <!--:newsdate="specialEvent.eventtime | erasetime"-->
+          <!--:newsnid="specialEvent.nid"-->
+          <!--@setNid="show_event(specialEvent.nid)"/>-->
+      <!--</slide>-->
+      <!--&lt;!&ndash;end of special BIM event&ndash;&gt;-->
+
+
+
+      <slide
+        v-for="event in events"
+        :key="event.nid"
+      >
+
+        <newsteaser
+          :id="event.nid == '20220' ? 'special-event' : ''"
+          :newstitle="event.title"
+          :newscompany="event.company"
+          :newsdate="event.eventtime | erasetime"
+          :newsnid="event.nid"
+          @setNid="show_event(event.nid)"/>
+      </slide>
+      </carousel>
+    </section>
+    <div v-if="eventNid != 0">
+      <news
+        :nid="eventNid"
+        @clearNid="eventNid = 0"/>
+    </div>
+  </div>
 </template>
 
 <script>
 import newsteaser from '@/components/front/newsteaser'
 import news from '@/components/front/news'
+import axios from '@/node_modules/axios'
 
 export default {
   name: 'newspane',
+  components: {
+    newsteaser,
+    news
+  },
+  filters: {
+    erasetime: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.split(' ')[0]
+    }
+  },
   data () {
     return {
       events:[],
+      specialEvent: {},
       loading: true,
       eventNid: 0,
     }
   },
   mounted() {
-    fetch('https://ed808.com:92/latin/contents/list/event')
-      .then(response => response.json())
+    axios.get('https://ed808.com:92/latin/contents/list/event')
       .then((data) => {
-          this.events = data
+        console.log(data)
+        let events = []
+        let spec = {}
+        data.data.forEach((el)=>{
+          if(el.nid != '20220') {
+            events.push(el)
+          }else {
+            spec = el
+          }
+        })
+          events = [spec, ...events]
+          this.events = events
+          this.specialEvent = spec
           this.loading = false
     })
   },
@@ -69,17 +115,7 @@ export default {
       this.eventNid = nid
     }
   },
-  components: {
-    newsteaser,
-    news
-  },
-  filters: {
-    erasetime: function (value) {
-        if (!value) return ''
-        value = value.toString()
-        return value.split(' ')[0]
-    }
-  }
+
 }
 </script>
 
@@ -177,6 +213,7 @@ section#events{
     border-radius: 30px;
   }
 }
+
 </style>
 
 

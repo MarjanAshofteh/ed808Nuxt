@@ -49,8 +49,9 @@
               <div class="social-line">
                 <a href="#pablo" class="btn btn-just-icon btn-simple">
                   <md-button class="md-icon-button">
-                    <i class="mdi mdi-linkedin"></i>
+                    <i class="mdi mdi-linkedin-box"></i>
                   </md-button>
+                  <md-tooltip>Linkedin</md-tooltip>
                 </a>
                 <md-progress-bar
                   v-if="sending"

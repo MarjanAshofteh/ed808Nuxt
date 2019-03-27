@@ -30,19 +30,20 @@
     <section id="subscribe">
       <div class="inner">
         <h2>Subscribe Your Email</h2>
-        <div class="input-wrapper">
+        <div class="input-wrapper" >
           <input
+            :disabled="submiting"
             v-model="inputBox"
             placeholder="Submit Your Email..."
             autocomplete="off"
             @keyup.enter="addEmail"
           >
-          <button @click="addEmail" />
+          <button :disabled="submiting" @click="addEmail" />
           <div
             v-if="aftersubmit"
-            style="margin-top: 20px;"
+            style="margin-top: 20px;color: #43A047"
           >
-            Thank You :)
+            Thanks for your subscription!
           </div>
         </div>
         <p> Join our mailing list to receive the latest updates and personalized content right in your inbox </p>
@@ -212,7 +213,8 @@
         inputBox:'',
         aftersubmit:false,
         toggleCard: false,
-        loginActive: false
+        loginActive: false,
+        submiting: false
       }
     },
     created(){
@@ -272,6 +274,7 @@
           });
       },
       addEmail() {
+        this.submiting = true
         axios.post('https://ed808.com:92/latin/web_form',
           {
             "nid" : 20162,
@@ -287,8 +290,10 @@
           .then((data) => {
             this.aftersubmit = true
             this.inputBox = ''
+            this.submiting = false
           })
           .catch(e => {
+            this.submiting = false
           });
       },
       get_gravatar(email, size){

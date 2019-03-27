@@ -3,14 +3,32 @@
   <div>
 
     <div class="profile-brief">
-      <h3 class="title" v-if="brief.full_name">{{brief.full_name}}</h3>
-      <h6 v-if="brief.job">{{brief.job}}</h6>
-      <div v-if="brief.about" class="description text-center" v-html="brief.about"></div>
+      <h3 class="title" v-if="user.full_name">
+        {{ user.full_name }}
+      </h3>
+      <div v-if="!sameUser && user.full_name">
+        <button
+          v-if="!sameUser"
+          class="md-follow"
+          :class="user.user_follow ? 'active' : ''"
+          @click="follow(user.user_follow, uid)"
+        >
+          {{ user.user_follow ? 'Following' : 'Follow' }}
+        </button>
+      </div>
+      <h6 v-if="user.job">{{user.job}}</h6>
+      <div
+        v-if="user.about"
+        class="description text-center"
+        v-html="user.about"
+      >
+
+      </div>
     </div>
     <div style="margin-top: 59px;">
       <md-icon class="md-size-2x">layers</md-icon>
-      <h1 style="margin-top: 12px;">Posts</h1>
-      <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
+      <h1 v-if="spinner_loading" style="margin-top: 12px;">Posts</h1>
+      <!--<addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>-->
       <div class="posts">
         <div class="spinner-loading" v-if="spinner_loading">
           <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
@@ -45,14 +63,17 @@
 <script>
   import axios from "@/node_modules/axios"
   import addPost from "@/components/user/addPost"
+  import { cookie } from "@/components/mixins/cookie.js";
 
   export default {
     name: "posts",
     layout:'userpanel',
+    mixins: [cookie],
     scrollToTop: true,
     data() {
       return {
         uid: this.$route.params.uid,
+        user: {},
         posts:[],
         brief:{},
         sameUser:false,
@@ -66,8 +87,37 @@
     components:{
       addPost
     },
+    async asyncData({params, req, query}){
+      let cookie = '';
+      if ( req && req.headers && req.headers.cookie) {
+        cookie = req.headers.cookie
+      }
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials  = true;
+      try {
+        let {data} = await axios.get('https://ed808.com:92/latin/user/'+ params.uid,
+          {
+            headers: {
+              'Content-type': 'application/json',
+              'Cookie' : cookie
+            }
+          })
+
+        return {
+          user: data
+        }
+      }
+      catch (e) {
+
+      }
+
+    },
     mounted(){
+      console.log(this.user)
+      this.$store.state.userBackground = this.user.hasOwnProperty('background_image') ? this.user.background_image : '/images/city-profile.jpg'
+      this.$store.state.userImage = this.user.hasOwnProperty('picture') ? this.user.picture : '/images/avatar.png'
       this.isSameUser()
+      // console.log(this.following)
       /*
       * @todo: add getProfile here and showing it aside posts
       */
@@ -77,6 +127,35 @@
       body_minimizer(str){
         if(str) return str.replace(/<(?:.|\n)*?>/gm, '').slice(0,300).concat('<a :href="\'/node/\'+ post.nid" style="cursor: pointer;">... Read More</a>')
         else return ''
+      },
+      follow(following, uid) {
+        if(this.$store.getters.getUid){
+          this.$store.commit('TOGGLE_LOGIN')
+        }else {
+          axios.defaults.crossDomain = true;
+          axios.defaults.withCredentials = true;
+          axios
+            .post(
+              "https://ed808.com:92/latin/user/" + uid + "/follow",
+              {
+                action: following ? "unfollow" : "follow"
+              },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-CSRF-Token": this.getCookie("token"),
+                  'Cache-Control': 'no-cache',
+                }
+              }
+            )
+            .then(() => {
+              console.log("sent");
+              this.user.user_follow = !this.user_follow;
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       },
       getPosts(){
         axios.defaults.crossDomain = true
@@ -108,7 +187,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .profile-brief{
     margin-top: -67px ;
   }
@@ -824,4 +903,28 @@
     -ms-flex-pack: center;
     justify-content: center
   }
+
+  button {
+    transition: 0.5s;
+    &.md-follow {
+      background-color: transparent;
+      color: #2196F3;
+      border: 1px solid #2196F3;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 0;
+      min-width: 120px;
+      position: relative;
+      top: -3px;
+      &.active {
+        background-color: #2196F3;
+        color: white;
+      }
+    }
+    &:hover {
+      opacity: 0.7;
+      cursor: pointer;
+    }
+  }
+
 </style>

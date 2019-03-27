@@ -15,10 +15,8 @@ export default {
 
     function myFunction(y) {
       let winScroll = y - document.getElementsByClassName('node-body')[0].offsetTop + 50
-      console.log(winScroll)
       let height =
         document.getElementById('node_body').scrollHeight
-      console.log(height)
         // document.documentElement.clientHeight;
       let scrolled = (winScroll / height) * 100;
       if(winScroll < 0) {

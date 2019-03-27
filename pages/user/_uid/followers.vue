@@ -1,13 +1,11 @@
 <template>
-  <!-- following tag + following user -->
   <div>
     <div class="users">
-
+      <div v-if="users.length == 0 && !loading">
+        Nobody is following you!
+      </div>
       <div v-if="loading">
         Please wait...
-      </div>
-      <div v-if="users.length == 0 && !loading">
-        You are not following any user!
       </div>
       <div
         v-if="users.length != 0 && !loading"
@@ -20,10 +18,9 @@
           :name="user.full_name"
           :picture="user.picture"
           :about_me="user.about"
-          :following="true"
+          :following="user.user_follow"
         />
       </div>
-
     </div>
   </div>
 </template>
@@ -32,7 +29,7 @@
   import axios from '@/node_modules/axios'
   import UserTeaser from "@/components/fields/userTeaser";
   export default {
-    name: "Following",
+    name: "Followers",
     components: {UserTeaser},
     layout: 'userpanel',
     data() {
@@ -41,30 +38,18 @@
         loading: true
       }
     },
-    asyncData({params, app}){
-
-    },
     mounted() {
-      console.log(this.$route.params.uid)
-      axios.get(`https://ed808.com:92/latin/user/${this.$route.params.uid}/following?parameter[sort]=time&parameter[sort_dir]=ASC&parameter[page]=0&parameter[limits]=10`,
-        {},
-        {
-          headers: {
-            'Cache-Control': 'no-cache',
-            'cache-control': 'no-cache',
-
-          }
-        })
+      axios.get(`https://ed808.com:92/latin/user/${this.$route.params.uid}/follower?parameter[sort]=time&parameter[sort_dir]=ASC&parameter[page]=0&parameter[limits]=10`)
         .then((data)=> {
           console.log(data.data)
-          this.users = data.data.following
+          this.users = data.data.follower
           setTimeout(()=>{this.loading = false},500)
         })
     }
   }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
   .users {
     margin: auto;
     width: 60%;

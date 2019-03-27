@@ -94,7 +94,7 @@ export default {
           return value.split('-')[2]
       },
       converturl: function(value){
-          if (!value || value == "") return '/nophoto.png'
+          if (!value || value == "") return '/images/default.jpg'
           return value
       },
       priceFormat: function(value){
