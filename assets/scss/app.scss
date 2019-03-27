@@ -334,3 +334,13 @@ header#header{
 a:not(.md-button):hover {
   text-decoration: none;
 }
+
+.comment-action {
+  .md-badge-content.md-primary {
+    .md-badge.md-theme-default {
+      color: #d32f2f;
+      background-color: #fff;
+      font-weight: 700;
+    }
+  }
+}

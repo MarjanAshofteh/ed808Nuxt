@@ -16,7 +16,7 @@
       <!--Comment form-->
       <div class="comment-card comment-form">
         <form>
-          <md-card-header v-if="$store.getters.getUid">
+          <md-card-header>
             <md-avatar>
               <img
                 v-if="$store.state.user.picture"
@@ -29,7 +29,12 @@
                 alt="Avatar"
               >
             </md-avatar>
-            <div class="md-commentor" v-text="$store.state.user.full_name"></div>
+            <div class="md-commentor" v-if="$store.state.user.full_name">
+              {{$store.state.user.full_name}}
+            </div>
+            <div class="md-commentor" v-else>
+              Guest User
+            </div>
             <div class="md-right">
               <md-button
                 :disabled="commentText == '' || onSubmit"
@@ -40,21 +45,21 @@
               </md-button>
             </div>
           </md-card-header>
-          <md-card-header v-else>
-            <div>You need to
-              <a @click="$store.commit('TOGGLE_LOGIN')">Login</a>
-              or
-              <nuxt-link to="/register">Register</nuxt-link>
-              for submiting your comment.</div>
-          </md-card-header>
-          <md-card-content v-if="$store.getters.getUid">
+          <!--<md-card-header v-else>-->
+            <!--<div>You need to-->
+              <!--<a @click="$store.commit('TOGGLE_LOGIN')">Login</a>-->
+              <!--or-->
+              <!--<nuxt-link to="/register">Register</nuxt-link>-->
+              <!--for submiting your comment.</div>-->
+          <!--</md-card-header>-->
+          <md-card-content>
             <md-field>
               <label>Write your comment</label>
               <md-textarea
                 v-model="commentText"
                 :class="{'active': textareaActive}"
                 :disabled="onSubmit"
-                @focus="textareaActive = true"
+                @focus="growField()"
                 md-autogrow
               />
               <md-snackbar
@@ -209,7 +214,7 @@
 
 
                       <!--like Btn-->
-                      <md-badge :md-content="c.likes" md-dense >
+                      <md-badge class="md-primary"  :md-content="c.likes" md-dense >
                         <md-button v-if="!c.user_like"
                           :disabled="c.uid == $store.getters.getUid "
                           class="md-icon-button md-danger md-dense md-like"
@@ -369,7 +374,7 @@
 
 
                       <!--like Btn-->
-                      <md-badge
+                      <md-badge class="md-primary"
                         :md-content="r.likes"
                         md-dense
                       >
@@ -472,6 +477,13 @@ export default {
     this.getComments();
   },
   methods: {
+    growField(){
+      if(!this.$store.getters.getUid){
+        this.$store.commit('TOGGLE_LOGIN')
+      }else {
+        this.textareaActive = true
+      }
+    },
     // cid = comment id
     // dislike = if wants to dislike = true  else = false
     // index = index of comment
@@ -674,6 +686,9 @@ export default {
     border-radius: 3px;
     border: 1px solid #d9d9d9;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.09);
+    .md-layout {
+      width: 100%;
+    }
     @media screen and (max-width: 720px) {
       .md-layout-item.md-size-20 {
         min-width: 100%;
@@ -869,4 +884,5 @@ export default {
   right: 15px;
   z-index: 10;
 }
+
 </style>

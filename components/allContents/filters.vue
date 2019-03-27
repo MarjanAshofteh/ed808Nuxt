@@ -21,13 +21,15 @@
           </md-checkbox>
         </md-list>
       </div>
-      <div class="md-card" v-if="!filtersLoading" style="margin-bottom: 15px;">
+      <div v-if="!filtersLoading" style="margin-bottom: 15px;">
         <md-toolbar style="min-height: 50px;" :md-elevation="0">
           <span class="md-subheading">Tags</span>
         </md-toolbar>
-        <div class="md-scrollbar md-tags" style="max-height: 250px;overflow: overlay; overflow-x: hidden;">
+        <div class="md-tags">
             <span v-for="(tag,index) in tags" :key="index" >
-              <nuxt-link :to="`/tag/${tag.tid}/${tag.name}`">{{ tag.name }}</nuxt-link>
+              <nuxt-link :to="`/tag/${tag.tid}/${tag.name}`">
+                <md-button class="md-raised">{{ tag.name }}</md-button>
+              </nuxt-link>
             </span>
         </div>
       </div>
@@ -106,23 +108,36 @@ label.md-checkbox-label {
 	  flex: 0 1 25%;
   }
 }
-.md-tags span{
-  display: inline-block;
-  margin: 5px;
-  a{
+.md-tags {
+  text-align: left;
+  span{
     display: inline-block;
-    line-height: 24px;
-    padding: 5px;
-    background-color: #EEEEEE;
-    transition-duration: .5s;
-    border-radius: 3px;
-    color: #212121 !important;
-    &:hover {
-      background-color: #E0E0E0;
-
+    .md-button {
+      min-width: 60px;
     }
+    .md-ripple {
+      background-color: #EEEEEE;
+
+      .md-button-content {
+        font-size: 12px
+      }
+    }
+    /*a{*/
+      /*display: inline-block;*/
+      /*line-height: 24px;*/
+      /*padding: 5px;*/
+      /*background-color: #EEEEEE;*/
+      /*transition-duration: .5s;*/
+      /*border-radius: 3px;*/
+      /*color: #212121 !important;*/
+      /*&:hover {*/
+        /*background-color: #E0E0E0;*/
+
+      /*}*/
+    /*}*/
   }
 }
+
 </style>
 
 

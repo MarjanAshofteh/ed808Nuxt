@@ -28,7 +28,7 @@
     <div style="margin-top: 59px;">
       <md-icon class="md-size-2x">layers</md-icon>
       <h1 v-if="spinner_loading" style="margin-top: 12px;">Posts</h1>
-      <!--<addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>-->
+      <addPost @updateposts="getPosts" v-if="sameUser" viewMode="minimal"></addPost>
       <div class="posts">
         <div class="spinner-loading" v-if="spinner_loading">
           <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
@@ -129,7 +129,9 @@
         else return ''
       },
       follow(following, uid) {
-        if(this.$store.getters.getUid){
+        if(!this.$store.getters.getUid){
+          console.log('not logged in')
+          console.log(this.$store)
           this.$store.commit('TOGGLE_LOGIN')
         }else {
           axios.defaults.crossDomain = true;

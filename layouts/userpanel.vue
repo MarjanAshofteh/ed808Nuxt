@@ -1,5 +1,20 @@
 <template>
   <div>
+    <!--login with overlay-->
+    <div
+      v-if="$store.state.loginActive"
+      class="login-card-with-overlay"
+      :class="{ 'active' : $store.state.loginActive }"
+      @click="hideLoginCard($event)"
+    >
+      <div
+        class="login-card"
+        :class="{ 'active' : $store.state.loginActive }"
+      >
+        <Login :pageComponent="false" />
+      </div>
+    </div>
+
     <MainNav :transparent="true" class="fixed"/>
     <md-content class="top">
       <div class="background-image">
@@ -108,10 +123,11 @@
   import axios from "@/node_modules/axios"
   import { cookie } from '../components/mixins/cookie.js'
   import MainNav from "../components/elements/main-nav";
+  import Login from "../components/fields/login";
 
   export default {
     name:'userpanel',
-    components: {MainNav},
+    components: {MainNav ,Login},
     scrollToTop: true,
     mixins: [cookie],
     data(){
