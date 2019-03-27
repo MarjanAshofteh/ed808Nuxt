@@ -997,8 +997,9 @@ body {
 }
 .vue-affix {
   /*padding-top: 20px;*/
-  position: absolute;
+  position: absolute !important;
   width: calc(((100% - 800px) / 2) - 15px);
+  left: 0;
   @media screen and (max-width: 992px) {
     width: 10%;
   }
@@ -1014,9 +1015,9 @@ body {
     background: #92278f;
     background: var(--md-theme-default-primary-on-background, #92278f);
   }
-}
-.vue-affix.affix {
-  position: fixed;
+  &.affix {
+    position: fixed !important;
+  }
 }
 .affix-bottom {
   position:absolute;
