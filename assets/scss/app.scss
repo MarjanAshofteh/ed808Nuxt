@@ -344,3 +344,21 @@ a:not(.md-button):hover {
     }
   }
 }
+.clap {
+  .md-badge-content {
+    .md-badge.md-theme-default {
+      color: #fff;
+      background-color: #43A047;
+      font-weight: 700;
+    }
+  }
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0!important;
+  border: 0!important;
+  outline: none!important;
+}
+input {
+  outline: none!important;
+}

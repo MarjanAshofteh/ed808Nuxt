@@ -76,10 +76,11 @@
             >
               <div class="side-social">
               <span class="clap">
-              <md-button
-                class="md-icon-button clap"
-                @click="clapContent()"
-              >
+                <md-badge md-position="bottom" :md-content="node_content.clap_point">
+                <md-button
+                  class="md-icon-button clap"
+                  @click="clapContent()"
+                >
                 <img
                   v-if="node_content.user_clap < 10"
                   :src="node_content.user_clap != 0 ? '/images/clap-active.png' : '/images/clap.png'"
@@ -95,12 +96,14 @@
                   Clap
                 </md-tooltip>
               </md-button>
-              <md-tooltip md-direction="bottom" v-if="node_content.user_clap >= 10">
-                You clapped so much!
-              </md-tooltip>
-              <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
-                Please login to clap.
-              </md-tooltip>
+                <md-tooltip md-direction="bottom" v-if="node_content.user_clap >= 10">
+                  You clapped so much!
+                </md-tooltip>
+                <md-tooltip md-direction="bottom" v-if="!$store.getters.getUid">
+                  Please login to clap.
+                </md-tooltip>
+              </md-badge>
+            </span>
             </span>
                 <span class="clap">
               <md-button
@@ -1026,7 +1029,6 @@ body {
 }
 .side-social {
   width: 50px;
-  padding-left: 10px;
   margin: auto;
   .md-ripple {
     .md-button-content {
