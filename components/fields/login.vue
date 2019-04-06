@@ -13,7 +13,7 @@
               <!--</md-button>-->
             <!--</a>-->
             <!--<a class="btn btn-just-icon btn-simple" href="https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77gasbcb9ngw6d&redirect_uri=https://ed808.com:2/login/linkedin&state=gihmmsWer2563&scope=r_basicprofile%20r_emailaddress">-->
-            <a class="btn btn-just-icon btn-simple">
+            <a class="btn btn-just-icon btn-simple" @click="authenticate('linkedin')">
               <md-button class="md-icon-button">
                 <i class="mdi mdi-linkedin-box"></i>
               </md-button>
@@ -176,6 +176,11 @@
       // }
     },
     methods:{
+      authenticate: function (provider) {
+        this.$auth.authenticate(provider).then(function () {
+          // Execute application logic after successful social authentication
+        })
+      },
       loginWithLinkedin(){
         axios.crossDomain = true
         axios.crossOrigin = true

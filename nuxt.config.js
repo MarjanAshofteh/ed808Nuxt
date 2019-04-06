@@ -79,6 +79,7 @@ module.exports = {
     { src: '~plugins/vue-sharing.js', ssr: false },
     //{ src: '~plugins/vue-youtube.js', ssr: false },
     { src: '~plugins/VueEditor.js', ssr: false },
+    { src: '~plugins/vue-authenticate.js', ssr: false },
   ],
 
   /*
@@ -99,6 +100,6 @@ module.exports = {
     extractCSS: true
   },
   server: {
-    port:3000
+    port:2000
   }
 }
