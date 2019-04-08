@@ -12,9 +12,7 @@
                 <!--<i class="mdi mdi-facebook-box"></i>-->
               <!--</md-button>-->
             <!--</a>-->
-            <a class="btn btn-just-icon btn-simple" @click="loginWithLinkedin">
-            <!--<a class="btn btn-just-icon btn-simple" @click="authenticate('linkedin')">-->
-            <!--<a class="btn btn-just-icon btn-simple">-->
+            <a class="btn btn-just-icon btn-simple">
               <md-button class="md-icon-button">
                 <i class="mdi mdi-linkedin-box"></i>
               </md-button>
