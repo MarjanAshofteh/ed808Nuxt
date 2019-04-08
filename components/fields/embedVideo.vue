@@ -1,28 +1,29 @@
 <template>
   <div class="video_player">
-    <youtube :video-id="videoId" player-width="840" player-height="472.5" class="video_inside"></youtube>
+    <iframe id="ytplayer" type="text/html" width="100%" height="auto"
+            :src="'https://www.youtube.com/embed/'+videoId"
+            frameborder="0"></iframe>
   </div>
 </template>
 
 <script>
-  import Vue from 'vue'
-  import VueYouTubeEmbed from 'vue-youtube-embed'
-  Vue.use(VueYouTubeEmbed)
-
   export default {
     name:'embedVideo',
     props:['url'],
     data(){
       return{
-        videoId:''
+        videoId: this.url.split('v=')[1].split('&')[0]
       }
     },
+    beforeCreate(){
+      // Vue.use(VueYouTubeEmbed)
+    },
     mounted(){
-      this.method(this.url)
+      // this.url = this.url.split('v=')[1].split('&')[0]
     },
     methods: {
       method(url) {
-        this.videoId = this.$youtube.getIdFromURL(url)
+        // this.videoId = this.$youtube.getIdFromURL(url)
       }
     }
   }
@@ -33,6 +34,7 @@
     margin:50px 0 50px 0;
     iframe {
       height:475px !important;
+      max-width: 800px;
     }
     .video_inside{
       background-color: #f6f6f6;
