@@ -85,7 +85,7 @@
     //   this.name = to.params.tname,
     //     next()
     // },
-    async asyncData({req, res, query, params}) {
+    async asyncData({req, res, query, params, error}) {
       try {
         const {data} = await axios.get('https://ed808.com:92/latin/tag/' + params.tid ,{
           withCredentials:true,
@@ -106,7 +106,9 @@
           }
         }
       } catch (e) {
-
+        if (e.response.hasOwnProperty('status')) {
+          error({ statusCode: e.response.status, message: e.response.statusText })
+        }
       }
     },
     mounted(){
@@ -296,8 +298,8 @@
         height: 38px;
       }
       &.bookmarked {
-        color: #555 !important;
-        border-color: #aaa;
+        color: #fff !important;
+        background: #2196f3;
       }
       .md-progress-spinner{
         vertical-align: middle;

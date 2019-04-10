@@ -75,7 +75,7 @@
               style=""
             >
               <div class="side-social">
-              <span class="clap">
+                <span class="clap">
                 <md-badge md-position="bottom" :md-content="node_content.clap_point">
                 <md-button
                   class="md-icon-button clap"
@@ -104,37 +104,37 @@
                 </md-tooltip>
               </md-badge>
             </span>
-            </span>
                 <span class="clap">
-              <md-button
-                class="md-icon-button"
-                @click="bookmarkContent()"
-              >
-                <i
-                  class="mdi"
-                  :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
-                  :style="'color:' + node_content.user_bookmark ? 'yellow' : ''"
-                />
-                <md-tooltip
-                  v-if="!node_content.user_bookmark && $store.getters.getUid"
-                  md-direction="bottom"
-                >
-                  Bookmark this article
-                </md-tooltip>
-                <md-tooltip
-                  v-if="node_content.user_bookmark && $store.getters.getUid"
-                  md-direction="bottom"
-                >
-                  Remove from bookmarks
-                </md-tooltip>
-              </md-button>
-              <md-tooltip
-                v-if="!$store.getters.getUid"
-                md-direction="bottom"
-              >
-                  Please login to bookmark this content.
-                </md-tooltip>
-            </span>
+                  <md-button
+                    class="md-icon-button"
+                    :class="{ 'bookmark-active': node_content.user_bookmark }"
+                    @click="bookmarkContent()"
+                  >
+                    <i
+                      class="mdi"
+                      :class="node_content.user_bookmark ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
+                      :style="'color:' + node_content.user_bookmark ? 'yellow' : ''"
+                    />
+                    <md-tooltip
+                      v-if="!node_content.user_bookmark && $store.getters.getUid"
+                      md-direction="bottom"
+                    >
+                      Bookmark this article
+                    </md-tooltip>
+                    <md-tooltip
+                      v-if="node_content.user_bookmark && $store.getters.getUid"
+                      md-direction="bottom"
+                    >
+                      Remove from bookmarks
+                    </md-tooltip>
+                  </md-button>
+                  <md-tooltip
+                    v-if="!$store.getters.getUid"
+                    md-direction="bottom"
+                  >
+                      Please login to bookmark this content.
+                    </md-tooltip>
+                </span>
 
 
                 <a href="#comments">
@@ -534,7 +534,7 @@ export default {
     // Must be a number
     return /^\d+$/.test(params.nid)
   },
-  async asyncData({ params, query, req }) {
+  async asyncData({ params, query, req, error }) {
     try {
       axios.withCredentials = true
       axios.crossDomain = true
@@ -542,14 +542,13 @@ export default {
       if (req && req.headers && req.headers.cookie) {
         cookie = req.headers.cookie
       }
-      const { data } = await axios.get(
-        "https://ed808.com:92/latin/contents/" + params.nid,{},
-          {
-            headers:  {
-              'Cookie' :  cookie,
-              'Cache-Control': 'no-cache'
-            }
-          })
+      const { data } = await axios({
+        url: "https://ed808.com:92/latin/contents/" + params.nid,
+        method: 'get',
+        headers:  {
+          'Cookie' :  cookie,
+        }
+      })
 
       if (data) {
         let contentTypes = [];
@@ -581,8 +580,9 @@ export default {
     }
     catch (e) {
       console.log(e);
-      // res.statusCode = e.response.status
-      // this.error({ statusCode: 404, message: 'Text' })
+      if (e.response.hasOwnProperty('status')) {
+        error({ statusCode: e.response.status, message: e.response.statusText })
+      }
     }
   },
   mounted() {
@@ -1114,6 +1114,11 @@ body {
     }
   }
 }
+.bookmark-active {
+  .mdi {
+    color: #fbc02d !important;
+  }
+}
 .share {
   &.mobile-share{
     display: none;
@@ -1285,7 +1290,7 @@ th, td {
   text-align: center;
   padding: 8px;
 }
-
+W
 table {
   tr:nth-child(even) {
     background-color: #F5F5F5;
