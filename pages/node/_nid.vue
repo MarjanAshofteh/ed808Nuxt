@@ -25,14 +25,14 @@
         </div>
         <div>
           <eventData
-          v-if="types.includes('event')"
-          :date="node_content.event_time"
-          :time="node_content.time_and_duration"
-          :organizer="node_content.company"
-          :place="node_content.event_place"
-          :webinar_covered="node_content.ifwebinar"
-          :registration_link="node_content.registration_link"
-          :nid="nid"
+            v-if="types.includes('event')"
+            :date="node_content.event_time"
+            :time="node_content.time_and_duration"
+            :organizer="node_content.company"
+            :place="node_content.event_place"
+            :webinar_covered="node_content.ifwebinar"
+            :registration_link="node_content.registration_link"
+            :nid="nid"
           />
         </div>
       </div>

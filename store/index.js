@@ -12,8 +12,8 @@ export const state = () => ({
   loginActive: false,
   roles: ['administrator'],
   backGround: '',
-  userBackground: '',
-  userImage: '',
+  userBackground: false,
+  userImage: false,
   //allContents page
   filtersLoading: true,
   selected: {
@@ -70,6 +70,10 @@ export const mutations = {
   //commit is synchronous and may freeze your frontend till it is done.
   SET_USER(state, uid) {
     state.user.uid = uid
+  },
+  SET_PROFILE(state, image, background) {
+    state.userBackground = background ? background : '/images/city-profile.jpg'
+    state.userImage = image ? image : '/images/avatar.png'
   },
   SET_USER_DATA(state, user){
     state.user = user;

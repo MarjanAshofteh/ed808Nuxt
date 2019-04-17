@@ -16,7 +16,9 @@
           {{ user.user_follow ? 'Following' : 'Follow' }}
         </button>
       </div>
-      <h6 v-if="user.job">{{user.job}}</h6>
+      <h6 v-if="user.job">
+        {{  user.job  }}
+      </h6>
       <div
         v-if="user.about"
         class="description text-center"
@@ -70,6 +72,11 @@
     layout:'userpanel',
     mixins: [cookie],
     scrollToTop: true,
+    head(){
+      return {
+        title: this.user.full_name
+      }
+    },
     data() {
       return {
         uid: this.$route.params.uid,
@@ -113,9 +120,9 @@
 
     },
     mounted(){
-      console.log(this.user)
-      this.$store.state.userBackground = this.user.hasOwnProperty('background_image') ? this.user.background_image : '/images/city-profile.jpg'
-      this.$store.state.userImage = this.user.hasOwnProperty('picture') ? this.user.picture : '/images/avatar.png'
+      // console.log(this.user)
+      // this.$store.state.userBackground = this.user.hasOwnProperty('background_image') ? this.user.background_image : '/images/city-profile.jpg'
+      // this.$store.state.userImage = this.user.hasOwnProperty('picture') ? this.user.picture : '/images/avatar.png'
       this.isSameUser()
       // console.log(this.following)
       /*

@@ -5,46 +5,84 @@
         <md-content class="md-elevation-3 box">
           <div class="box-head">
             <md-icon>account_box</md-icon>
-            <span class="item-text">Personal</span>
-            <md-button v-if="sameUser" @click="editThis('personal')" class="md-icon-button md-accent edit">
+            <span class="item-text">
+              Personal
+            </span>
+            <md-button
+              v-if="sameUser"
+              @click="editThis('personal')"
+              class="md-icon-button md-accent edit"
+            >
               <md-icon>edit</md-icon>
             </md-button>
           </div>
           <div class="box-text">
-            <div v-if="editingEl != 'personal'">
-              <div class="box-row" v-if="user.full_name">{{user.full_name}}</div>
-              <div class="box-row" v-if="user.mail">{{user.mail}}</div>
-              <div class="box-row" v-if="user.mobile">{{user.mobile}}</div>
+            <div
+              v-if="editingEl != 'personal'"
+            >
+              <div
+                class="box-row"
+                v-if="user.full_name"
+              >
+                {{user.full_name}}
+              </div>
+              <div
+                class="box-row"
+                v-if="user.mail"
+              >
+                {{user.mail}}
+              </div>
+              <div
+                class="box-row"
+                v-if="user.mobile"
+              >
+                {{user.mobile}}
+              </div>
             </div>
 
             <div class="box-edit" v-else>
               <div>
                 <md-field>
                   <label>full name</label>
-                  <md-input v-model="user.full_name"></md-input>
+                  <md-input v-model="user.full_name" />
                 </md-field>
 
                 <md-field>
                   <label>Email address</label>
-                  <md-input v-model="user.mail"></md-input>
+                  <md-input v-model="user.mail" />
                 </md-field>
 
                 <md-field>
                   <label>Phone</label>
-                  <md-input v-model="user.mobile"></md-input>
+                  <md-input v-model="user.mobile" />
                 </md-field>
 
-                <div class="loading" v-if="updateField">
-                  <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
+                <div
+                  v-if="updateField"
+                  class="loading"
+                >
+                  <md-progress-bar
+                    md-mode="indeterminate"
+                    md-theme-default
+                  />
                 </div>
               </div>
 
               <div class="md-layout md-alignment-center-space-between">
                 <div class="md-layout-item">
-                  <md-button class="md-raised green" @click="doneEditingThis('personal')">Save</md-button>
+                  <md-button
+                    class="md-raised green"
+                    @click="doneEditingThis('personal')"
+                  >
+                    Save
+                  </md-button>
                 </div>
                 <div class="md-layout-item">
-                  <md-button @click="cancleEditingThis('personal')">Cancel</md-button>
+                  <md-button
+                    @click="cancleEditingThis('personal')"
+                  >
+                    Cancel
+                  </md-button>
                 </div>
               </div>
             </div>
